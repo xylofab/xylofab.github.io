@@ -27,3 +27,8 @@ O site passa a falar com a app fab3d (repositório `skydoy/fab3d-gestao`) atrav�
 ## Portes
 
 Preços de balcão dos CTT em 2026 (Encomenda Postal para Portugal, Correio Azul Internacional para o estrangeiro), por peso: peças + a maior embalagem do carrinho. Mais de 2 kg: a combinar por email.
+
+
+## Logótipos de pagamento
+
+`assets/pay/visa.svg`, `mastercard.svg` e `mbway.svg` vêm de [activemerchant/payment_icons](https://github.com/activemerchant/payment_icons) (licença MIT). `multibanco.svg` foi feito a partir do ícone da [PaymentFont](https://github.com/AlexanderPoellmann/PaymentFont) (licença SIL OFL 1.1). As marcas pertencem aos seus donos e aparecem só para mostrar os meios de pagamento aceites.

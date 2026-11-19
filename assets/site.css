@@ -146,7 +146,7 @@ table.t td.num { color: var(--white); font-family: 'JetBrains Mono', monospace; 
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
 
-.pay-logo { min-width: 0; padding: 4px 10px; }
-.pay-logo img { display: block; height: 26px; width: auto; }
+.pay-logo { min-width: 0; height: auto; padding: 0; background: none; border-radius: 6px; }
+.pay-logo img { display: block; height: 36px; width: auto; }
 .method-logos { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
-.method-logos .pay-chip { height: 36px; }
+.method-logos .pay-logo img { height: 30px; }

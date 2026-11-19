@@ -296,7 +296,7 @@
   /* logótipos oficiais em assets/pay/<id>.svg; se o ficheiro faltar mostra só o nome */
   XF.payLogos = function (ids) {
     return XF.PAY.filter(function (p) { return !ids || ids.indexOf(p[0]) >= 0; }).map(function (p) {
-      return '<span class="pay-chip pay-logo"><img src="assets/pay/' + p[0] + '.svg" alt="' + p[1] + '" height="26" onerror="this.replaceWith(document.createTextNode(this.alt))"></span>';
+      return '<span class="pay-chip pay-logo"><img src="assets/pay/' + p[0] + '.svg" alt="' + p[1] + '" height="36" onerror="this.replaceWith(document.createTextNode(this.alt))"></span>';
     }).join('');
   };
   function footer() {
