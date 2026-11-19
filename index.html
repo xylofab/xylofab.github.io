@@ -191,7 +191,8 @@
 
 <footer id="site-footer"></footer>
 
-<script src="assets/site.js?v=5"></script>
+<script src="assets/config.js?v=1"></script>
+<script src="assets/site.js?v=8"></script>
 <script>
 (function () {
   var cl = function (v) { return Math.max(0, Math.min(1, v)); };
@@ -232,22 +233,25 @@
     { pt: 'Vi a minha encomenda a ser impressa ao vivo. Fiquei a olhar como quem olha para o forno.', en: 'I watched my order being printed live. Like staring at the oven.', who: 'J. P.', p: 'suporte', s: 4 },
     { pt: 'O marcador é tão bonito que agora leio mais. Ou finjo.', en: 'The bookmark is so pretty that I read more now. Or pretend to.', who: 'R. F.', p: 'marcador', s: 5 }
   ];
+  var REAL = null;
   function buildReviews() {
-    var label = XF.L('EXEMPLO', 'EXAMPLE');
+    var label = REAL ? '' : XF.L('EXEMPLO', 'EXAMPLE');
     var card = function (r) {
-      var prod = r.p === 'custom' ? 'XyloFab Custom' : XF.pt(XF.product(r.p)).name;
-      return '<figure class="review"><div style="display:flex;justify-content:space-between;align-items:center"><span aria-label="' + r.s + '/5" style="color:#FFB020;font-size:18px;letter-spacing:2px">' + '★★★★★'.slice(0, r.s) + '☆☆☆☆☆'.slice(0, 5 - r.s) + '</span><span class="mono" style="font-size:11px;font-weight:700;color:#0A0F1F;background:#C9D3E8;padding:4px 8px;border-radius:999px">' + label + '</span></div>' +
-        '<blockquote style="margin:0;font-size:17px;line-height:1.45;font-weight:600">' + XF.esc(XF.f(r)) + '</blockquote><figcaption class="muted" style="font-size:14px"><strong style="color:#fff">' + r.who + '</strong> · ' + XF.esc(prod) + '</figcaption></figure>';
+      var pp = XF.product(r.p);
+      var prod = r.prodName || (r.p === 'custom' ? 'XyloFab Custom' : pp ? XF.pt(pp).name : '');
+      return '<figure class="review"><div style="display:flex;justify-content:space-between;align-items:center"><span aria-label="' + r.s + '/5" style="color:#FFB020;font-size:18px;letter-spacing:2px">' + '★★★★★'.slice(0, r.s) + '☆☆☆☆☆'.slice(0, 5 - r.s) + '</span>' + (label ? '<span class="mono" style="font-size:11px;font-weight:700;color:#0A0F1F;background:#C9D3E8;padding:4px 8px;border-radius:999px">' + label + '</span>' : '') + '</div>' +
+        '<blockquote style="margin:0;font-size:17px;line-height:1.45;font-weight:600">' + XF.esc(XF.f(r)) + '</blockquote><figcaption class="muted" style="font-size:14px"><strong style="color:#fff">' + XF.esc(r.who) + '</strong> · ' + XF.esc(prod) + '</figcaption>' + (r.reply ? '<p class="small" style="margin:0;border-left:3px solid #FF5A1F;padding-left:10px">XyloFab: ' + XF.esc(r.reply) + '</p>' : '') + '</figure>';
     };
-    var a = REV.map(card).join(''), b = REV.slice().reverse().map(card).join('');
+    var LIST = REAL ? REAL.list : REV;
+    var a = LIST.map(card).join(''), b = LIST.slice().reverse().map(card).join('');
     $('revA').innerHTML = a + a; $('revB').innerHTML = b + b;
     /* média geral: calculada das opiniões mostradas (na fase 2, das opiniões aprovadas da app) */
-    var avg = REV.reduce(function (t, r) { return t + r.s; }, 0) / REV.length;
+    var avg = REAL ? REAL.average : REV.reduce(function (t, r) { return t + r.s; }, 0) / REV.length;
     var full = Math.round(avg);
     var num = new Intl.NumberFormat(XF.lang === 'pt' ? 'pt-PT' : XF.lang, { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(avg);
     $('rev-avg').innerHTML = '<span style="font-size:clamp(48px,7vw,72px);font-weight:900;line-height:1;letter-spacing:-.03em">' + num + '</span>' +
       '<span style="display:flex;flex-direction:column;gap:6px"><span aria-label="' + num + '/5" style="color:#FFB020;font-size:22px;letter-spacing:3px">' + '★★★★★'.slice(0, full) + '☆☆☆☆☆'.slice(0, 5 - full) + '</span>' +
-      '<span class="muted" style="font-size:14px">' + XF.L('Média de ', 'Average of ') + REV.length + XF.L(' opiniões', ' reviews') + ' · <span class="mono" style="font-weight:700">' + label + '</span></span></span>';
+      '<span class="muted" style="font-size:14px">' + XF.L('Média de ', 'Average of ') + (REAL ? REAL.count : REV.length) + ((REAL ? REAL.count : REV.length) === 1 ? XF.L(' opinião', ' review') : XF.L(' opiniões', ' reviews')) + (label ? ' · <span class="mono" style="font-weight:700">' + label + '</span>' : '') + '</span></span>';
   }
 
   /* lab */
@@ -259,6 +263,12 @@
     if (!XF.validEmail(email)) { XF.toast(XF.L('Esse email não parece certo.', 'That email does not look right.')); return; }
     var list = XF.load('xf-lab', []); if (!Array.isArray(list)) list = [];
     list.push({ idea: idea, name: name, email: email, at: new Date().toISOString() }); XF.save('xf-lab', list);
+    if (XF.API) {
+      XF.sendIdea({ idea: idea, name: name, email: email, lang: XF.lang }).then(function () {
+        $('lab-idea').value = ''; XF.toast(XF.L('Recebemos a tua ideia. Respondemos por email com o NDA.', 'We got your idea. We will reply by email with the NDA.'));
+      }, function (err) { XF.toast(err.message); });
+      return;
+    }
     var body = idea + '\n\n— ' + (name || '') + ' <' + email + '>';
     location.href = 'mailto:' + XF.EMAIL + '?subject=' + encodeURIComponent('XyloFab Lab · ' + XF.L('ideia (pedido de NDA)', 'idea (NDA request)')) + '&body=' + encodeURIComponent(body);
     XF.toast(XF.L('Abrimos o teu email com a ideia. Só falta carregar em enviar.', 'We opened your email with the idea. Just press send.'));
@@ -337,6 +347,13 @@
     addEventListener('resize', function () { sizePins(); onScroll(); });
   });
   document.addEventListener('xf:lang', buildAll);
+  if (XF.API) XF.reviews().then(function (d) {
+    if (!d.count || !d.reviews.length) return;
+    REAL = { count: d.count, average: d.average, list: d.reviews.map(function (r) { return { pt: r.text, en: r.text, who: r.who, prodName: r.product, s: r.stars, reply: r.reply }; }) };
+    while (REAL.list.length < 5) REAL.list = REAL.list.concat(REAL.list);
+    buildReviews();
+    var note = document.querySelector('#s-rev p.small'); if (note) note.hidden = true;
+  }).catch(function () {});
 })();
 </script>
 </body>

@@ -5,8 +5,10 @@
   'use strict';
 
   var XF = window.XF = {};
-  XF.API = ''; // fase 2: endereço da app fab3d (túnel Cloudflare)
-  XF.TEST = true;
+  /* Fase 2: endereço público da loja na app fab3d (túnel Cloudflare), sem barra no fim.
+     Vazio = modo de teste: tudo fica só neste browser e não se cobra nada. */
+  XF.API = (window.XYLOFAB_API || '').replace(/\/+$/, '');
+  XF.TEST = !XF.API;
   XF.EMAIL = 'print.xylofab@gmail.com';
 
   /* ---------- guardar no browser, sem rebentar se não der ---------- */
@@ -80,7 +82,7 @@
     if (UI.en[key] != null) return XF.tr(UI.en[key]);
     return DICT.en[key] != null ? DICT.en[key] : key;
   };
-  var dictSrc = function (c) { return 'assets/i18n/' + c + '.js?v=5'; };
+  var dictSrc = function (c) { return 'assets/i18n/' + c + '.js?v=7'; };
   XF.loadDict = function (c, cb) {
     if (c === 'pt' || c === 'en' || XF.I18N[c]) { cb(); return; }
     var sc = document.createElement('script'); sc.src = dictSrc(c);
@@ -166,6 +168,7 @@
   };
   XF.product = function (id) { return XF.PRODUCTS.filter(function (p) { return p.id === id; })[0]; };
   XF.art = function (kind, name) {
+    if (kind && kind.indexOf('photo:') === 0) return '<img src="' + XF.esc(kind.slice(6)) + '" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;border-radius:inherit">';
     var A = {
       vaso: '<svg viewBox="0 0 200 200" aria-hidden="true"><polygon points="60,36 140,36 162,100 132,172 68,172 38,100" fill="#C9643E"/><polyline points="60,36 100,100 140,36" fill="none" stroke="#E08A66" stroke-width="4"/><polyline points="38,100 162,100" fill="none" stroke="#A9502F" stroke-width="4"/><polyline points="68,172 100,100 132,172" fill="none" stroke="#E08A66" stroke-width="4"/></svg>',
       suporte: '<svg viewBox="0 0 200 200" aria-hidden="true"><rect x="86" y="36" width="20" height="110" rx="8" transform="rotate(-14 96 146)" fill="#EDEDED"/><path d="M30 150 Q55 118 80 150 T130 150 T170 150 L170 168 L30 168 Z" fill="#EDEDED"/></svg>',
@@ -261,6 +264,91 @@
   XF.saveProfile = function (p) { var users = XF.load('xf-users', {}); users[p.email] = p; XF.save('xf-users', users); };
   XF.orders = function () { return XF.load('xf-orders', []); };
   XF.validEmail = function (e) { return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test((e || '').trim()); };
+
+  /* ---------- fase 2: a loja a sério, na app fab3d ---------- */
+  if (XF.API) (function () {
+    var TOKEN = 'xf-token', ME = 'xf-me', CAT = 'xf-cat';
+    var ERR = {"A encomenda passa de 2 kg. Escreve-nos para combinarmos os portes.": "Your order is over 2 kg. Write to us and we will agree the shipping cost.", "A loja ainda não está a aceitar pagamentos. Tenta mais tarde.": "The shop is not taking payments yet. Please try later.", "A palavra-passe precisa de 8 caracteres ou mais.": "The password needs 8 characters or more.", "Conta-nos a ideia em poucas linhas.": "Tell us the idea in a few lines.", "Demasiados pedidos. Espera um pouco e tenta outra vez.": "Too many requests. Wait a little and try again.", "Escolhe as estrelas primeiro.": "Pick the stars first.", "Escreve uma frase.": "Write a sentence.", "Esse email não parece certo.": "That email does not look right.", "Esse link já não serve. Pede outro.": "That link no longer works. Ask for a new one.", "Esta encomenda já começou a ser impressa. Escreve-nos e vemos o que dá para fazer.": "This order has already started printing. Write to us and we will see what we can do.", "Falta a localidade.": "The city is missing.", "Falta a morada.": "The address is missing.", "Falta o código postal.": "The postcode is missing.", "Falta o teu nome.": "Your name is missing.", "Já existe uma conta com esse email. Entra em vez disso.": "There is already an account with that email. Sign in instead.", "Não encontrei essa encomenda.": "We could not find that order.", "O carrinho está vazio.": "Your cart is empty.", "O email ou a palavra-passe não estão certos.": "The email or the password is not right.", "O pagamento não abriu. Tenta outra vez.": "The payment did not open. Try again.", "Só dá para avaliar depois de entregue.": "You can review it once it is delivered.", "Tens de entrar na tua conta.": "You need to sign in to your account.", "Um dos produtos já não está à venda. Tira-o do carrinho.": "One of the products is no longer for sale. Remove it from the cart.", "Pedido inválido.": "Something in the form is not right."};
+    function errText(pt) {
+      pt = pt || 'Algo correu mal. Tenta outra vez.';
+      if (XF.isPT()) return pt;
+      var en = ERR[pt];
+      if (!en && /^Falta o nome para /.test(pt)) en = 'The name is missing.';
+      if (!en && /^O pagamento não abriu/.test(pt)) en = 'The payment did not open. Try again.';
+      return XF.tr(en || 'Something went wrong. Try again.');
+    }
+    XF.req = function (method, path, body) {
+      var h = {}, t = XF.load(TOKEN, '');
+      if (body !== undefined) h['content-type'] = 'application/json';
+      if (t) h.authorization = 'Bearer ' + t;
+      return fetch(XF.API + '/api/loja' + path, { method: method, headers: h, body: body === undefined ? undefined : JSON.stringify(body) })
+        .catch(function () { throw new Error(XF.L('Não conseguimos falar com a loja. Confirma a internet e tenta outra vez.', 'We could not reach the shop. Check your connection and try again.')); })
+        .then(function (r) {
+          return r.text().then(function (x) {
+            var d = {}; try { d = x ? JSON.parse(x) : {}; } catch (e) {}
+            if (r.status === 401 && t && path.indexOf('/conta') === 0) { XF.drop(TOKEN); XF.drop(ME); }
+            if (!r.ok) throw new Error(errText(d.error));
+            return d;
+          });
+        });
+    };
+    /* catálogo: usa o guardado e atualiza por trás */
+    var ART = { nome: 'chaves', casa: 'vaso', secretaria: 'suporte', leitura: 'marcador', outros: 'vaso' };
+    var TILE = { nome: '#FFE3D6', casa: '#F1E4DA', secretaria: '#262D40', leitura: '#E3EADF', outros: '#F1E4DA' };
+    function useCatalog(c) {
+      if (!c || !c.products) return;
+      XF.PRODUCTS = c.products.map(function (p) {
+        p.art = p.photo ? 'photo:' + XF.API + p.photo : ART[p.cat] || 'vaso';
+        p.tile = TILE[p.cat] || '#F1E4DA';
+        p.pt.tag = p.pt.tag || { nome: 'COM O TEU NOME', casa: 'CASA', secretaria: 'SECRETÁRIA', leitura: 'LEITURA', outros: 'XYLOFAB' }[p.cat];
+        p.en.tag = p.en.tag || { nome: 'WITH YOUR NAME', casa: 'HOME', secretaria: 'DESK', leitura: 'READING', outros: 'XYLOFAB' }[p.cat];
+        return p;
+      });
+      if (c.colors && c.colors.length) XF.COLORS = c.colors;
+      XF.shopOpen = !!c.open;
+    }
+    if (XF.load(CAT, null)) useCatalog(XF.load(CAT, null)); else XF.PRODUCTS = [];
+    XF.catalogReady = XF.req('GET', '/catalogo').then(function (c) {
+      var changed = JSON.stringify(c) !== JSON.stringify(XF.load(CAT, null));
+      XF.save(CAT, c); useCatalog(c);
+      var ids = XF.PRODUCTS.map(function (p) { return p.id; }), cart = XF.load('xf-cart', []);
+      var kept = cart.filter(function (l) { return ids.indexOf(l.id) >= 0; });
+      if (kept.length !== cart.length) { XF.save('xf-cart', kept); changed = true; }
+      if (changed) document.dispatchEvent(new CustomEvent('xf:lang'));
+    }).catch(function () {});
+    /* conta */
+    function keep(d) { if (d.token) XF.save(TOKEN, d.token); XF.save(ME, d.profile || d); return d.profile || d; }
+    XF.signup = function (name, email, password, lab) { return XF.req('POST', '/conta/registar', { name: name, email: email, password: password, lab: !!lab, lang: XF.lang }).then(keep); };
+    XF.login = function (email, password) { return XF.req('POST', '/conta/entrar', { email: email, password: password }).then(keep); };
+    XF.logout = function () { XF.req('POST', '/conta/sair').catch(function () {}); XF.drop(TOKEN); XF.drop(ME); };
+    XF.user = function () { return XF.load(TOKEN, '') ? { email: (XF.load(ME, {}) || {}).email } : null; };
+    XF.profile = function () { return XF.load(TOKEN, '') ? XF.load(ME, null) : null; };
+    XF.saveProfile = function (p) {
+      XF.save(ME, p);
+      return XF.req('PATCH', '/conta', {
+        name: p.name, notifyEmail: p.notifyEmail !== false, lab: !!p.lab, names: p.names || [], lang: XF.lang,
+        addresses: (p.addresses || []).map(function (a) { return { label: a.label || '', line: a.line, zip: a.zip || '', city: a.city || '', country: a.country || 'PT', region: a.region || 'cont', def: !!a.def }; })
+      }).then(function (d) { XF.save(ME, Object.assign(d, { notifyWa: p.notifyWa, wa: p.wa })); document.dispatchEvent(new CustomEvent('xf:me')); return d; })
+        .catch(function (e) { XF.toast(e.message); });
+    };
+    XF.orders = function () { var me = XF.profile(); return (me && me.orders) || []; };
+    XF.refreshMe = function () {
+      if (!XF.load(TOKEN, '')) return Promise.resolve(null);
+      return XF.req('GET', '/conta').then(function (d) { XF.save(ME, d); document.dispatchEvent(new CustomEvent('xf:me')); return d; }).catch(function () { return null; });
+    };
+    XF.changePassword = function (pw) { return XF.req('PATCH', '/conta', { password: pw }); };
+    XF.forgot = function (email) { return XF.req('POST', '/conta/recuperar', { email: email, lang: XF.lang }); };
+    XF.resetPassword = function (token, pw) { return XF.req('POST', '/conta/repor', { token: token, password: pw }).then(keep); };
+    XF.cancelOrder = function (id) { return XF.req('POST', '/encomendas/' + encodeURIComponent(id) + '/cancelar').then(function (d) { XF.save(ME, d); return d; }); };
+    XF.review = function (id, stars, text, pub) { return XF.req('POST', '/opinioes', { orderId: id, stars: stars, text: text, public: !!pub }).then(function (d) { XF.save(ME, d); return d; }); };
+    XF.exportData = function () { return XF.req('GET', '/conta/dados'); };
+    XF.deleteAccount = function () { return XF.req('DELETE', '/conta').then(function () { XF.drop(TOKEN); XF.drop(ME); }); };
+    XF.checkout = function (body) { return XF.req('POST', '/encomendas', body); };
+    XF.orderStatus = function (id) { return XF.req('GET', '/encomendas/' + encodeURIComponent(id)); };
+    XF.sendIdea = function (body) { return XF.req('POST', '/lab', body); };
+    XF.reviews = function () { return XF.req('GET', '/opinioes'); };
+    if (XF.load(TOKEN, '')) document.addEventListener('DOMContentLoaded', function () { XF.refreshMe().then(function () { XF.mount(); }); });
+  })();
 
   /* ---------- aviso rápido ---------- */
   XF.toast = function (text) {

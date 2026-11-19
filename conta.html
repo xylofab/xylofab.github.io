@@ -42,13 +42,14 @@
 <header id="site-header"></header>
 <main id="app" class="wrap" style="padding-top: 36px; padding-bottom: 96px"></main>
 <footer id="site-footer"></footer>
-<script src="assets/site.js?v=5"></script>
+<script src="assets/config.js?v=1"></script>
+<script src="assets/site.js?v=8"></script>
 <script>
 (function () {
   var $ = function (id) { return document.getElementById(id); };
   var L = XF.L;
   var qs = new URLSearchParams(location.search);
-  var st = { mode: qs.get('criar') ? 'signup' : 'login', email: qs.get('email') || '', name: '', error: '', info: '', tab: 'resumo', order: null, rating: {}, confirm: false, adding: false };
+  var st = { mode: qs.get('repor') ? 'reset' : qs.get('criar') ? 'signup' : 'login', email: qs.get('email') || '', name: '', error: '', info: '', tab: 'resumo', order: null, rating: {}, confirm: false, adding: false };
   var STEPS = ['paga', 'fila', 'imprimir', 'enviada', 'entregue'];
   var STEP_NAMES = { paga: ['Paga', 'Paid'], fila: ['Na fila', 'In queue'], imprimir: ['A imprimir', 'Printing'], enviada: ['Enviada', 'Shipped'], entregue: ['Entregue', 'Delivered'] };
   var STEP_COL = { paga: '#C9D3E8', fila: '#C9D3E8', imprimir: '#FF5A1F', enviada: '#FFB020', entregue: '#22C07A' };
@@ -57,16 +58,18 @@
   /* ---------- entrar / criar conta ---------- */
   function authView() {
     var m = st.mode;
-    var title = { signup: L('Cria a tua conta', 'Create your account'), login: L('Bem-vindo de volta', 'Welcome back'), forgot: L('Recuperar a palavra-passe', 'Reset your password'), sent: L('Está a caminho', 'On its way') }[m];
+    var title = { signup: L('Cria a tua conta', 'Create your account'), login: L('Bem-vindo de volta', 'Welcome back'), forgot: L('Recuperar a palavra-passe', 'Reset your password'), reset: L('Nova palavra-passe', 'New password'), sent: L('Está a caminho', 'On its way') }[m];
     var body = '';
-    if (m === 'sent') body = '<div style="background:#EAF8F1;color:#146C45;border-radius:16px;padding:16px;font-weight:700">' + L('No site real, enviamos um link para ', 'On the live site we send a link to ') + XF.esc(st.email) + L('. No modo de teste, cria uma conta nova com outra palavra-passe.', '. In test mode, create a new account with another password.') + '</div><button type="button" class="link-btn" style="color:#3B4664" data-mode="login">← ' + L('Voltar', 'Back') + '</button>';
+    if (m === 'sent' && XF.API) body = '<div style="background:#EAF8F1;color:#146C45;border-radius:16px;padding:16px;font-weight:700">' + L('Se houver uma conta com ', 'If there is an account for ') + XF.esc(st.email) + L(', enviámos um link para escolheres uma palavra-passe nova. Vê também o spam.', ', we sent a link to choose a new password. Check your spam folder too.') + '</div><button type="button" class="link-btn" style="color:#3B4664" data-mode="login">← ' + L('Voltar', 'Back') + '</button>';
+    else if (m === 'sent') body = '<div style="background:#EAF8F1;color:#146C45;border-radius:16px;padding:16px;font-weight:700">' + L('No site real, enviamos um link para ', 'On the live site we send a link to ') + XF.esc(st.email) + L('. No modo de teste, cria uma conta nova com outra palavra-passe.', '. In test mode, create a new account with another password.') + '</div><button type="button" class="link-btn" style="color:#3B4664" data-mode="login">← ' + L('Voltar', 'Back') + '</button>';
     else body =
+      (m === 'reset' ? '<label class="field">' + L('Palavra-passe nova', 'New password') + '<input id="a-newpw" type="password" autocomplete="new-password"></label>' : '') +
       (m === 'signup' ? '<label class="field">' + L('Nome', 'Name') + '<input id="a-name" autocomplete="name" value="' + XF.esc(st.name) + '"></label>' : '') +
-      '<label class="field">Email<input id="a-email" type="email" autocomplete="email" value="' + XF.esc(st.email) + '"></label>' +
-      (m !== 'forgot' ? '<label class="field">' + L('Palavra-passe', 'Password') + '<input id="a-pw" type="password" autocomplete="' + (m === 'signup' ? 'new-password' : 'current-password') + '"></label>' : '') +
+      (m !== 'reset' ? '<label class="field">Email<input id="a-email" type="email" autocomplete="email" value="' + XF.esc(st.email) + '"></label>' : '') +
+      (m !== 'forgot' && m !== 'reset' ? '<label class="field">' + L('Palavra-passe', 'Password') + '<input id="a-pw" type="password" autocomplete="' + (m === 'signup' ? 'new-password' : 'current-password') + '"></label>' : '') +
       (m === 'signup' ? '<label class="check"><input id="a-terms" type="checkbox"><span>' + L('Aceito os <a href="termos.html" style="color:#B3380C">termos</a> e a <a href="privacidade.html" style="color:#B3380C">política de privacidade</a>', 'I accept the <a href="termos.html" style="color:#B3380C">terms</a> and the <a href="privacidade.html" style="color:#B3380C">privacy policy</a>') + '</span></label><label class="check"><input id="a-lab" type="checkbox" checked style="accent-color:#22C07A"><span>' + L('Quero saber primeiro das novidades do Lab', 'Tell me first about Lab news') + '</span></label>' : '') +
       '<p class="error" role="alert">' + XF.esc(st.error) + '</p>' +
-      '<button type="submit" class="btn btn-orange btn-big">' + { signup: L('Criar conta', 'Create account'), login: L('Entrar', 'Sign in'), forgot: L('Enviar link', 'Send link') }[m] + '</button>' +
+      '<button type="submit" class="btn btn-orange btn-big">' + { signup: L('Criar conta', 'Create account'), login: L('Entrar', 'Sign in'), forgot: L('Enviar link', 'Send link'), reset: L('Guardar e entrar', 'Save and sign in') }[m] + '</button>' +
       (m === 'login' ? '<button type="button" class="link-btn" style="color:#B3380C" data-mode="forgot">' + L('Esqueci-me da palavra-passe', 'I forgot my password') + '</button>' : '') +
       (m === 'forgot' ? '<button type="button" class="link-btn" style="color:#3B4664" data-mode="login">← ' + L('Voltar', 'Back') + '</button>' : '');
     return '<div class="sheet light" style="margin:24px auto;background:#fff;color:var(--ink)">' +
@@ -78,7 +81,7 @@
   }
 
   /* ---------- área de cliente ---------- */
-  function myOrders(u) { return XF.orders().filter(function (o) { return o.email === u.email; }); }
+  function myOrders(u) { return XF.API ? XF.orders() : XF.orders().filter(function (o) { return o.email === u.email; }); }
   function navView(u) {
     var os = myOrders(u), toRate = os.filter(function (o) { return o.status === 'entregue' && !o.review; }).length;
     var items = [['resumo', L('Resumo', 'Overview')], ['encomendas', L('Encomendas', 'Orders'), os.length || ''], ['moradas', L('Moradas', 'Addresses')], ['guardados', L('Nomes e favoritos', 'Names and favourites')], ['lab', 'Lab'], ['opinioes', L('Opiniões', 'Reviews'), toRate || ''], ['definicoes', L('Definições', 'Settings')]];
@@ -105,7 +108,7 @@
     }
     if (tab === 'encomendas' && !st.order) {
       out = '<h1 class="h-l">' + L('Encomendas', 'Orders') + '</h1>' + (os.length ? os.map(function (o) {
-        return '<button type="button" class="row" data-order="' + o.id + '"><span style="display:flex;flex-direction:column;gap:4px"><span class="mono small" style="font-weight:700">' + o.id + ' · ' + new Date(o.date).toLocaleDateString(XF.lang) + '</span><span style="font-size:18px;font-weight:800">' + XF.esc(o.items.map(function (i) { return i.qty + '× ' + i.name; }).join(', ')) + '</span></span><span style="display:flex;align-items:center;gap:14px"><span class="status" style="background:' + STEP_COL[o.status] + '">' + sn(o.status) + '</span><span class="mono" style="font-weight:700">' + XF.euro(o.total) + '</span></span></button>';
+        return '<button type="button" class="row" data-order="' + o.id + '"><span style="display:flex;flex-direction:column;gap:4px"><span class="mono small" style="font-weight:700">' + (o.code || o.id) + ' · ' + new Date(o.date).toLocaleDateString(XF.lang) + '</span><span style="font-size:18px;font-weight:800">' + XF.esc(o.items.map(function (i) { return i.qty + '× ' + i.name; }).join(', ')) + '</span></span><span style="display:flex;align-items:center;gap:14px"><span class="status" style="background:' + STEP_COL[o.status] + '">' + sn(o.status) + '</span><span class="mono" style="font-weight:700">' + XF.euro(o.total) + '</span></span></button>';
       }).join('') : '<p class="lead">' + L('Ainda não fizeste nenhuma encomenda.', 'You have not placed any orders yet.') + '</p>');
     }
     if (tab === 'encomendas' && st.order) {
@@ -113,13 +116,13 @@
       if (!o) { st.order = null; return areaView(u); }
       var z = XF.SHIP[o.zone];
       out = '<button type="button" class="btn btn-ghost" data-back style="align-self:flex-start">← ' + L('Encomendas', 'Orders') + '</button>' +
-        '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:flex-end"><div><span class="mono small" style="font-weight:700">' + o.id + '</span><h1 class="h-m">' + XF.esc(o.items.map(function (i) { return i.qty + '× ' + i.name + (i.custom ? ' "' + i.custom + '"' : ''); }).join(', ')) + '</h1></div><span class="status" style="background:' + STEP_COL[o.status] + '">' + sn(o.status) + '</span></div>' + timeline(o) +
+        '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:flex-end"><div><span class="mono small" style="font-weight:700">' + (o.code || o.id) + '</span><h1 class="h-m">' + XF.esc(o.items.map(function (i) { return i.qty + '× ' + i.name + (i.custom ? ' "' + i.custom + '"' : ''); }).join(', ')) + '</h1></div><span class="status" style="background:' + STEP_COL[o.status] + '">' + sn(o.status) + '</span></div>' + timeline(o) +
         '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px"><div class="card card-pad"><span class="mono small" style="font-weight:700">' + L('ENTREGA', 'DELIVERY') + '</span><p style="margin:6px 0 0">' + XF.esc(o.address.line) + '<br>' + XF.esc(o.address.zip + ' ' + o.address.city) + '</p><p class="small" style="margin:6px 0 0">CTT · ' + XF.esc(XF.f(z)) + ' · ' + XF.esc(XF.f(z.days)) + '</p></div>' +
-        '<div class="card card-pad"><span class="mono small" style="font-weight:700">' + L('PAGAMENTO', 'PAYMENT') + '</span><p style="margin:6px 0 0">' + { mbway: 'MB WAY', multibanco: 'Multibanco', cartao: L('Cartão', 'Card') }[o.method] + '</p><p class="small" style="margin:6px 0 0">' + L('Portes ', 'Shipping ') + (o.shipping == null ? L('a combinar', 'to be agreed') : XF.euro(o.shipping)) + ' · Total ' + XF.euro(o.total) + '</p></div></div>' +
+        '<div class="card card-pad"><span class="mono small" style="font-weight:700">' + L('PAGAMENTO', 'PAYMENT') + '</span><p style="margin:6px 0 0">' + ({ mbway: 'MB WAY', mb_way: 'MB WAY', multibanco: 'Multibanco', cartao: L('Cartão', 'Card'), card: L('Cartão', 'Card') }[o.method] || 'Stripe') + '</p><p class="small" style="margin:6px 0 0">' + L('Portes ', 'Shipping ') + (o.shipping == null ? L('a combinar', 'to be agreed') : XF.euro(o.shipping)) + ' · Total ' + XF.euro(o.total) + '</p></div></div>' +
         '<div style="display:flex;flex-wrap:wrap;gap:10px"><button type="button" class="btn btn-orange" data-reorder="' + o.id + '">' + L('Voltar a encomendar', 'Order again') + '</button>' +
         (o.status === 'fila' || o.status === 'paga' ? '<button type="button" class="btn btn-ghost" data-cancel="' + o.id + '">' + L('Cancelar encomenda', 'Cancel order') + '</button>' : '') +
         '<a class="btn btn-ghost" href="mailto:' + XF.EMAIL + '?subject=' + encodeURIComponent(L('Ajuda com a encomenda ', 'Help with order ') + o.id) + '">' + L('Preciso de ajuda', 'I need help') + '</a>' +
-        (o.status !== 'entregue' ? '<button type="button" class="btn btn-green" data-next="' + o.id + '">' + L('Teste: avançar fase', 'Test: next step') + '</button>' : '') + '</div>';
+        (XF.TEST && o.status !== 'entregue' ? '<button type="button" class="btn btn-green" data-next="' + o.id + '">' + L('Teste: avançar fase', 'Test: next step') + '</button>' : '') + '</div>';
     }
     if (tab === 'moradas') {
       var as = u.addresses || [];
@@ -136,8 +139,8 @@
         (favs.length ? favs.map(function (id) { var p = XF.product(id); if (!p) return ''; return '<div style="display:flex;align-items:center;gap:12px"><span style="width:48px;height:48px;border-radius:12px;background:' + p.tile + '"></span><span style="flex:1"><b>' + XF.esc(XF.pt(p).name) + '</b><br><span class="mono small">' + XF.euro(p.price) + '</span></span><button type="button" class="btn btn-orange" data-favadd="' + id + '">' + XF.t('add') + '</button></div>'; }).join('') : '<p class="muted" style="margin:0">' + L('Ainda não tens favoritos. Toca no coração na loja.', 'No favourites yet. Tap the heart in the shop.') + '</p>') + '</div></div>';
     }
     if (tab === 'lab') {
-      var ideas = XF.load('xf-lab', []); if (!Array.isArray(ideas)) ideas = [];
-      ideas = ideas.filter(function (x) { return x && typeof x === 'object' && x.email === u.email; });
+      var ideas = XF.API ? (u.ideas || []) : XF.load('xf-lab', []); if (!Array.isArray(ideas)) ideas = [];
+      if (!XF.API) ideas = ideas.filter(function (x) { return x && typeof x === 'object' && x.email === u.email; });
       out = '<section style="border:2px solid #22C07A;border-radius:28px;padding:clamp(22px,4vw,40px);display:flex;flex-direction:column;gap:16px"><span class="mono" style="font-weight:700;letter-spacing:.14em;color:#22C07A">XYLOFAB LAB</span><h1 class="h-l">' + L('A tua ideia, connosco.', 'Your idea, with us.') + '</h1>' +
         '<ol style="margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px;font-size:17px"><li>' + L('Contas-nos a ideia em poucas linhas, sem segredos.', 'You tell us the idea in a few lines, no secrets.') + '</li><li>' + L('Assinamos os dois um NDA (acordo de confidencialidade).', 'We both sign an NDA (non-disclosure agreement).') + '</li><li>' + L('Desenhamos, imprimimos protótipos e afinamos contigo.', 'We design, print prototypes and fine-tune with you.') + '</li></ol>' +
         '<a class="btn btn-green btn-big" href="index.html#lab-ideia" style="align-self:flex-start">' + L('Contar uma ideia', 'Tell us an idea') + '</a>' +
@@ -147,10 +150,10 @@
     if (tab === 'opinioes') {
       var done = os.filter(function (o) { return o.status === 'entregue'; });
       out = '<h1 class="h-l">' + L('Opiniões', 'Reviews') + '</h1>' + (done.length ? done.map(function (o) {
-        if (o.review) return '<div class="card card-pad"><b>' + o.id + '</b> · <span style="color:#FFB020">' + '★★★★★'.slice(0, o.review.stars) + '</span><p class="muted" style="margin:6px 0 0">' + XF.esc(o.review.text) + '</p><p class="small" style="margin:6px 0 0">' + L('À espera de aprovação para aparecer no site.', 'Waiting for approval before it shows on the site.') + '</p></div>';
+        if (o.review) return '<div class="card card-pad"><b>' + (o.code || o.id) + '</b> · <span style="color:#FFB020">' + '★★★★★'.slice(0, o.review.stars) + '</span><p class="muted" style="margin:6px 0 0">' + XF.esc(o.review.text) + '</p><p class="small" style="margin:6px 0 0">' + (o.review.state === 'aprovada' ? L('Aprovada. Já está no site.', 'Approved. It is on the site now.') : o.review.state === 'recusada' ? L('Não foi publicada.', 'It was not published.') : L('À espera de aprovação para aparecer no site.', 'Waiting for approval before it shows on the site.')) + '</p></div>';
         var r = st.rating[o.id] || 0;
         return '<form class="card card-pad" data-review="' + o.id + '" style="display:flex;flex-direction:column;gap:12px"><b>' + L('Como ficou ', 'How was ') + XF.esc(o.items[0].name) + '?</b><div style="display:flex;gap:6px" role="group" aria-label="' + L('Estrelas', 'Stars') + '">' + [1, 2, 3, 4, 5].map(function (n) { return '<button type="button" class="star" data-star="' + o.id + ':' + n + '" aria-pressed="' + (n <= r) + '" aria-label="' + n + '/5">★</button>'; }).join('') + '</div><label class="field">' + L('Em poucas palavras', 'In a few words') + '<textarea name="text"></textarea></label><label class="check"><input type="checkbox" name="public" checked><span>' + L('Podem mostrar no site com as minhas iniciais', 'You may show it on the site with my initials') + '</span></label><div><button type="submit" class="btn btn-orange">' + L('Enviar opinião', 'Send review') + '</button></div></form>';
-      }).join('') : '<p class="lead">' + L('Quando uma encomenda for entregue, podes avaliá-la aqui. (No teste, usa "avançar fase" numa encomenda até ficar entregue.)', 'Once an order is delivered you can review it here. (In test mode, use "next step" on an order until it is delivered.)') + '</p>');
+      }).join('') : '<p class="lead">' + (XF.API ? L('Quando uma encomenda for entregue, podes avaliá-la aqui.', 'Once an order is delivered you can review it here.') : L('Quando uma encomenda for entregue, podes avaliá-la aqui. (No teste, usa "avançar fase" numa encomenda até ficar entregue.)', 'Once an order is delivered you can review it here. (In test mode, use "next step" on an order until it is delivered.)')) + '</p>');
     }
     if (tab === 'definicoes') {
       out = '<h1 class="h-l">' + L('Definições', 'Settings') + '</h1>' +
@@ -181,6 +184,7 @@
     var u = XF.profile(); if (!u) return;
     var orders = XF.orders(), find = function (id) { return orders.filter(function (o) { return o.id === id; })[0]; };
     if ((el = t.closest('[data-next]'))) { var o = find(el.dataset.next); o.status = STEPS[Math.min(STEPS.length - 1, STEPS.indexOf(o.status) + 1)]; XF.save('xf-orders', orders); XF.toast(L('Fase: ', 'Step: ') + sn(o.status)); render(); return; }
+    if ((el = t.closest('[data-cancel]')) && XF.API) { el.disabled = true; XF.cancelOrder(el.dataset.cancel).then(function () { st.order = null; XF.toast(L('Encomenda cancelada. O dinheiro vai ser devolvido.', 'Order cancelled. The money will be refunded.')); render(); }, function (err) { el.disabled = false; XF.toast(err.message); }); return; }
     if ((el = t.closest('[data-cancel]'))) { XF.save('xf-orders', orders.filter(function (o) { return o.id !== el.dataset.cancel; })); st.order = null; XF.toast(L('Encomenda cancelada. No site real, o dinheiro é devolvido.', 'Order cancelled. On the live site the money is refunded.')); render(); return; }
     if ((el = t.closest('[data-reorder]'))) { find(el.dataset.reorder).items.forEach(function (i) { XF.addToCart(i.id, { color: i.color, custom: i.custom, qty: i.qty }); }); return; }
     if (t.closest('[data-addaddr]')) { st.adding = !st.adding; render(); return; }
@@ -189,12 +193,14 @@
     if ((el = t.closest('[data-delname]'))) { u.names.splice(+el.dataset.delname, 1); XF.saveProfile(u); render(); return; }
     if ((el = t.closest('[data-favadd]'))) { var p = XF.product(el.dataset.favadd); if (p.personal) location.href = 'loja.html?ver=' + p.id; else XF.addToCart(p.id); return; }
     if ((el = t.closest('[data-star]'))) { var parts = el.dataset.star.split(':'); st.rating[parts[0]] = +parts[1]; render(); return; }
+    if (t.closest('[data-export]') && XF.API) { XF.exportData().then(function (d) { var a2 = document.createElement('a'); a2.href = URL.createObjectURL(new Blob([JSON.stringify(d, null, 2)], { type: 'application/json' })); a2.download = 'xylofab-os-meus-dados.json'; a2.click(); }, function (err) { XF.toast(err.message); }); return; }
     if (t.closest('[data-export]')) {
       var data = { conta: u, encomendas: myOrders(u), favoritos: XF.load('xf-favs', []) }; delete data.conta.pw;
       var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })); a.download = 'xylofab-os-meus-dados.json'; a.click(); return;
     }
     if (t.closest('[data-askdel]')) { st.confirm = true; render(); return; }
     if (t.closest('[data-nodel]')) { st.confirm = false; render(); return; }
+    if (t.closest('[data-dodel]') && XF.API) { XF.deleteAccount().then(function () { st.confirm = false; rerenderHeader(); render(); XF.toast(L('Conta apagada.', 'Account deleted.')); }, function (err) { XF.toast(err.message); }); return; }
     if (t.closest('[data-dodel]')) { var us = XF.load('xf-users', {}); delete us[u.email]; XF.save('xf-users', us); XF.logout(); st.confirm = false; rerenderHeader(); render(); XF.toast(L('Conta apagada.', 'Account deleted.')); return; }
   });
   document.addEventListener('change', function (e) {
@@ -223,7 +229,12 @@
         XF.login(email, pw).then(done, fail);
       } else if (st.mode === 'forgot') {
         if (!XF.validEmail(email)) { st.error = L('Esse email não parece certo.', 'That email does not look right.'); return render(); }
+        if (XF.API) { XF.forgot(email).then(function () { st.mode = 'sent'; st.error = ''; render(); }, fail); return; }
         st.mode = 'sent'; st.error = ''; render();
+      } else if (st.mode === 'reset') {
+        var np = ($('a-newpw') || {}).value || '';
+        if (np.length < 8) { st.error = L('A palavra-passe precisa de 8 caracteres ou mais.', 'The password needs 8 characters or more.'); return render(); }
+        XF.resetPassword(qs.get('repor'), np).then(function (u2) { history.replaceState(null, '', 'conta.html'); done(u2); }, fail);
       }
       return;
     }
@@ -240,11 +251,13 @@
       var fd = new FormData(f); u.name = String(fd.get('name')).trim() || u.name;
       var newpw = String(fd.get('pw'));
       var fin = function () { XF.saveProfile(u); rerenderHeader(); render(); XF.toast(L('Guardado.', 'Saved.')); };
+      if (newpw && XF.API) { if (newpw.length < 8) { XF.toast(L('A palavra-passe precisa de 8 caracteres ou mais.', 'The password needs 8 characters or more.')); return; } XF.changePassword(newpw).then(fin, function (err) { XF.toast(err.message); }); return; }
       if (newpw) { if (newpw.length < 8) { XF.toast(L('A palavra-passe precisa de 8 caracteres ou mais.', 'The password needs 8 characters or more.')); return; } XF.hash(newpw).then(function (h) { u.pw = h; fin(); }); } else fin();
     }
     if (f.dataset.review) {
       var id = f.dataset.review, stars = st.rating[id] || 0;
       if (!stars) { XF.toast(L('Escolhe as estrelas primeiro.', 'Pick the stars first.')); return; }
+      if (XF.API) { XF.review(id, stars, f.querySelector('[name=text]').value, f.querySelector('[name=public]').checked).then(function () { XF.toast(L('Obrigado! Fica à espera de aprovação.', 'Thank you! It is waiting for approval.')); render(); }, function (err) { XF.toast(err.message); }); return; }
       var orders = XF.orders(); orders.forEach(function (o) { if (o.id === id) o.review = { stars: stars, text: f.querySelector('[name=text]').value, public: f.querySelector('[name=public]').checked }; });
       XF.save('xf-orders', orders); XF.toast(L('Obrigado! Fica à espera de aprovação.', 'Thank you! It is waiting for approval.')); render();
     }
@@ -257,6 +270,7 @@
   function fail(err) { st.error = err.message; render(); }
   document.addEventListener('DOMContentLoaded', render);
   document.addEventListener('xf:lang', render);
+  document.addEventListener('xf:me', render);
 })();
 </script>
 </body>
