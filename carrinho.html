@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carrinho · XyloFab</title>
+<meta name="theme-color" content="#0A0F1F">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+.opt { font: inherit; text-align: left; color: #fff; background: var(--ink-2); border: 2px solid var(--line-2); border-radius: 22px; padding: 22px; display: flex; flex-direction: column; gap: 8px; cursor: pointer; min-height: 150px; transition: transform .2s, border-color .2s; }
+.opt:hover { transform: translateY(-3px); }
+.opt[aria-pressed="true"] { border-color: var(--orange); }
+.method { display: flex; align-items: center; gap: 14px; min-height: 62px; padding: 0 18px; border-radius: 16px; border: 2px solid var(--line-2); background: var(--ink-2); cursor: pointer; }
+.method:has(input:checked) { border-color: var(--orange); }
+.method input { width: 20px; height: 20px; accent-color: var(--orange); }
+.qty { display: flex; align-items: center; border: 1px solid var(--line-2); border-radius: 12px; }
+.qty button { width: 44px; height: 44px; border: 0; background: transparent; color: #fff; font-size: 20px; font-weight: 800; cursor: pointer; }
+</style>
+</head>
+<body data-page="carrinho">
+<header id="site-header"></header>
+
+<main class="wrap" style="padding-top: 40px; padding-bottom: 96px; display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-start">
+<section style="flex: 999 1 540px; min-width: 0; display: flex; flex-direction: column; gap: 22px" id="left"></section>
+<aside class="card card-pad" style="flex: 1 1 320px; display: flex; flex-direction: column; gap: 14px; position: sticky; top: 110px" id="summary"></aside>
+</main>
+
+<footer id="site-footer"></footer>
+<script src="assets/site.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var st = { step: 'cart', mode: null, done: null, error: '', form: { name: '', email: '', country: 'PT', region: 'cont', address: '', city: '', zip: '', method: 'mbway', phone: '' } };
+  var L = function (pt, en) { return XF.isPT() ? pt : en; };
+
+  function lines() {
+    return XF.cart().map(function (l) { var p = XF.product(l.id); return p ? { l: l, p: p, t: XF.pt(p) } : null; }).filter(Boolean);
+  }
+  function weight(ls) {
+    var g = 0, pack = 0;
+    ls.forEach(function (x) { g += x.p.grams * x.l.qty; pack = Math.max(pack, x.p.pack); });
+    return g + pack;
+  }
+  function zone() { return XF.zoneOf(st.form.country, st.form.region); }
+  function totals() {
+    var ls = lines(), sub = ls.reduce(function (a, x) { return a + x.p.price * x.l.qty; }, 0);
+    var w = weight(ls), ship = ls.length ? XF.shipping(zone(), w) : 0;
+    return { ls: ls, sub: sub, w: w, ship: ship, total: sub + (ship || 0) };
+  }
+
+  function colorName(id) { var c = XF.COLORS.filter(function (c) { return c.id === id; })[0]; return c ? c[XF.isPT() ? 'pt' : 'en'] : id; }
+
+  function renderSummary() {
+    var T = totals(), z = XF.SHIP[zone()];
+    $('summary').innerHTML = '<h2 style="margin:0;font-size:20px;font-weight:900">' + L('Resumo', 'Summary') + '</h2>' +
+      T.ls.map(function (x) { return '<div style="display:flex;justify-content:space-between;gap:10px"><span>' + x.l.qty + ' × ' + XF.esc(x.t.name) + (x.l.custom ? ' "' + XF.esc(x.l.custom) + '"' : '') + '</span><span class="mono">' + XF.euro(x.p.price * x.l.qty) + '</span></div>'; }).join('') +
+      '<div style="height:1px;background:var(--line)"></div>' +
+      '<div style="display:flex;justify-content:space-between;gap:10px" class="muted"><span>' + L('Portes', 'Shipping') + ' · ' + XF.esc(z[XF.isPT() ? 'pt' : 'en']) + '<br><span class="small">CTT · ' + XF.esc(z.days[XF.isPT() ? 'pt' : 'en']) + ' · ' + T.w + ' g</span></span><span class="mono" style="color:#fff">' + (T.ls.length ? (T.ship == null ? L('A combinar', 'To be agreed') : XF.euro(T.ship)) : '—') + '</span></div>' +
+      '<div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-weight:800">Total</span><span class="mono" style="font-weight:700;font-size:22px">' + XF.euro(T.total) + '</span></div>' +
+      '<p class="small" style="margin:0">' + L('Os portes são calculados pelo peso das peças e da embalagem. Fora da União Europeia podem existir taxas alfandegárias, pagas por quem recebe.', 'Shipping is calculated from the weight of the items and the packaging. Outside the European Union, customs fees may apply and are paid by the recipient.') + '</p>';
+  }
+
+  function cartView() {
+    var T = totals();
+    if (!T.ls.length) return '<h1 class="h-l">' + L('O carrinho está vazio.', 'Your cart is empty.') + '</h1><p class="lead">' + L('As impressoras estão à espera.', 'The printers are waiting.') + '</p><div><a class="btn btn-orange btn-big" href="loja.html">' + L('Ir à loja', 'Go to the shop') + '</a></div>';
+    var personal = T.ls.some(function (x) { return x.p.personal; });
+    return '<h1 class="h-l">' + L('O teu carrinho', 'Your cart') + '</h1><ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px">' +
+      T.ls.map(function (x, i) {
+        return '<li class="card" style="padding:16px;display:flex;flex-wrap:wrap;align-items:center;gap:16px"><div style="width:72px;height:72px;border-radius:14px;background:' + x.p.tile + ';display:flex;align-items:center;justify-content:center"><div style="width:70%">' + XF.art(x.p.art, x.l.custom ? XF.esc(x.l.custom) : 'ANA') + '</div></div>' +
+          '<div style="flex:1 1 200px;display:flex;flex-direction:column;gap:2px"><span style="font-weight:800">' + XF.esc(x.t.name) + '</span><span class="small">' + XF.esc(colorName(x.l.color)) + (x.l.custom ? ' · "' + XF.esc(x.l.custom) + '"' : '') + '</span></div>' +
+          '<div class="qty"><button type="button" data-dec="' + i + '" aria-label="' + L('Menos um', 'One less') + '">−</button><span class="mono" style="min-width:28px;text-align:center;font-weight:700">' + x.l.qty + '</span><button type="button" data-inc="' + i + '" aria-label="' + L('Mais um', 'One more') + '">+</button></div>' +
+          '<span class="mono" style="min-width:80px;text-align:right;font-weight:700">' + XF.euro(x.p.price * x.l.qty) + '</span><button type="button" class="link-btn" data-del="' + i + '">' + L('Tirar', 'Remove') + '</button></li>';
+      }).join('') + '</ul>' +
+      (personal ? '<p class="small" style="margin:0;color:#FFB020">' + L('Tens peças personalizadas no carrinho: estas não têm os 14 dias de devolução por arrependimento.', 'You have personalised items in your cart: the 14-day change-of-mind return does not apply to them.') + '</p>' : '') +
+      '<div><button type="button" class="btn btn-orange btn-big" data-go="choose">' + L('Continuar', 'Continue') + '</button></div>';
+  }
+
+  function chooseView() {
+    var u = XF.profile();
+    if (u) { st.mode = 'user'; return detailsView(); }
+    return '<h1 class="h-l">' + L('Como queres continuar?', 'How do you want to continue?') + '</h1><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px">' +
+      '<button type="button" class="opt" data-mode="guest"><span style="font-size:21px;font-weight:900">' + L('Comprar sem conta', 'Checkout as guest') + '</span><span class="muted" style="font-size:15px">' + L('Só pedimos o email para o recibo e o estado da encomenda.', 'We only need your email for the receipt and order updates.') + '</span></button>' +
+      '<a class="opt" style="text-decoration:none" href="conta.html?depois=carrinho"><span style="font-size:21px;font-weight:900">' + L('Entrar ou criar conta', 'Sign in or create an account') + '</span><span class="muted" style="font-size:15px">' + L('Segues a impressão ao vivo e guardas as moradas.', 'Follow the print live and save your addresses.') + '</span></a></div>' +
+      '<button type="button" class="link-btn" data-go="cart">← ' + L('Voltar ao carrinho', 'Back to cart') + '</button>';
+  }
+
+  function detailsView() {
+    var f = st.form, u = XF.profile();
+    if (u && !f.email) { f.name = u.name; f.email = u.email; var a = (u.addresses || []).filter(function (x) { return x.def; })[0]; if (a) { f.address = a.line; f.city = a.city || ''; f.zip = a.zip || ''; f.country = a.country || 'PT'; f.region = a.region || 'cont'; } }
+    var cs = XF.countries().map(function (c) { return '<option value="' + c.code + '"' + (c.code === f.country ? ' selected' : '') + '>' + XF.esc(c.name) + '</option>'; }).join('');
+    var methods = [['mbway', 'MB WAY', L('Confirmas na app do MB WAY.', 'You confirm in the MB WAY app.')], ['multibanco', 'Multibanco', L('Recebes uma referência por email.', 'You get a payment reference by email.')], ['cartao', L('Cartão', 'Card'), 'Visa · Mastercard']];
+    return '<h1 class="h-l">' + (u ? L('Olá, ', 'Hi, ') + XF.esc(u.name.split(' ')[0]) + '.' : L('Para onde vai?', 'Where is it going?')) + '</h1>' +
+      '<form id="details" novalidate style="display:flex;flex-direction:column;gap:14px">' +
+      '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px">' +
+      '<label class="field">' + L('Nome', 'Name') + '<input name="name" autocomplete="name" value="' + XF.esc(f.name) + '" required></label>' +
+      '<label class="field">Email<input name="email" type="email" autocomplete="email" value="' + XF.esc(f.email) + '" required></label>' +
+      '<label class="field">' + L('País', 'Country') + '<select name="country" autocomplete="country">' + cs + '</select></label>' +
+      (f.country === 'PT' ? '<label class="field">' + L('Região', 'Region') + '<select name="region"><option value="cont"' + (f.region === 'cont' ? ' selected' : '') + '>' + L('Continente', 'Mainland') + '</option><option value="mad"' + (f.region === 'mad' ? ' selected' : '') + '>Madeira</option><option value="acr"' + (f.region === 'acr' ? ' selected' : '') + '>' + L('Açores', 'Azores') + '</option></select></label>' : '') +
+      '</div><label class="field">' + L('Morada', 'Address') + '<input name="address" autocomplete="street-address" value="' + XF.esc(f.address) + '" required></label>' +
+      '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px"><label class="field">' + L('Código postal', 'Postcode') + '<input name="zip" autocomplete="postal-code" value="' + XF.esc(f.zip) + '" required></label><label class="field">' + L('Localidade', 'City') + '<input name="city" autocomplete="address-level2" value="' + XF.esc(f.city) + '" required></label></div>' +
+      '<fieldset style="margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:10px"><legend style="font-weight:800;margin-bottom:10px;padding:0">' + L('Como pagas', 'How you pay') + '</legend>' +
+      methods.map(function (m) { return '<label class="method"><input type="radio" name="method" value="' + m[0] + '"' + (f.method === m[0] ? ' checked' : '') + '><span style="flex:1;display:flex;flex-direction:column"><span style="font-weight:800">' + m[1] + '</span><span class="small">' + m[2] + '</span></span></label>'; }).join('') +
+      '</fieldset>' + (f.method === 'mbway' ? '<label class="field" style="max-width:320px">' + L('Telemóvel do MB WAY', 'MB WAY phone number') + '<input name="phone" type="tel" autocomplete="tel" value="' + XF.esc(f.phone) + '" placeholder="9XX XXX XXX"></label>' : '') +
+      '<p class="error" role="alert">' + XF.esc(st.error) + '</p>' +
+      '<button type="submit" class="btn btn-orange btn-big">' + L('Pagar ', 'Pay ') + XF.euro(totals().total) + '</button>' +
+      '<p class="small" style="margin:0">' + L('Modo de teste: não é cobrado nada. Ao carregar em Pagar a encomenda fica registada neste browser.', 'Test mode: nothing is charged. When you press Pay the order is saved in this browser.') + '</p></form>' +
+      '<button type="button" class="link-btn" data-go="cart">← ' + L('Voltar ao carrinho', 'Back to cart') + '</button>';
+  }
+
+  function doneView() {
+    var o = st.done, u = XF.profile();
+    var how = { mbway: L('Recebeste um pedido no MB WAY.', 'You got a request in MB WAY.'), multibanco: L('Mandámos a referência Multibanco para o teu email.', 'We emailed you the Multibanco reference.'), cartao: L('O cartão foi aceite.', 'Your card was accepted.') }[o.method];
+    return '<h1 class="h-l">' + L('Está feito.', 'Done.') + '<br><span style="color:var(--green)">' + L('As impressoras já sabem.', 'The printers know.') + '</span></h1>' +
+      '<p class="lead">' + L('Encomenda ', 'Order ') + o.id + '. ' + how + ' ' + L('Quando começar a ser impressa, avisamos-te por email.', 'We will email you when it starts printing.') + '</p>' +
+      '<p class="mono small" style="margin:0">' + L('TESTE: NÃO FOI COBRADO NADA.', 'TEST: NOTHING WAS CHARGED.') + '</p>' +
+      (u ? '<div><a class="btn btn-orange btn-big" href="conta.html">' + L('Ver na minha conta', 'See it in my account') + '</a></div>'
+         : '<div class="card card-pad" style="background:#fff;color:var(--ink);display:flex;flex-direction:column;gap:10px"><span style="font-size:20px;font-weight:900">' + L('Queres seguir a impressão ao vivo?', 'Want to follow the print live?') + '</span><span style="color:#3B4664">' + L('Cria uma conta com o mesmo email e a encomenda aparece lá.', 'Create an account with the same email and the order will be there.') + '</span><div><a class="btn" style="background:var(--ink);color:#fff" href="conta.html?criar=1&email=' + encodeURIComponent(o.email) + '">' + L('Criar conta', 'Create account') + '</a></div></div>') +
+      '<div><a class="btn btn-ghost" href="loja.html">' + L('Voltar à loja', 'Back to the shop') + '</a></div>';
+  }
+
+  function render() {
+    var v = st.step === 'cart' ? cartView() : st.step === 'choose' ? chooseView() : st.step === 'details' ? detailsView() : doneView();
+    $('left').innerHTML = v;
+    $('summary').hidden = st.step === 'done' || !lines().length;
+    if (!$('summary').hidden) renderSummary();
+    XF.renderCartCount();
+  }
+
+  function readForm() {
+    var fm = $('details'); if (!fm) return;
+    var d = new FormData(fm); ['name', 'email', 'country', 'region', 'address', 'zip', 'city', 'method', 'phone'].forEach(function (k) { if (d.has(k)) st.form[k] = String(d.get(k)); });
+  }
+
+  document.addEventListener('click', function (e) {
+    var t = e.target, c = XF.cart(), i;
+    if ((i = t.closest('[data-inc]'))) { c[+i.dataset.inc].qty = Math.min(20, c[+i.dataset.inc].qty + 1); XF.setCart(c); render(); return; }
+    if ((i = t.closest('[data-dec]'))) { c[+i.dataset.dec].qty = Math.max(1, c[+i.dataset.dec].qty - 1); XF.setCart(c); render(); return; }
+    if ((i = t.closest('[data-del]'))) { c.splice(+i.dataset.del, 1); XF.setCart(c); render(); return; }
+    if ((i = t.closest('[data-go]'))) { st.step = i.dataset.go === 'choose' ? 'choose' : i.dataset.go; st.error = ''; render(); scrollTo(0, 0); return; }
+    if ((i = t.closest('[data-mode]'))) { st.mode = i.dataset.mode; st.step = 'details'; render(); return; }
+  });
+  document.addEventListener('change', function (e) {
+    if (!e.target.closest('#details')) return;
+    readForm();
+    if (['country', 'region', 'method'].indexOf(e.target.name) >= 0) { if (e.target.name === 'country') st.form.region = 'cont'; render(); }
+  });
+  document.addEventListener('input', function (e) { if (e.target.closest('#details')) readForm(); });
+  document.addEventListener('submit', function (e) {
+    if (e.target.id !== 'details') return;
+    e.preventDefault(); readForm();
+    var f = st.form, L2 = L;
+    if (!f.name.trim()) st.error = L2('Falta o teu nome.', 'Your name is missing.');
+    else if (!XF.validEmail(f.email)) st.error = L2('Esse email não parece certo.', 'That email does not look right.');
+    else if (!f.address.trim() || !f.zip.trim() || !f.city.trim()) st.error = L2('Falta completar a morada.', 'Please complete the address.');
+    else if (f.method === 'mbway' && f.phone.replace(/\D/g, '').length < 9) st.error = L2('Falta o número do MB WAY.', 'The MB WAY number is missing.');
+    else st.error = '';
+    if (st.error) { render(); return; }
+    var T = totals(), orders = XF.orders();
+    var o = {
+      id: 'XF-T' + String(Date.now()).slice(-5), date: new Date().toISOString(), email: f.email.trim().toLowerCase(), name: f.name.trim(),
+      address: { line: f.address, zip: f.zip, city: f.city, country: f.country, region: f.region }, zone: zone(), method: f.method,
+      items: T.ls.map(function (x) { return { id: x.p.id, name: x.p.pt.name, qty: x.l.qty, color: x.l.color, custom: x.l.custom, price: x.p.price }; }),
+      weight: T.w, shipping: T.ship, total: T.total, status: 'fila', test: true
+    };
+    orders.unshift(o); XF.save('xf-orders', orders);
+    var u = XF.profile();
+    if (u && !(u.addresses || []).length) { u.addresses = [{ label: L('Casa', 'Home'), line: f.address, zip: f.zip, city: f.city, country: f.country, region: f.region, def: true }]; XF.saveProfile(u); }
+    XF.setCart([]); st.done = o; st.step = 'done'; render(); scrollTo(0, 0);
+  });
+  document.addEventListener('DOMContentLoaded', function () {
+    if (XF.profile() && new URLSearchParams(location.search).get('passo') === 'dados') { st.mode = 'user'; st.step = 'details'; }
+    render();
+  });
+  document.addEventListener('xf:lang', render);
+})();
+</script>
+</body>
+</html>

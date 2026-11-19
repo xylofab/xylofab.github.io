@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="XyloFab">
+  <circle cx="100" cy="100" r="92" fill="#0A0F1F" stroke="#FF5A1F" stroke-width="10"/>
+  <circle cx="100" cy="8" r="9" fill="#FFFFFF"/>
+  <rect x="70" y="40" width="60" height="38" rx="6" fill="#FFFFFF"/>
+  <polygon points="80,78 120,78 108,114 92,114" fill="#FFFFFF"/>
+  <rect x="94" y="113" width="12" height="10" rx="2" fill="#FFFFFF"/>
+  <circle cx="100" cy="140" r="7" fill="#FF5A1F"/>
+  <rect x="62" y="158" width="76" height="12" rx="6" fill="#FF5A1F"/>
+</svg>

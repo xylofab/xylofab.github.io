@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quem somos · XyloFab</title>
+<meta name="theme-color" content="#0A0F1F">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+.draw { stroke-dasharray: 578; animation: draw 1.6s cubic-bezier(.6,.1,.2,1) both; }
+.story p { margin: 0; font-size: 18px; line-height: 1.65; color: #3B4664; }
+.photo { border-radius: 24px; background: var(--ink-3); display: flex; align-items: center; justify-content: center; color: var(--mist); font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+</style>
+</head>
+<body data-page="quem">
+<header id="site-header"></header>
+<main>
+
+<section class="wrap" style="padding-top: 80px; padding-bottom: 72px; display: flex; flex-wrap: wrap; align-items: center; gap: 48px">
+<div style="flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 22px">
+<p class="eyebrow rise" data-i18n="about">Quem somos</p>
+<h1 class="h-xl rise"><span data-lang="pt">Uma oficina,<br>várias impressoras<br><span style="color: var(--orange)">e muita teimosia.</span></span><span data-lang="en" hidden>One workshop,<br>a few printers<br><span style="color: var(--orange)">and a lot of stubbornness.</span></span></h1>
+<p class="lead rise-2" data-lang="pt">A XyloFab imprime em 3D por encomenda: produtos nossos, peças à medida de quem nos escreve e as experiências do Lab. Cada peça só começa a ser impressa depois de alguém a querer.</p>
+<p class="lead rise-2" data-lang="en" hidden>XyloFab is made-to-order 3D printing: our own products, custom parts for whoever writes to us, and the experiments of the Lab. Every part starts printing only after someone wants it.</p>
+</div>
+<div class="rise-2" style="flex: 1 1 280px; display: flex; justify-content: center">
+<svg width="100%" viewBox="0 0 200 200" role="img" aria-label="XyloFab" style="max-width: 300px"><circle class="draw" cx="100" cy="100" r="92" fill="none" stroke="#FF5A1F" stroke-width="10" transform="rotate(-90 100 100)"/><circle cx="100" cy="8" r="9" fill="#fff"/><rect x="70" y="40" width="60" height="38" rx="6" fill="#fff"/><polygon points="80,78 120,78 108,114 92,114" fill="#fff"/><rect x="94" y="113" width="12" height="10" rx="2" fill="#fff"/><circle cx="100" cy="140" r="7" fill="#FF5A1F"/><rect x="62" y="158" width="76" height="12" rx="6" fill="#FF5A1F"/></svg>
+</div>
+</section>
+
+<section class="reveal" style="background: #fff; color: var(--ink)">
+<div class="wrap story" style="padding-top: 88px; padding-bottom: 88px; display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-start">
+<div class="photo" style="flex: 1 1 360px; aspect-ratio: 4 / 3; background: #E6E3DC; color: #3B4664" data-lang="pt">[FOTO DA OFICINA]</div>
+<div class="photo" style="flex: 1 1 360px; aspect-ratio: 4 / 3; background: #E6E3DC; color: #3B4664" data-lang="en" hidden>[WORKSHOP PHOTO]</div>
+<div style="flex: 999 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 16px" data-lang="pt">
+<p class="eyebrow" style="color: var(--orange-dark)">COMO COMEÇOU</p>
+<h2 class="h-l">Começou com uma Ender 3.<br>E com muita teimosia.</h2>
+<p>Tudo começou com uma Ender 3 lá em casa: muitas camadas tortas, umas quantas peças boas e uma vontade enorme de perceber como é que aquilo funcionava por dentro.</p>
+<p>Depois veio a VzBot, uma CoreXY montada à mão, rápida e rebelde. Deu luta. Muita. E foi a lutar com ela que aprendemos a afinar cada eixo, cada correia e cada décima de milímetro. Quando as ideias começaram a pedir mais precisão, chegou a X1E.</p>
+<p>A XyloFab nasceu no dia em que decidimos deixar de imprimir só para nós e começar a fazer coisas diferentes para fora: peças que não se encontram nas lojas, para quem anda à procura delas.</p>
+<p>O nome vem do grego <em>xylon</em>, madeira. Uma árvore cresce em anéis, uma camada por ano, e as nervuras da madeira contam essa história. Uma impressora 3D faz o mesmo, camada a camada, só que em horas.</p>
+<p>E no coração das nossas máquinas está o CoreXY: dois motores que só funcionam bem quando trabalham juntos, um no X e outro no Y. Não é por acaso que XyloFab começa por X e Y.</p>
+</div>
+<div style="flex: 999 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 16px" data-lang="en" hidden>
+<p class="eyebrow" style="color: var(--orange-dark)">HOW IT STARTED</p>
+<h2 class="h-l">It started with an Ender 3.<br>And a lot of stubbornness.</h2>
+<p>It all began with an Ender 3 at home: plenty of crooked layers, a few good parts and a huge urge to understand how the thing worked inside.</p>
+<p>Then came the VzBot, a hand-built CoreXY, fast and rebellious. It put up a fight. A big one. Fighting with it taught us to tune every axis, every belt and every tenth of a millimetre. When our ideas started asking for more precision, the X1E arrived.</p>
+<p>XyloFab was born the day we decided to stop printing only for ourselves and start making different things for other people: parts you cannot find in shops, for people who are looking for them.</p>
+<p>The name comes from the Greek <em>xylon</em>, wood. A tree grows in rings, one layer a year, and the grain of the wood tells that story. A 3D printer does the same, layer by layer, just in hours.</p>
+<p>And at the heart of our machines is CoreXY: two motors that only work well when they work together, one on X and one on Y. It is no accident that XyloFab starts with X and Y.</p>
+</div>
+</div>
+</section>
+
+<section class="wrap" style="padding-top: 96px; padding-bottom: 96px; display: flex; flex-direction: column; gap: 32px">
+<h2 class="h-l reveal"><span data-lang="pt">Como trabalhamos</span><span data-lang="en" hidden>How we work</span></h2>
+<div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr))">
+<div class="card card-pad lift reveal" style="display: flex; flex-direction: column; gap: 10px"><span class="mono" style="font-weight: 700; color: var(--orange)">01</span><b style="font-size: 21px" data-lang="pt">Só por encomenda</b><b style="font-size: 21px" data-lang="en" hidden>Made to order only</b><span class="muted" data-lang="pt">Não há armazém cheio de coisas à espera. Imprimimos o que pedes, quando pedes.</span><span class="muted" data-lang="en" hidden>No warehouse full of things waiting around. We print what you ask for, when you ask.</span></div>
+<div class="card card-pad lift reveal" style="display: flex; flex-direction: column; gap: 10px"><span class="mono" style="font-weight: 700; color: var(--orange)">02</span><b style="font-size: 21px" data-lang="pt">Da Ender 3 à X1E</b><b style="font-size: 21px" data-lang="en" hidden>From Ender 3 to X1E</b><span class="muted" data-lang="pt">As peças saem da nossa frota, a começar pela Bambu Lab X1E. Na tua conta vês em que impressora está a tua.</span><span class="muted" data-lang="en" hidden>Parts come out of our fleet, starting with the Bambu Lab X1E. Your account shows which printer yours is on.</span></div>
+<div class="card card-pad lift reveal" style="display: flex; flex-direction: column; gap: 10px"><span class="mono" style="font-weight: 700; color: var(--orange)">03</span><b style="font-size: 21px" data-lang="pt">Materiais escolhidos</b><b style="font-size: 21px" data-lang="en" hidden>Chosen materials</b><span class="muted" data-lang="pt">PLA e PETG, nas cores que temos em stock. Se a cor acabar, sai da loja até voltar.</span><span class="muted" data-lang="en" hidden>PLA and PETG, in the colours we have in stock. If a colour runs out, it leaves the shop until it is back.</span></div>
+<div class="card card-pad lift reveal" style="display: flex; flex-direction: column; gap: 10px"><span class="mono" style="font-weight: 700; color: var(--orange)">04</span><b style="font-size: 21px" data-lang="pt">Vista antes de sair</b><b style="font-size: 21px" data-lang="en" hidden>Checked before it leaves</b><span class="muted" data-lang="pt">Olhamos para cada peça antes de a embalar. Se não ficou bem, imprimimos outra.</span><span class="muted" data-lang="en" hidden>We look at every part before packing it. If it is not right, we print another.</span></div>
+</div>
+</section>
+
+<section class="wrap" style="padding-bottom: 96px; display: flex; flex-direction: column; gap: 32px">
+<h2 class="h-l reveal"><span data-lang="pt">Quem está por trás</span><span data-lang="en" hidden>Who is behind it</span></h2>
+<div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr))">
+<figure class="card lift reveal" style="margin: 0; overflow: hidden"><div class="photo" style="aspect-ratio: 1 / 1; border-radius: 0">[FOTO]</div><figcaption class="card-pad" style="display: flex; flex-direction: column; gap: 4px"><b style="font-size: 20px">Tiago Febra</b><span class="muted" data-lang="pt">Monta, afina e programa as máquinas, e a app que as põe a trabalhar.</span><span class="muted" data-lang="en" hidden>Builds, tunes and programs the machines, and the app that puts them to work.</span></figcaption></figure>
+<figure class="card lift reveal" style="margin: 0; overflow: hidden"><div class="photo" style="aspect-ratio: 1 / 1; border-radius: 0">[FOTO]</div><figcaption class="card-pad" style="display: flex; flex-direction: column; gap: 4px"><b style="font-size: 20px">Any Larissa</b><span class="muted" data-lang="pt">Escolhe as cores, cuida da oficina e dá vida aos produtos novos.</span><span class="muted" data-lang="en" hidden>Picks the colours, looks after the workshop and brings new products to life.</span></figcaption></figure>
+<div class="card-pad lift reveal" style="border: 2px dashed var(--line-2); border-radius: 24px; display: flex; flex-direction: column; justify-content: center; gap: 10px"><b style="font-size: 22px" data-lang="pt">E as impressoras.</b><b style="font-size: 22px" data-lang="en" hidden>And the printers.</b><span class="muted" data-lang="pt">A Ender 3 que começou tudo, a VzBot que deu luta e a X1E que veio pôr ordem. Trabalham de noite e não se queixam.</span><span class="muted" data-lang="en" hidden>The Ender 3 that started it all, the VzBot that put up a fight and the X1E that brought order. They work at night and never complain.</span></div>
+</div>
+</section>
+
+<section id="contactos" class="wrap reveal" style="padding-bottom: 96px">
+<div class="card" style="border-radius: 32px; padding: clamp(24px, 4vw, 56px); display: flex; flex-wrap: wrap; gap: 32px; align-items: center; justify-content: space-between">
+<div style="flex: 999 1 380px; display: flex; flex-direction: column; gap: 12px">
+<h2 class="h-l"><span data-lang="pt">Fala connosco.</span><span data-lang="en" hidden>Talk to us.</span></h2>
+<p class="muted" style="margin: 0; font-size: 18px">Email: <a href="mailto:print.xylofab@gmail.com" style="color: #fff">print.xylofab@gmail.com</a></p>
+<p class="small" style="margin: 0"><span data-lang="pt">Respondemos o mais depressa possível. Em breve, o tempo médio de resposta aparece aqui.</span><span data-lang="en" hidden>We reply as fast as we can. Our average reply time will show here soon.</span></p>
+</div>
+<div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 10px">
+<a class="btn btn-white btn-big" href="mailto:print.xylofab@gmail.com"><span data-lang="pt">Enviar um email</span><span data-lang="en" hidden>Send an email</span></a>
+<a class="btn btn-orange btn-big" href="mailto:print.xylofab@gmail.com?subject=Pedido%20de%20or%C3%A7amento%20XyloFab"><span data-lang="pt">Pedir um orçamento</span><span data-lang="en" hidden>Ask for a quote</span></a>
+</div>
+</div>
+</section>
+</main>
+<footer id="site-footer"></footer>
+<script src="assets/site.js"></script>
+</body>
+</html>

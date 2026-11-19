@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loja · XyloFab</title>
+<meta name="theme-color" content="#0A0F1F">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+.prod { background: var(--ink-2); border-radius: 26px; overflow: hidden; display: flex; flex-direction: column; animation: rise .5s cubic-bezier(.2,.7,.2,1) both; transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s; }
+.prod:hover { transform: translateY(-8px); box-shadow: 0 24px 48px rgba(0,0,0,.45); }
+.prod .art { position: relative; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.prod .art .pic { width: 64%; transition: transform .5s cubic-bezier(.2,.7,.2,1); }
+.prod:hover .art .pic { transform: scale(1.08) rotate(-4deg); }
+.fav { position: absolute; top: 10px; right: 10px; width: 44px; height: 44px; border-radius: 999px; border: 0; background: var(--ink); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.swatch { width: 48px; height: 48px; border-radius: 999px; border: 3px solid transparent; outline: 2px solid var(--ink-2); outline-offset: -6px; cursor: pointer; }
+.swatch[aria-pressed="true"] { border-color: #fff; }
+.toolbar { padding: 4px 0; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
+</style>
+</head>
+<body data-page="loja">
+<header id="site-header"></header>
+
+<main class="wrap" style="padding-top: 48px; padding-bottom: 96px; display: flex; flex-direction: column; gap: 26px">
+<div class="rise" style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<p class="eyebrow" data-i18n="shop">Loja</p>
+<h1 class="h-xl"><span data-lang="pt">Tudo o que já<br>saiu da impressora.</span><span data-lang="en" hidden>Everything that has<br>come off the printer.</span></h1>
+</div>
+<label class="field" style="flex: 0 1 360px"><span data-lang="pt">Procurar</span><span data-lang="en" hidden>Search</span>
+<input id="q" type="search" placeholder="vaso, nome, suporte..." style="border-radius: 999px; background: var(--ink-2)">
+</label>
+</div>
+
+<div class="toolbar">
+<div class="chips" role="group" aria-label="Categorias" id="cats"></div>
+<label style="display: flex; align-items: center; gap: 10px; font-weight: 700"><span data-lang="pt">Ordenar</span><span data-lang="en" hidden>Sort</span>
+<select id="sort" class="input" style="width: auto; min-height: 44px; background: var(--ink-2)"></select>
+</label>
+</div>
+
+<p id="count" class="mono small" style="margin: 0"></p>
+<div id="empty" hidden class="card-pad" style="border: 2px dashed var(--line-2); border-radius: 26px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start">
+<span style="font-size: 26px; font-weight: 900; letter-spacing: -.03em" data-lang="pt">Nada com esse nome. Ainda.</span><span style="font-size: 26px; font-weight: 900; letter-spacing: -.03em" data-lang="en" hidden>Nothing with that name. Yet.</span>
+<a class="btn btn-orange" href="index.html#custom"><span data-lang="pt">Pedir à medida</span><span data-lang="en" hidden>Ask for a custom part</span></a>
+</div>
+<div class="grid" id="grid"></div>
+</main>
+
+<div class="overlay" id="view" role="dialog" aria-modal="true" aria-labelledby="v-name">
+<div class="sheet" style="background: var(--ink-2)">
+<div id="v-art" style="flex: 1 1 320px; min-height: 320px; display: flex; align-items: center; justify-content: center"></div>
+<div style="flex: 1 1 340px; padding: 30px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; justify-content: space-between; gap: 10px; align-items: flex-start"><span id="v-tag" class="mono" style="font-size: 12px; font-weight: 700; letter-spacing: .1em; color: var(--orange)"></span><button type="button" class="close-btn" id="v-close" aria-label="Fechar"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13" stroke="#0A0F1F" stroke-width="2" stroke-linecap="round"/></svg></button></div>
+<h2 id="v-name" class="h-m"></h2>
+<span id="v-price" class="mono" style="font-size: 24px; font-weight: 700"></span>
+<p id="v-line" class="muted" style="margin: 0"></p>
+<label class="field" id="v-name-field" hidden><span data-lang="pt">O nome (até 10 letras)</span><span data-lang="en" hidden>The name (up to 10 letters)</span><input id="v-custom" maxlength="10" value="ANA" style="font-size: 18px; font-weight: 700"></label>
+<fieldset style="margin: 0; padding: 0; border: 0"><legend style="font-weight: 700; margin-bottom: 10px; padding: 0"><span data-lang="pt">Cor</span><span data-lang="en" hidden>Colour</span>: <span id="v-color-name"></span></legend><div class="chips" id="v-colors" style="gap: 10px"></div></fieldset>
+<p id="v-personal" class="small" hidden style="margin: 0; color: #FFB020"></p>
+<div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center">
+<div style="display: flex; align-items: center; border: 1px solid var(--line-2); border-radius: 14px"><button type="button" class="link-btn" id="v-dec" aria-label="Menos" style="width: 48px; text-decoration: none; font-size: 22px; color: #fff">−</button><span id="v-qty" class="mono" style="min-width: 30px; text-align: center; font-weight: 700">1</span><button type="button" class="link-btn" id="v-inc" aria-label="Mais" style="width: 48px; text-decoration: none; font-size: 22px; color: #fff">+</button></div>
+<button type="button" class="btn btn-orange btn-big" id="v-add" style="flex: 1 1 200px"></button>
+</div>
+</div>
+</div>
+</div>
+
+<footer id="site-footer"></footer>
+<script src="assets/site.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var st = { cat: 'tudo', q: '', sort: 'novos', view: null, color: 0, qty: 1 };
+  var CATS = [['tudo', 'Tudo', 'All'], ['casa', 'Casa', 'Home'], ['secretaria', 'Secretária', 'Desk'], ['leitura', 'Leitura', 'Reading'], ['nome', 'Com o teu nome', 'With your name']];
+  var favs = function () { return XF.load('xf-favs', []); };
+
+  function render() {
+    var pt = XF.isPT();
+    $('cats').innerHTML = CATS.map(function (c) { return '<button type="button" class="chip" data-cat="' + c[0] + '" aria-pressed="' + (st.cat === c[0]) + '">' + (pt ? c[1] : c[2]) + '</button>'; }).join('');
+    $('sort').innerHTML = [['novos', 'Novidades', 'Newest'], ['barato', 'Preço: mais barato', 'Price: low to high'], ['caro', 'Preço: mais caro', 'Price: high to low']].map(function (o) { return '<option value="' + o[0] + '"' + (st.sort === o[0] ? ' selected' : '') + '>' + (pt ? o[1] : o[2]) + '</option>'; }).join('');
+    var q = st.q.trim().toLowerCase();
+    var list = XF.PRODUCTS.filter(function (p) { var t = XF.pt(p); return (st.cat === 'tudo' || p.cat === st.cat) && (!q || (t.name + ' ' + t.line + ' ' + t.tag + ' ' + p.pt.name).toLowerCase().indexOf(q) >= 0); });
+    if (st.sort === 'barato') list.sort(function (a, b) { return a.price - b.price; });
+    if (st.sort === 'caro') list.sort(function (a, b) { return b.price - a.price; });
+    $('count').textContent = list.length + (pt ? (list.length === 1 ? ' PRODUTO' : ' PRODUTOS') : (list.length === 1 ? ' PRODUCT' : ' PRODUCTS'));
+    $('empty').hidden = list.length > 0;
+    var f = favs();
+    $('grid').innerHTML = list.map(function (p, i) {
+      var t = XF.pt(p), fav = f.indexOf(p.id) >= 0;
+      return '<article class="prod" style="animation-delay:' + (i * 60) + 'ms"><div class="art" style="background:' + p.tile + '"><span class="tag" style="position:absolute;top:14px;left:14px;z-index:1">' + XF.esc(t.tag) + '</span>' +
+        '<button type="button" class="fav" data-fav="' + p.id + '" aria-pressed="' + fav + '" aria-label="' + (fav ? (pt ? 'Tirar dos favoritos' : 'Remove from favourites') : (pt ? 'Juntar aos favoritos' : 'Add to favourites')) + '"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="' + (fav ? '#FF5A1F' : 'none') + '" stroke="#FF5A1F" stroke-width="2" stroke-linejoin="round"/></svg></button>' +
+        '<div class="pic">' + XF.art(p.art) + '</div></div>' +
+        '<div style="padding:20px;display:flex;flex-direction:column;gap:10px;flex:1"><div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline"><h2 style="margin:0;font-size:19px;font-weight:800">' + XF.esc(t.name) + '</h2><span class="mono" style="font-weight:700;white-space:nowrap">' + XF.euro(p.price) + '</span></div>' +
+        '<p class="muted" style="margin:0;font-size:15px;min-height:2.8em">' + XF.esc(t.line) + '</p><span class="small">' + (pt ? 'Em stock em ' : 'In stock in ') + XF.COLORS.length + (pt ? ' cores' : ' colours') + (p.personal ? (pt ? ' · personalizado' : ' · personalised') : '') + '</span>' +
+        '<div style="margin-top:auto;display:flex;gap:8px"><button type="button" class="btn btn-ghost" style="flex:1" data-view="' + p.id + '">' + (pt ? 'Ver' : 'View') + '</button><button type="button" class="btn btn-orange" style="flex:2" data-' + (p.personal ? 'view' : 'quick') + '="' + p.id + '">' + (p.personal ? (pt ? 'Escolher o nome' : 'Choose name') : XF.t('add')) + '</button></div></div></article>';
+    }).join('');
+    if (st.view) renderView();
+  }
+
+  function renderView() {
+    var p = XF.product(st.view), t = XF.pt(p), pt = XF.isPT(), col = XF.COLORS[st.color];
+    var name = ($('v-custom').value || '').trim().toUpperCase() || 'NOME';
+    $('v-art').style.background = p.tile;
+    $('v-art').innerHTML = p.personal
+      ? '<div style="width:80%">' + XF.art('chaves', XF.esc(name)).replace('fill="#FF5A1F"', 'fill="' + col.hex + '"').replace('fill="#0A0F1F">', 'fill="' + col.text + '">') + '</div>'
+      : '<div style="width:60%">' + XF.art(p.art) + '</div>';
+    $('v-tag').textContent = t.tag;
+    $('v-name').textContent = t.name;
+    $('v-price').textContent = XF.euro(p.price);
+    $('v-line').textContent = t.line + (pt ? ' Feito por encomenda: sai da oficina em até 7 dias.' : ' Made to order: leaves the workshop within 7 days.');
+    $('v-name-field').hidden = !p.personal;
+    $('v-personal').hidden = !p.personal;
+    $('v-personal').textContent = pt ? 'Peça personalizada: não tem os 14 dias de devolução por arrependimento.' : 'Personalised item: the 14-day change-of-mind return does not apply.';
+    $('v-color-name').textContent = col[pt ? 'pt' : 'en'];
+    $('v-colors').innerHTML = XF.COLORS.map(function (c, i) { return '<button type="button" class="swatch" data-color="' + i + '" aria-pressed="' + (i === st.color) + '" aria-label="' + c[pt ? 'pt' : 'en'] + '" style="background:' + c.hex + '"></button>'; }).join('');
+    $('v-qty').textContent = st.qty;
+    $('v-add').textContent = (pt ? 'Adicionar ao carrinho · ' : 'Add to cart · ') + XF.euro(p.price * st.qty);
+  }
+  function openView(id) { st.view = id; st.color = 0; st.qty = 1; renderView(); $('view').classList.add('open'); $('v-close').focus(); }
+  function closeView() { st.view = null; $('view').classList.remove('open'); }
+
+  document.addEventListener('click', function (e) {
+    var c = e.target.closest('[data-cat]'); if (c) { st.cat = c.dataset.cat; render(); return; }
+    var f = e.target.closest('[data-fav]');
+    if (f) { var l = favs(), i = l.indexOf(f.dataset.fav); if (i >= 0) l.splice(i, 1); else l.push(f.dataset.fav); XF.save('xf-favs', l); XF.toast(i >= 0 ? (XF.isPT() ? 'Saiu dos favoritos.' : 'Removed from favourites.') : (XF.isPT() ? 'Guardado nos favoritos.' : 'Saved to favourites.')); render(); return; }
+    var v = e.target.closest('[data-view]'); if (v) { openView(v.dataset.view); return; }
+    var q = e.target.closest('[data-quick]'); if (q) { XF.addToCart(q.dataset.quick); return; }
+    var sw = e.target.closest('[data-color]'); if (sw) { st.color = +sw.dataset.color; renderView(); return; }
+    if (e.target === $('view')) closeView();
+  });
+  $('v-close').addEventListener('click', closeView);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && st.view) closeView(); });
+  $('v-custom').addEventListener('input', renderView);
+  $('v-inc').addEventListener('click', function () { st.qty = Math.min(20, st.qty + 1); renderView(); });
+  $('v-dec').addEventListener('click', function () { st.qty = Math.max(1, st.qty - 1); renderView(); });
+  $('v-add').addEventListener('click', function () {
+    var p = XF.product(st.view), custom = p.personal ? (($('v-custom').value || '').trim().toUpperCase()) : '';
+    if (p.personal && !custom) { XF.toast(XF.isPT() ? 'Falta o nome.' : 'The name is missing.'); return; }
+    XF.addToCart(p.id, { color: XF.COLORS[st.color].id, custom: custom, qty: st.qty });
+    closeView();
+  });
+  $('q').addEventListener('input', function (e) { st.q = e.target.value; render(); });
+  $('sort').addEventListener('change', function (e) { st.sort = e.target.value; render(); });
+  document.addEventListener('DOMContentLoaded', function () {
+    render();
+    var ver = new URLSearchParams(location.search).get('ver');
+    if (ver && XF.product(ver)) openView(ver);
+  });
+  document.addEventListener('xf:lang', render);
+})();
+</script>
+</body>
+</html>

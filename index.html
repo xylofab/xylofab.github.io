@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XyloFab — Impressão 3D por encomenda</title>
+<meta name="description" content="XyloFab: impressão 3D por encomenda. Produtos próprios, peças à medida e o XyloFab Lab.">
+<meta name="theme-color" content="#0A0F1F">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+.stage { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+.draw { stroke-dasharray: 578; animation: draw 1.6s cubic-bezier(.6,.1,.2,1) both; }
+.r1 { animation: rise .9s .9s cubic-bezier(.2,.7,.2,1) both; }
+.r2 { animation: rise .9s 1.2s cubic-bezier(.2,.7,.2,1) both; }
+.bob { animation: bob 1.6s ease-in-out infinite; }
+.sway { animation: sway 1.2s ease-in-out infinite alternate; }
+.rowA, .rowB { display: flex; gap: 20px; width: max-content; animation: marquee 60s linear infinite; }
+.rowB { animation-direction: reverse; }
+.rowA:hover, .rowB:hover { animation-play-state: paused; }
+.blink { animation: blink 1s steps(1) infinite; }
+.pcard { flex: 0 0 auto; width: 320px; background: var(--ink-2); border-radius: 26px; overflow: hidden; display: flex; flex-direction: column; transition: transform .35s cubic-bezier(.2,.7,.2,1); }
+.pcard:hover { transform: translateY(-8px) rotate(-1deg); }
+.pcard .art { height: 250px; display: flex; align-items: center; justify-content: center; position: relative; }
+.pcard .art svg { width: 62%; }
+.review { margin: 0; width: 340px; flex: 0 0 auto; background: var(--ink-2); border-radius: 22px; padding: 22px; display: flex; flex-direction: column; gap: 14px; }
+.progress-pill { position: fixed; right: 14px; top: 50%; transform: translateY(-50%); z-index: 25; background: rgba(10,15,31,.72); color: #fff; padding: 10px 6px; border-radius: 999px; display: flex; flex-direction: column; align-items: center; gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .1em; }
+@media (max-width: 560px) { .progress-pill { display: none; } }
+</style>
+</head>
+<body data-page="home">
+<header id="site-header"></header>
+
+<div class="progress-pill" aria-hidden="true">
+<span style="writing-mode: vertical-rl" id="layer-label">CAMADA 000 / 120</span>
+<span style="width: 3px; height: 120px; background: rgba(255,255,255,.3); border-radius: 2px; position: relative; overflow: hidden"><span id="layer-bar" style="position: absolute; left: 0; right: 0; top: 0; height: 0; background: #fff"></span></span>
+</div>
+
+<main>
+<!-- 1. Abertura -->
+<section id="s-intro" style="position: relative; height: 220svh" aria-label="XyloFab">
+<div class="stage" style="background: var(--ink)">
+<div id="intro-logo" style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; padding: 24px; text-align: center">
+<svg width="220" height="220" viewBox="0 0 200 200" role="img" aria-label="Logótipo XyloFab">
+<circle class="draw" cx="100" cy="100" r="92" fill="none" stroke="#FF5A1F" stroke-width="10" transform="rotate(-90 100 100)"/>
+<g class="r1"><circle cx="100" cy="8" r="9" fill="#fff"/><rect x="70" y="40" width="60" height="38" rx="6" fill="#fff"/><polygon points="80,78 120,78 108,114 92,114" fill="#fff"/><rect x="94" y="113" width="12" height="10" rx="2" fill="#fff"/><circle cx="100" cy="140" r="7" fill="#FF5A1F"/><rect x="62" y="158" width="76" height="12" rx="6" fill="#FF5A1F"/></g>
+</svg>
+<h1 class="r1" style="margin: 0; font-size: clamp(3.4rem, 11vw, 9rem); font-weight: 900; letter-spacing: -0.06em; line-height: .85">XYLOFAB</h1>
+<p class="r2 mono" style="margin: 0; font-size: 14px; letter-spacing: .18em; color: var(--mist)" data-i18n="hint">DESCE DEVAGAR. ESTAMOS A IMPRIMIR.</p>
+<svg class="r2 bob" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v15M5 13l7 7 7-7" fill="none" stroke="#FF5A1F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+<div id="intro-fill" style="position: absolute; left: 0; right: 0; bottom: 0; height: 0; background-color: #FF5A1F; background-image: repeating-linear-gradient(0deg, #FF5A1F 0 22px, #EC4F15 22px 24px)"></div>
+<div id="intro-noz" style="position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); opacity: 0; z-index: 2">
+<div class="sway"><svg viewBox="0 0 110 130" aria-hidden="true" style="width: clamp(60px, 16vw, 104px); height: auto; display: block"><rect x="13" y="0" width="84" height="54" rx="10" fill="#fff"/><polygon points="27,54 83,54 67,104 43,104" fill="#fff"/><rect x="47" y="103" width="16" height="14" rx="3" fill="#fff"/><rect x="52" y="116" width="6" height="14" fill="#FF5A1F"/></svg></div>
+</div>
+</div>
+</section>
+
+<!-- 2. Manifesto -->
+<section id="s-mani" style="position: relative; height: 180svh; background: #FF5A1F" aria-label="Manifesto">
+<div class="stage" style="display: flex; flex-direction: column; justify-content: center; padding: 0 clamp(24px, 6vw, 96px); color: var(--ink)">
+<p class="mono" style="margin: 0 0 28px; font-size: 14px; font-weight: 700; letter-spacing: .18em">MANIFESTO · 001</p>
+<p id="mani" style="margin: 0; display: flex; flex-wrap: wrap; column-gap: .28em; font-size: clamp(2.8rem, 8.5vw, 8.4rem); font-weight: 900; letter-spacing: -0.055em; line-height: .95; max-width: 1300px"></p>
+</div>
+</section>
+
+<!-- 3. Loja (amostra) -->
+<section id="s-shop" style="position: relative; height: 170svh" aria-labelledby="shop-title">
+<div class="stage" style="background: var(--ink); display: flex; flex-direction: column; justify-content: center; gap: 30px">
+<div id="curtain-l" style="position: absolute; top: 0; bottom: 0; left: 0; width: 50%; z-index: 5; background: #FF5A1F"></div>
+<div id="curtain-r" style="position: absolute; top: 0; bottom: 0; right: 0; width: 50%; z-index: 5; background: #FF5A1F"></div>
+<div style="padding: 70px clamp(24px, 4vw, 48px) 0; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<p class="eyebrow" data-i18n="shop">Loja</p>
+<h2 id="shop-title" class="h-l"><span data-i18n="shop1">Saiu da impressora.</span><br><span data-i18n="shop2">Pode ir para tua casa.</span></h2>
+</div>
+<a class="btn btn-white" href="loja.html" data-lang="pt">Ver a loja toda →</a><a class="btn btn-white" href="loja.html" data-lang="en" hidden>See the whole shop →</a>
+</div>
+<div id="track" style="display: flex; gap: 24px; padding: 0 clamp(24px, 4vw, 48px); will-change: transform"></div>
+</div>
+</section>
+
+<!-- 4. Custom -->
+<section id="custom" style="position: relative; height: 200svh; background: #fff" aria-labelledby="custom-title">
+<div class="stage" style="background: #fff; color: var(--ink); display: flex; align-items: center">
+<div class="wrap" style="width: 100%; padding-top: 70px; display: flex; flex-wrap: wrap; align-items: center; gap: clamp(24px, 4vw, 64px)">
+<div style="flex: 999 1 460px; min-width: 0; display: flex; flex-direction: column; gap: 22px">
+<div style="display: flex; align-items: center; gap: 16px">
+<svg width="80" height="80" viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="92" fill="#0A0F1F" stroke="#FF5A1F" stroke-width="10"/><g id="custom-orbit"><circle cx="100" cy="8" r="9" fill="#fff"/></g><rect x="70" y="40" width="60" height="38" rx="6" fill="#fff"/><polygon points="80,78 120,78 108,114 92,114" fill="#fff"/><rect x="94" y="113" width="12" height="10" rx="2" fill="#fff"/><circle cx="100" cy="140" r="7" fill="#FF5A1F"/><rect x="62" y="158" width="76" height="12" rx="6" fill="#FF5A1F"/></svg>
+<span style="font-size: 26px; font-weight: 900; letter-spacing: -.03em">XYLOFAB <span style="color: var(--orange-dark)">CUSTOM</span></span>
+</div>
+<h2 id="custom-title" class="h-l"><span data-i18n="custom1">Tens uma ideia esquisita?</span><br><span style="color: var(--orange-dark)" data-i18n="custom2">Ótimo.</span></h2>
+<p data-lang="pt" style="margin: 0; max-width: 520px; font-size: 19px; color: #3B4664">Manda uma foto, um desenho num guardanapo ou um ficheiro STL. Respondemos com um preço e um prazo. Sem compromisso, com curiosidade.</p>
+<p data-lang="en" hidden style="margin: 0; max-width: 520px; font-size: 19px; color: #3B4664">Send us a photo, a sketch on a napkin or an STL file. We reply with a price and a delivery time. No strings attached, just curiosity.</p>
+<div><a class="btn btn-big" style="background: var(--ink); color: #fff" href="mailto:print.xylofab@gmail.com?subject=Pedido%20de%20or%C3%A7amento%20XyloFab"><span data-lang="pt">Pedir orçamento</span><span data-lang="en" hidden>Ask for a quote</span></a></div>
+</div>
+<figure style="flex: 1 1 300px; margin: 0; display: flex; flex-direction: column; align-items: center; gap: 12px">
+<svg width="100%" viewBox="0 0 300 320" role="img" aria-label="Um esboço que se transforma numa peça impressa" style="max-width: 360px">
+<defs><clipPath id="printed"><rect id="solid-clip" x="0" y="280" width="300" height="320"/></clipPath></defs>
+<rect x="20" y="284" width="260" height="10" rx="5" fill="#0A0F1F"/>
+<g id="sketch" fill="none" stroke="#8A8A8A" stroke-width="2.4" stroke-dasharray="7 6" stroke-linecap="round"><path d="M110 44 L190 40 L212 122 L182 282 L118 280 L88 124 Z"/><path d="M92 118 L208 126"/><path d="M150 30 L150 18"/><path d="M230 70 q12 -10 22 2"/></g>
+<g clip-path="url(#printed)"><path d="M110 40 L190 40 L210 120 L180 280 L120 280 L90 120 Z" fill="#FF5A1F"/><path d="M90 120 L210 120" stroke="#EC4F15" stroke-width="4"/><path d="M103 80 L197 80 M98 160 L202 160 M106 200 L194 200 M112 240 L188 240" stroke="#EC4F15" stroke-width="2"/></g>
+<rect id="print-line" x="88" y="278" width="124" height="3" fill="#0A0F1F" opacity="0"/>
+</svg>
+<figcaption id="custom-cap" class="mono" style="font-size: 14px; font-weight: 700; letter-spacing: .1em"></figcaption>
+</figure>
+</div>
+</div>
+</section>
+
+<!-- 5. Lab -->
+<section id="lab" style="position: relative; height: 200svh; background: #050A14" aria-labelledby="lab-title">
+<div class="stage" style="background-color: #050A14; background-image: linear-gradient(rgba(34,192,122,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(34,192,122,.12) 1px, transparent 1px); background-size: 44px 44px; display: flex; align-items: center">
+<div class="wrap" style="width: 100%; padding-top: 70px; display: flex; flex-wrap: wrap; align-items: center; gap: clamp(24px, 4vw, 56px)">
+<div style="flex: 999 1 460px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; align-items: center; gap: 16px">
+<svg width="80" height="80" viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="92" fill="#050A14" stroke="#22C07A" stroke-width="10"/><circle cx="100" cy="8" r="9" fill="#fff"/><rect x="70" y="40" width="60" height="38" rx="6" fill="#fff"/><polygon points="80,78 120,78 108,114 92,114" fill="#fff"/><rect x="94" y="113" width="12" height="10" rx="2" fill="#fff"/><circle cx="100" cy="140" r="7" fill="#22C07A"/><rect x="62" y="158" width="76" height="12" rx="6" fill="#22C07A"/></svg>
+<span style="font-size: 26px; font-weight: 900; letter-spacing: -.03em">XYLOFAB <span style="color: var(--green)">LAB</span></span>
+</div>
+<h2 id="lab-title" class="h-l"><span data-i18n="lab1">Coisas que ainda</span><br><span style="color: var(--green)" data-i18n="lab2">não existem.</span></h2>
+<div style="background: #0A1220; border: 1px solid #1C3A2E; border-radius: 18px; padding: 18px 20px; min-height: 120px">
+<p class="mono" style="margin: 0; font-size: 15px; line-height: 1.7; color: var(--green); white-space: pre-line"><span id="lab-text"></span><span class="blink">▌</span></p>
+</div>
+<form id="lab-form" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center">
+<label class="sr" for="lab-email">Email</label>
+<input id="lab-email" class="input" type="email" autocomplete="email" placeholder="o-teu@email.pt" style="flex: 1 1 220px; max-width: 360px">
+<button class="btn btn-green btn-big" type="submit"><span data-lang="pt">Avisem-me</span><span data-lang="en" hidden>Let me know</span></button>
+</form>
+<p class="mono small" style="margin: 0"><span data-lang="pt">EM BREVE · O PRIMEIRO PROTÓTIPO ESTÁ A SER AFINADO</span><span data-lang="en" hidden>COMING SOON · THE FIRST PROTOTYPE IS BEING TUNED</span></p>
+</div>
+<div style="flex: 1 1 300px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 8px"><div class="lab-tile" style="aspect-ratio: 3/4; border-radius: 18px; background: #0A1A14; border: 1px solid #1C3A2E; display: flex; align-items: center; justify-content: center"><svg width="56%" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 8 L90 30 L90 70 L50 92 L10 70 L10 30 Z" fill="#22C07A"/></svg></div><span class="mono" style="font-size: 12px; font-weight: 700; color: var(--green)">#01</span></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><div class="lab-tile" style="aspect-ratio: 3/4; border-radius: 18px; background: #0A1420; border: 1px solid #1C3A2E; display: flex; align-items: center; justify-content: center"><svg width="56%" viewBox="0 0 100 100" aria-hidden="true"><path d="M20 80 Q50 0 80 80 Z" fill="#22C07A"/></svg></div><span class="mono" style="font-size: 12px; font-weight: 700; color: var(--green)">#02</span></div>
+<div style="display: flex; flex-direction: column; gap: 8px"><div class="lab-tile" style="aspect-ratio: 3/4; border-radius: 18px; background: #0A1A14; border: 1px solid #1C3A2E; display: flex; align-items: center; justify-content: center"><svg width="56%" viewBox="0 0 100 100" aria-hidden="true"><path d="M15 15 H85 V85 H15 Z M35 35 V65 H65 V35 Z" fill="#22C07A" fill-rule="evenodd"/></svg></div><span class="mono" style="font-size: 12px; font-weight: 700; color: var(--green)">#03</span></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 6. Opiniões -->
+<section aria-labelledby="rev-title" style="padding: 120px 0 100px; display: flex; flex-direction: column; gap: 40px">
+<div class="wrap" style="width: 100%; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 10px"><p class="eyebrow"><span data-lang="pt">OPINIÕES</span><span data-lang="en" hidden>REVIEWS</span></p><h2 id="rev-title" class="h-l" data-i18n="rev">Quem já tem uma.</h2></div>
+</div>
+<div style="overflow: hidden"><div class="rowA" id="revA"></div></div>
+<div style="overflow: hidden"><div class="rowB" id="revB"></div></div>
+<p class="small" style="margin: 0 auto; padding: 0 24px; text-align: center"><span data-lang="pt">Exemplos. Quando houver opiniões de clientes, aparecem aqui depois de aprovadas.</span><span data-lang="en" hidden>Examples. Real customer reviews will show here once approved.</span></p>
+</section>
+
+<!-- 7. Fecho -->
+<section id="s-end" aria-label="XyloFab" style="padding: 110px 24px 70px; display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center">
+<svg viewBox="0 0 200 200" role="img" aria-label="Logótipo XyloFab" style="width: clamp(160px, 40vw, 260px); height: auto">
+<circle id="end-ring" cx="100" cy="100" r="92" fill="none" stroke="#FF5A1F" stroke-width="10" stroke-dasharray="578" stroke-dashoffset="578" transform="rotate(-90 100 100)"/>
+<g id="end-in" opacity="0"><circle cx="100" cy="8" r="9" fill="#fff"/><rect x="70" y="40" width="60" height="38" rx="6" fill="#fff"/><polygon points="80,78 120,78 108,114 92,114" fill="#fff"/><rect x="94" y="113" width="12" height="10" rx="2" fill="#fff"/><circle cx="100" cy="140" r="7" fill="#FF5A1F"/><rect x="62" y="158" width="76" height="12" rx="6" fill="#FF5A1F"/></g>
+</svg>
+<span id="end-word" style="font-size: clamp(3rem, 10vw, 7.5rem); font-weight: 800; letter-spacing: -.03em; line-height: 1; opacity: 0">XYLOFAB</span>
+<p class="mono" style="margin: 0; font-size: 14px; letter-spacing: .18em; color: var(--mist)">IMPRESSÃO 3D · PRODUTOS · INOVAÇÃO</p>
+</section>
+</main>
+
+<footer id="site-footer"></footer>
+
+<script src="assets/site.js"></script>
+<script>
+(function () {
+  var cl = function (v) { return Math.max(0, Math.min(1, v)); };
+  var $ = function (id) { return document.getElementById(id); };
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function progress(el) {
+    var r = el.getBoundingClientRect(), len = el.offsetHeight - innerHeight;
+    return len > 0 ? cl(-r.top / len) : 0;
+  }
+
+  /* manifesto */
+  function buildMani() {
+    $('mani').innerHTML = XF.t('mani').split(' ').map(function (w) { return '<span style="display:inline-block;opacity:.14">' + XF.esc(w) + '</span>'; }).join('');
+  }
+
+  /* amostra da loja */
+  function buildShop() {
+    var html = XF.PRODUCTS.map(function (p) {
+      var t = XF.pt(p);
+      var btn = p.personal
+        ? '<a class="btn btn-orange" href="loja.html?ver=' + p.id + '">' + (XF.isPT() ? 'Escolher o nome' : 'Choose the name') + '</a>'
+        : '<button type="button" class="btn btn-orange" data-add="' + p.id + '">' + XF.t('add') + '</button>';
+      return '<article class="pcard"><div class="art" style="background:' + p.tile + '"><span class="tag" style="position:absolute;top:14px;left:14px">' + XF.esc(t.tag) + '</span>' + XF.art(p.art) + '</div>' +
+        '<div style="padding:20px;display:flex;flex-direction:column;gap:12px;flex:1"><div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline"><h3 style="margin:0;font-size:19px;font-weight:800">' + XF.esc(t.name) + '</h3><span class="mono" style="font-weight:700;white-space:nowrap">' + XF.euro(p.price) + '</span></div>' +
+        '<p class="muted" style="margin:0;font-size:15px;min-height:2.8em">' + XF.esc(t.line) + '</p>' + btn + '</div></article>';
+    }).join('');
+    html += '<a href="loja.html" class="pcard" style="border:2px dashed var(--line-2);background:transparent;align-items:center;justify-content:center;gap:14px;color:#fff;text-decoration:none;min-height:430px"><span style="font-size:28px;font-weight:900;letter-spacing:-.04em">' + (XF.isPT() ? 'Ver a loja toda' : 'See the whole shop') + '</span><svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="#FF5A1F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>';
+    $('track').innerHTML = html;
+  }
+  document.addEventListener('click', function (e) { var b = e.target.closest('[data-add]'); if (b) XF.addToCart(b.getAttribute('data-add')); });
+
+  /* opiniões de exemplo */
+  var REV = [
+    { pt: 'Pedi um porta-chaves com o nome do meu gato. Agora o gato tem mais estilo do que eu.', en: 'I ordered a keychain with my cat\'s name. Now the cat has more style than me.', who: 'A. R.', p: 'chaves', s: 5 },
+    { pt: 'Mandei um desenho num guardanapo. Chegou exatamente a peça que tinha na cabeça.', en: 'I sent a sketch on a napkin. I got exactly the part I had in my head.', who: 'M. C.', p: 'custom', s: 5 },
+    { pt: 'O vaso é pequeno. A planta acha-se enorme.', en: 'The planter is small. The plant thinks it is huge.', who: 'S. L.', p: 'vaso', s: 5 },
+    { pt: 'Vi a minha encomenda a ser impressa ao vivo. Fiquei a olhar como quem olha para o forno.', en: 'I watched my order being printed live. Like staring at the oven.', who: 'J. P.', p: 'suporte', s: 4 },
+    { pt: 'O marcador é tão bonito que agora leio mais. Ou finjo.', en: 'The bookmark is so pretty that I read more now. Or pretend to.', who: 'R. F.', p: 'marcador', s: 5 }
+  ];
+  function buildReviews() {
+    var label = XF.isPT() ? 'EXEMPLO' : 'EXAMPLE';
+    var card = function (r) {
+      var prod = r.p === 'custom' ? 'XyloFab Custom' : XF.pt(XF.product(r.p)).name;
+      return '<figure class="review"><div style="display:flex;justify-content:space-between;align-items:center"><span aria-label="' + r.s + '/5" style="color:#FFB020;font-size:18px;letter-spacing:2px">' + '★★★★★'.slice(0, r.s) + '☆☆☆☆☆'.slice(0, 5 - r.s) + '</span><span class="mono" style="font-size:11px;font-weight:700;color:#0A0F1F;background:#C9D3E8;padding:4px 8px;border-radius:999px">' + label + '</span></div>' +
+        '<blockquote style="margin:0;font-size:17px;line-height:1.45;font-weight:600">' + XF.esc(r[XF.isPT() ? 'pt' : 'en']) + '</blockquote><figcaption class="muted" style="font-size:14px"><strong style="color:#fff">' + r.who + '</strong> · ' + XF.esc(prod) + '</figcaption></figure>';
+    };
+    var a = REV.map(card).join(''), b = REV.slice().reverse().map(card).join('');
+    $('revA').innerHTML = a + a; $('revB').innerHTML = b + b;
+  }
+
+  /* lab */
+  var LAB = { pt: '> a ligar o laboratório...\n> 3 protótipos em teste\n> ideias que ainda não têm nome\n> lista de espera: aberta', en: '> booting the lab...\n> 3 prototypes under test\n> ideas that have no name yet\n> waiting list: open' };
+  $('lab-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var email = $('lab-email').value;
+    if (!XF.validEmail(email)) { XF.toast(XF.isPT() ? 'Esse email não parece certo.' : 'That email does not look right.'); return; }
+    var list = XF.load('xf-lab', []); if (list.indexOf(email) < 0) list.push(email); XF.save('xf-lab', list);
+    $('lab-email').value = '';
+    XF.toast(XF.isPT() ? 'Estás na lista. Avisamos-te primeiro.' : 'You are on the list. We will tell you first.');
+  });
+
+  function frame() {
+    var pI = progress($('s-intro')), pM = progress($('s-mani')), pS = progress($('s-shop')), pC = progress($('custom')), pL = progress($('lab'));
+    if (reduce) { pI = 1; pM = 1; pS = 1; pC = 1; pL = 1; }
+    /* abertura */
+    var fill = cl((pI - .18) / .74);
+    $('intro-logo').style.opacity = 1 - cl((pI - .04) / .16);
+    $('intro-logo').style.transform = 'translateY(' + (-cl(pI / .2) * 70) + 'px) scale(' + (1 - .15 * cl(pI / .2)) + ')';
+    $('intro-fill').style.height = (fill * 100) + '%';
+    $('intro-noz').style.bottom = (fill * 100) + '%';
+    $('intro-noz').style.opacity = cl((pI - .12) / .08) * (fill < .97 ? 1 : 0);
+    /* manifesto */
+    var words = $('mani').children, n = words.length;
+    for (var i = 0; i < n; i++) { var v = cl(pM * (n + 2) - i); words[i].style.opacity = .14 + .86 * v; words[i].style.transform = 'translateY(' + ((1 - v) * 30) + 'px)'; }
+    /* loja */
+    var c = cl(pS / .14) * 100;
+    $('curtain-l').style.transform = 'translateX(-' + c + '%)';
+    $('curtain-r').style.transform = 'translateX(' + c + '%)';
+    var track = $('track'), shift = Math.max(0, track.scrollWidth - innerWidth);
+    track.style.transform = 'translateX(' + (-cl((pS - .14) / .8) * shift) + 'px)';
+    var cards = track.children;
+    for (var j = 0; j < cards.length; j++) { var r = cl(((pS - .1) * 1.6 - j * .12) / .3); cards[j].style.clipPath = 'inset(' + ((1 - r) * 100) + '% 0 0 0)'; }
+    /* custom */
+    var pr = cl((pC - .15) / .7);
+    $('custom-orbit').setAttribute('transform', 'rotate(' + (pC * 360) + ' 100 100)');
+    $('solid-clip').setAttribute('y', 280 - pr * 244);
+    $('sketch').setAttribute('opacity', 1 - .85 * pr);
+    $('print-line').setAttribute('y', 278 - pr * 244);
+    $('print-line').setAttribute('opacity', pC > .15 && pC < .85 ? 1 : 0);
+    var cap = XF.isPT() ? ['O TEU GUARDANAPO', 'A IMPRIMIR...', 'A TUA PEÇA'] : ['YOUR NAPKIN', 'PRINTING...', 'YOUR PART'];
+    $('custom-cap').textContent = pC < .2 ? cap[0] : pC < .85 ? cap[1] : cap[2];
+    /* lab */
+    var full = LAB[XF.isPT() ? 'pt' : 'en'];
+    $('lab-text').textContent = full.slice(0, Math.floor(cl(pL * 1.4) * full.length));
+    var blur = (1 - cl((pL - .45) / .35)) * 16;
+    document.querySelectorAll('.lab-tile').forEach(function (t) { t.style.filter = 'blur(' + blur + 'px)'; });
+    /* fecho */
+    var end = $('s-end').getBoundingClientRect(), sign = cl((innerHeight - end.top) / (innerHeight * .9));
+    $('end-ring').setAttribute('stroke-dashoffset', 578 * (1 - cl(sign / .6)));
+    var inn = cl((sign - .5) / .4);
+    $('end-in').setAttribute('opacity', inn);
+    $('end-word').style.opacity = inn;
+    $('end-word').style.transform = 'translateY(' + ((1 - inn) * 30) + 'px)';
+    /* camada */
+    var total = document.documentElement.scrollHeight - innerHeight, prog = total > 0 ? cl(scrollY / total) : 0;
+    $('layer-label').textContent = (XF.isPT() ? 'CAMADA ' : 'LAYER ') + String(Math.round(prog * 120)).padStart(3, '0') + ' / 120';
+    $('layer-bar').style.height = (prog * 100) + '%';
+  }
+  var ticking = false;
+  function onScroll() { if (ticking) return; ticking = true; requestAnimationFrame(function () { ticking = false; frame(); }); }
+
+  function buildAll() { buildMani(); buildShop(); buildReviews(); frame(); }
+  document.addEventListener('DOMContentLoaded', function () {
+    buildAll();
+    addEventListener('scroll', onScroll, { passive: true });
+    addEventListener('resize', onScroll);
+  });
+  document.addEventListener('xf:lang', buildAll);
+})();
+</script>
+</body>
+</html>
