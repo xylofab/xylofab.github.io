@@ -4,6 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>A minha conta · XyloFab</title>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="XyloFab">
+<meta property="og:title" content="A minha conta · XyloFab">
+<meta property="og:description" content="XyloFab: impressão 3D por encomenda. Produtos próprios, peças à medida e o XyloFab Lab.">
+<meta property="og:url" content="https://xylofab.github.io/conta.html">
+<meta property="og:image" content="https://xylofab.github.io/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Logótipo XyloFab: bico de impressora dentro de um anel laranja">
+<meta property="og:locale" content="pt_PT">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://xylofab.github.io/assets/og.png">
 <meta name="theme-color" content="#0A0F1F">
 <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
@@ -34,13 +46,13 @@
 <script>
 (function () {
   var $ = function (id) { return document.getElementById(id); };
-  var L = function (pt, en) { return XF.isPT() ? pt : en; };
+  var L = XF.L;
   var qs = new URLSearchParams(location.search);
   var st = { mode: qs.get('criar') ? 'signup' : 'login', email: qs.get('email') || '', name: '', error: '', info: '', tab: 'resumo', order: null, rating: {}, confirm: false, adding: false };
   var STEPS = ['paga', 'fila', 'imprimir', 'enviada', 'entregue'];
   var STEP_NAMES = { paga: ['Paga', 'Paid'], fila: ['Na fila', 'In queue'], imprimir: ['A imprimir', 'Printing'], enviada: ['Enviada', 'Shipped'], entregue: ['Entregue', 'Delivered'] };
   var STEP_COL = { paga: '#C9D3E8', fila: '#C9D3E8', imprimir: '#FF5A1F', enviada: '#FFB020', entregue: '#22C07A' };
-  var sn = function (s) { return STEP_NAMES[s][XF.isPT() ? 0 : 1]; };
+  var sn = function (s) { return XF.L(STEP_NAMES[s][0], STEP_NAMES[s][1]); };
 
   /* ---------- entrar / criar conta ---------- */
   function authView() {
@@ -102,7 +114,7 @@
       var z = XF.SHIP[o.zone];
       out = '<button type="button" class="btn btn-ghost" data-back style="align-self:flex-start">← ' + L('Encomendas', 'Orders') + '</button>' +
         '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:flex-end"><div><span class="mono small" style="font-weight:700">' + o.id + '</span><h1 class="h-m">' + XF.esc(o.items.map(function (i) { return i.qty + '× ' + i.name + (i.custom ? ' "' + i.custom + '"' : ''); }).join(', ')) + '</h1></div><span class="status" style="background:' + STEP_COL[o.status] + '">' + sn(o.status) + '</span></div>' + timeline(o) +
-        '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px"><div class="card card-pad"><span class="mono small" style="font-weight:700">' + L('ENTREGA', 'DELIVERY') + '</span><p style="margin:6px 0 0">' + XF.esc(o.address.line) + '<br>' + XF.esc(o.address.zip + ' ' + o.address.city) + '</p><p class="small" style="margin:6px 0 0">CTT · ' + XF.esc(z[XF.isPT() ? 'pt' : 'en']) + ' · ' + XF.esc(z.days[XF.isPT() ? 'pt' : 'en']) + '</p></div>' +
+        '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px"><div class="card card-pad"><span class="mono small" style="font-weight:700">' + L('ENTREGA', 'DELIVERY') + '</span><p style="margin:6px 0 0">' + XF.esc(o.address.line) + '<br>' + XF.esc(o.address.zip + ' ' + o.address.city) + '</p><p class="small" style="margin:6px 0 0">CTT · ' + XF.esc(XF.f(z)) + ' · ' + XF.esc(XF.f(z.days)) + '</p></div>' +
         '<div class="card card-pad"><span class="mono small" style="font-weight:700">' + L('PAGAMENTO', 'PAYMENT') + '</span><p style="margin:6px 0 0">' + { mbway: 'MB WAY', multibanco: 'Multibanco', cartao: L('Cartão', 'Card') }[o.method] + '</p><p class="small" style="margin:6px 0 0">' + L('Portes ', 'Shipping ') + (o.shipping == null ? L('a combinar', 'to be agreed') : XF.euro(o.shipping)) + ' · Total ' + XF.euro(o.total) + '</p></div></div>' +
         '<div style="display:flex;flex-wrap:wrap;gap:10px"><button type="button" class="btn btn-orange" data-reorder="' + o.id + '">' + L('Voltar a encomendar', 'Order again') + '</button>' +
         (o.status === 'fila' || o.status === 'paga' ? '<button type="button" class="btn btn-ghost" data-cancel="' + o.id + '">' + L('Cancelar encomenda', 'Cancel order') + '</button>' : '') +
@@ -124,7 +136,13 @@
         (favs.length ? favs.map(function (id) { var p = XF.product(id); if (!p) return ''; return '<div style="display:flex;align-items:center;gap:12px"><span style="width:48px;height:48px;border-radius:12px;background:' + p.tile + '"></span><span style="flex:1"><b>' + XF.esc(XF.pt(p).name) + '</b><br><span class="mono small">' + XF.euro(p.price) + '</span></span><button type="button" class="btn btn-orange" data-favadd="' + id + '">' + XF.t('add') + '</button></div>'; }).join('') : '<p class="muted" style="margin:0">' + L('Ainda não tens favoritos. Toca no coração na loja.', 'No favourites yet. Tap the heart in the shop.') + '</p>') + '</div></div>';
     }
     if (tab === 'lab') {
-      out = '<section style="border:2px solid #22C07A;border-radius:28px;padding:clamp(22px,4vw,40px);display:flex;flex-direction:column;gap:16px"><span class="mono" style="font-weight:700;letter-spacing:.14em;color:#22C07A">XYLOFAB LAB</span><h1 class="h-l">' + L('Em breve.', 'Coming soon.') + '</h1><p class="muted" style="margin:0">' + L('O primeiro protótipo está a ser afinado. Quem tem conta vê primeiro.', 'The first prototype is being tuned. Account holders see it first.') + '</p><label class="check" style="font-weight:800"><input type="checkbox" data-lab' + (u.lab ? ' checked' : '') + ' style="accent-color:#22C07A;width:24px;height:24px">' + (u.lab ? L('Vais ser avisado primeiro', 'You will be told first') : L('Avisa-me primeiro', 'Tell me first')) + '</label></section>';
+      var ideas = XF.load('xf-lab', []); if (!Array.isArray(ideas)) ideas = [];
+      ideas = ideas.filter(function (x) { return x && typeof x === 'object' && x.email === u.email; });
+      out = '<section style="border:2px solid #22C07A;border-radius:28px;padding:clamp(22px,4vw,40px);display:flex;flex-direction:column;gap:16px"><span class="mono" style="font-weight:700;letter-spacing:.14em;color:#22C07A">XYLOFAB LAB</span><h1 class="h-l">' + L('A tua ideia, connosco.', 'Your idea, with us.') + '</h1>' +
+        '<ol style="margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px;font-size:17px"><li>' + L('Contas-nos a ideia em poucas linhas, sem segredos.', 'You tell us the idea in a few lines, no secrets.') + '</li><li>' + L('Assinamos os dois um NDA (acordo de confidencialidade).', 'We both sign an NDA (non-disclosure agreement).') + '</li><li>' + L('Desenhamos, imprimimos protótipos e afinamos contigo.', 'We design, print prototypes and fine-tune with you.') + '</li></ol>' +
+        '<a class="btn btn-green btn-big" href="index.html#lab-ideia" style="align-self:flex-start">' + L('Contar uma ideia', 'Tell us an idea') + '</a>' +
+        (ideas.length ? '<div style="display:flex;flex-direction:column;gap:10px"><b>' + L('As tuas ideias enviadas', 'Ideas you sent') + '</b>' + ideas.map(function (x) { return '<div class="card card-pad"><span class="mono small">' + new Date(x.at).toLocaleDateString(XF.lang) + ' · ' + L('À ESPERA DO NDA', 'WAITING FOR NDA') + '</span><p style="margin:6px 0 0">' + XF.esc(x.idea) + '</p></div>'; }).join('') + '</div>' : '') +
+        '<label class="check" style="font-weight:800"><input type="checkbox" data-lab' + (u.lab ? ' checked' : '') + ' style="accent-color:#22C07A;width:24px;height:24px">' + L('Quero saber das novidades do Lab', 'Tell me about Lab news') + '</label></section>';
     }
     if (tab === 'opinioes') {
       var done = os.filter(function (o) { return o.status === 'entregue'; });

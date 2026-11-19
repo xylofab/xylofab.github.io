@@ -4,6 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Envios, trocas e devoluções · XyloFab</title>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="XyloFab">
+<meta property="og:title" content="Envios, trocas e devoluções · XyloFab">
+<meta property="og:description" content="XyloFab: impressão 3D por encomenda. Produtos próprios, peças à medida e o XyloFab Lab.">
+<meta property="og:url" content="https://xylofab.github.io/envios.html">
+<meta property="og:image" content="https://xylofab.github.io/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Logótipo XyloFab: bico de impressora dentro de um anel laranja">
+<meta property="og:locale" content="pt_PT">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://xylofab.github.io/assets/og.png">
 <meta name="theme-color" content="#0A0F1F">
 <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
@@ -87,16 +99,16 @@
     ['Posso cancelar antes de ser impressa?', 'Sim. Enquanto estiver na fila, cancelas na tua conta e devolvemos o dinheiro todo.', 'Can I cancel before it is printed?', 'Yes. While it is in the queue, cancel from your account and we refund everything.']
   ];
   function render() {
-    var pt = XF.isPT(), k = pt ? 'pt' : 'en';
+    var pt = XF.isPT();
     var opts = [['pt', 'Portugal', 'Portugal'], ['eu', 'Europa', 'Europe'], ['us', 'Estados Unidos', 'United States'], ['rw', 'Resto do mundo', 'Rest of the world'], ['int', 'Fora de Portugal', 'Outside Portugal'], ['all', 'Todos os destinos', 'All destinations']];
-    $('dest').innerHTML = opts.map(function (o) { return '<option value="' + o[0] + '"' + (o[0] === dest ? ' selected' : '') + '>' + (pt ? o[1] : o[2]) + '</option>'; }).join('');
-    $('thead').innerHTML = [pt ? 'Destino' : 'Destination', pt ? 'Serviço' : 'Service', pt ? 'Depois de enviado' : 'After dispatch'].concat(XF.BANDS.map(function (b) { return (pt ? 'Até ' : 'Up to ') + (b < 1000 ? b + ' g' : (b / 1000) + ' kg'); })).map(function (h) { return '<th scope="col">' + h + '</th>'; }).join('');
+    $('dest').innerHTML = opts.map(function (o) { return '<option value="' + o[0] + '"' + (o[0] === dest ? ' selected' : '') + '>' + XF.L(o[1], o[2]) + '</option>'; }).join('');
+    $('thead').innerHTML = [XF.L('Destino', 'Destination'), XF.L('Serviço', 'Service'), XF.L('Depois de enviado', 'After dispatch')].concat(XF.BANDS.map(function (b) { return (XF.L('Até ', 'Up to ')) + (b < 1000 ? b + ' g' : (b / 1000) + ' kg'); })).map(function (h) { return '<th scope="col">' + h + '</th>'; }).join('');
     var show = function (z) { return dest === 'all' || (dest === 'pt' && z.indexOf('pt-') === 0) || dest === z || (dest === 'int' && z.indexOf('pt-') !== 0); };
     $('rows').innerHTML = Object.keys(XF.SHIP).filter(show).map(function (z) {
       var s = XF.SHIP[z];
-      return '<tr><th scope="row">' + s[k] + '</th><td>CTT · ' + s.service + '</td><td>' + s.days[k] + '</td>' + s.prices.map(function (p) { return '<td class="num">' + XF.euro(p) + '</td>'; }).join('') + '</tr>';
+      return '<tr><th scope="row">' + XF.f(s) + '</th><td>CTT · ' + s.service + '</td><td>' + XF.f(s.days) + '</td>' + s.prices.map(function (p) { return '<td class="num">' + XF.euro(p) + '</td>'; }).join('') + '</tr>';
     }).join('');
-    $('faq').innerHTML = FAQ.map(function (f, i) { var q = pt ? f[0] : f[2], a = pt ? f[1] : f[3]; return '<div class="card faq"><button type="button" aria-expanded="' + (open === i) + '" data-faq="' + i + '">' + q + '<span aria-hidden="true">+</span></button>' + (open === i ? '<p>' + a + '</p>' : '') + '</div>'; }).join('');
+    $('faq').innerHTML = FAQ.map(function (f, i) { var q = XF.L(f[0], f[2]), a = XF.L(f[1], f[3]); return '<div class="card faq"><button type="button" aria-expanded="' + (open === i) + '" data-faq="' + i + '">' + q + '<span aria-hidden="true">+</span></button>' + (open === i ? '<p>' + a + '</p>' : '') + '</div>'; }).join('');
   }
   document.addEventListener('change', function (e) { if (e.target.id === 'dest') { dest = e.target.value; render(); } });
   document.addEventListener('click', function (e) { var b = e.target.closest('[data-faq]'); if (b) { open = open === +b.dataset.faq ? -1 : +b.dataset.faq; render(); } });

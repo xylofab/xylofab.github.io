@@ -45,8 +45,8 @@
   };
   /* Textos da interface (português e inglês completos; as outras línguas usam inglês aqui). */
   var UI = {
-    pt: { myAccount: 'A minha conta', custom: 'Custom', lab: 'Lab', shipping: 'Envios', terms: 'Termos e condições', privacy: 'Política de privacidade', allProducts: 'Todos os produtos', help: 'Ajuda', returns: 'Trocas e devoluções', contacts: 'Contactos', securePay: 'PAGAMENTOS SEGUROS', tagline: 'Impressão 3D por encomenda. Produtos nossos, peças à medida e umas invenções.', made: 'Feito com filamento e teimosia.', testMode: 'MODO DE TESTE · NENHUM PAGAMENTO É FEITO', langNote: 'Português e inglês revistos à mão. Nas outras línguas, os textos principais estão traduzidos e o resto aparece em inglês.', added: 'no carrinho.', soon: 'Em breve' },
-    en: { myAccount: 'My account', custom: 'Custom', lab: 'Lab', shipping: 'Shipping', terms: 'Terms and conditions', privacy: 'Privacy policy', allProducts: 'All products', help: 'Help', returns: 'Returns', contacts: 'Contact', securePay: 'SECURE PAYMENTS', tagline: 'Made-to-order 3D printing. Our own products, custom parts and a few inventions.', made: 'Made with filament and stubbornness.', testMode: 'TEST MODE · NO PAYMENT IS TAKEN', langNote: 'Portuguese and English are reviewed by hand. In other languages the main texts are translated and the rest is shown in English.', added: 'added to your cart.', soon: 'Coming soon' }
+    pt: { myAccount: 'A minha conta', custom: 'Custom', lab: 'Lab', shipping: 'Envios', terms: 'Termos e condições', privacy: 'Política de privacidade', allProducts: 'Todos os produtos', help: 'Ajuda', returns: 'Trocas e devoluções', contacts: 'Contactos', securePay: 'PAGAMENTOS SEGUROS', tagline: 'Impressão 3D por encomenda. Produtos nossos, peças à medida e umas invenções.', made: 'Feito com filamento e teimosia.', testMode: 'MODO DE TESTE · NENHUM PAGAMENTO É FEITO', langNote: 'Escolhe a tua língua.', added: 'no carrinho.', soon: 'Em breve' },
+    en: { myAccount: 'My account', custom: 'Custom', lab: 'Lab', shipping: 'Shipping', terms: 'Terms and conditions', privacy: 'Privacy policy', allProducts: 'All products', help: 'Help', returns: 'Returns', contacts: 'Contact', securePay: 'SECURE PAYMENTS', tagline: 'Made-to-order 3D printing. Our own products, custom parts and a few inventions.', made: 'Made with filament and stubbornness.', testMode: 'TEST MODE · NO PAYMENT IS TAKEN', langNote: 'Choose your language.', added: 'added to your cart.', soon: 'Coming soon' }
   };
 
   var DICT = {};
@@ -60,25 +60,74 @@
   }
   XF.lang = detect();
   XF.isPT = function () { return XF.lang === 'pt'; };
-  XF.t = function (key) {
-    var d = DICT[XF.lang] || {}, u = UI[XF.lang] || UI.en;
-    if (d[key] != null) return d[key];
-    if (u[key] != null) return u[key];
-    if (DICT.en[key] != null) return DICT.en[key];
-    return UI.en[key] != null ? UI.en[key] : key;
+  XF.I18N = XF.I18N || {};
+  var norm = function (x) { return String(x).replace(/\s+/g, ' ').trim(); };
+  XF.norm = norm;
+  /* Traduz um texto inglês para a língua escolhida (dicionários em assets/i18n/xx.js). */
+  XF.tr = function (en) {
+    if (XF.lang === 'pt' || XF.lang === 'en' || en == null) return en;
+    var d = XF.I18N[XF.lang], v = d && d[norm(en)];
+    if (v == null) return en;
+    var m = String(en).match(/^(\s*)[\s\S]*?(\s*)$/);
+    return m[1] + v + m[2];
   };
+  XF.L = function (pt, en) { return XF.lang === 'pt' ? pt : XF.tr(en); };
+  XF.f = function (obj) { return XF.L(obj.pt, obj.en); };
+  XF.t = function (key) {
+    var d = DICT[XF.lang] || {};
+    if (d[key] != null) return d[key];
+    if (XF.lang === 'pt' && UI.pt[key] != null) return UI.pt[key];
+    if (UI.en[key] != null) return XF.tr(UI.en[key]);
+    return DICT.en[key] != null ? DICT.en[key] : key;
+  };
+  var dictSrc = function (c) { return 'assets/i18n/' + c + '.js?v=3'; };
+  XF.loadDict = function (c, cb) {
+    if (c === 'pt' || c === 'en' || XF.I18N[c]) { cb(); return; }
+    var sc = document.createElement('script'); sc.src = dictSrc(c);
+    sc.onload = cb; sc.onerror = cb; document.head.appendChild(sc);
+  };
+  /* carrega já o dicionário da língua guardada, antes do código da página correr */
+  if (XF.lang !== 'pt' && XF.lang !== 'en' && document.readyState === 'loading') {
+    document.write('<script src="' + dictSrc(XF.lang) + '"><\/script>');
+  }
   XF.setLang = function (c) {
     if (!DICT[c]) return;
     XF.lang = c; XF.save('xf-lang', c);
-    XF.applyLang();
-    document.dispatchEvent(new CustomEvent('xf:lang'));
+    XF.loadDict(c, function () {
+      XF.applyLang();
+      document.dispatchEvent(new CustomEvent('xf:lang'));
+    });
   };
+  var INLINE = { A: 1, EM: 1, STRONG: 1, B: 1, BR: 1, I: 1, SUP: 1, SPAN: 1, CODE: 1 };
+  function isLeaf(el) {
+    for (var i = 0; i < el.children.length; i++) {
+      var c = el.children[i];
+      if (!INLINE[c.tagName] || c.children.length && !isLeaf(c)) return false;
+    }
+    return true;
+  }
+  function trBlock(el) {
+    if (el.hasAttribute && el.hasAttribute('data-notr')) return;
+    if (isLeaf(el)) {
+      if (el._xsrc == null) el._xsrc = el.innerHTML;
+      if (!norm(el.textContent)) return;
+      var d = XF.I18N[XF.lang], v = (XF.lang !== 'en' && d) ? d[norm(el._xsrc)] : null;
+      el.innerHTML = v != null ? v : el._xsrc;
+      return;
+    }
+    for (var i = 0; i < el.children.length; i++) trBlock(el.children[i]);
+  }
+  XF.trBlock = trBlock;
   XF.applyLang = function () {
     document.documentElement.lang = XF.lang;
     document.querySelectorAll('[data-i18n]').forEach(function (el) { el.textContent = XF.t(el.getAttribute('data-i18n')); });
     var showPT = XF.lang === 'pt';
     document.querySelectorAll('[data-lang]').forEach(function (el) {
       el.hidden = (el.getAttribute('data-lang') === 'pt') !== showPT;
+      if (el.getAttribute('data-lang') === 'en' && !showPT) trBlock(el);
+    });
+    document.querySelectorAll('[data-tr-placeholder]').forEach(function (el) {
+      el.placeholder = XF.L(el.getAttribute('data-ph-pt') || el.placeholder, el.getAttribute('data-tr-placeholder'));
     });
     document.querySelectorAll('[data-lang-btn]').forEach(function (b) { b.textContent = XF.lang.toUpperCase(); });
     document.querySelectorAll('.lang-grid button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.code === XF.lang)); });
@@ -111,7 +160,10 @@
     { id: 'preto', hex: '#1E1E1E', text: '#FFFFFF', pt: 'Preto', en: 'Black' },
     { id: 'verde', hex: '#8FA68A', text: '#0A0F1F', pt: 'Verde salva', en: 'Sage green' }
   ];
-  XF.pt = function (obj) { return obj[XF.isPT() ? 'pt' : 'en']; };
+  XF.pt = function (obj) {
+    if (XF.isPT()) return obj.pt;
+    var o = {}; Object.keys(obj.en).forEach(function (k) { o[k] = XF.tr(obj.en[k]); }); return o;
+  };
   XF.product = function (id) { return XF.PRODUCTS.filter(function (p) { return p.id === id; })[0]; };
   XF.art = function (kind, name) {
     var A = {
@@ -147,7 +199,7 @@
     var name = function (c) { try { return dn ? dn.of(c) : c; } catch (e) { return c; } };
     var list = EUROPE.concat(OTHERS).map(function (c) { return { code: c, name: name(c) }; });
     list.sort(function (a, b) { return a.name.localeCompare(b.name); });
-    return [{ code: 'PT', name: name('PT') }].concat(list).concat([{ code: 'XX', name: XF.isPT() ? 'Outro país' : 'Other country' }]);
+    return [{ code: 'PT', name: name('PT') }].concat(list).concat([{ code: 'XX', name: XF.L('Outro país', 'Other country') }]);
   };
   XF.zoneOf = function (country, region) {
     if (country === 'PT') return region === 'mad' ? 'pt-mad' : region === 'acr' ? 'pt-acr' : 'pt-cont';
@@ -186,7 +238,7 @@
   XF.signup = function (name, email, password, lab) {
     var users = XF.load('xf-users', {});
     email = email.trim().toLowerCase();
-    if (users[email]) return Promise.reject(new Error(XF.isPT() ? 'Já existe uma conta com esse email. Entra em vez disso.' : 'There is already an account with that email. Sign in instead.'));
+    if (users[email]) return Promise.reject(new Error(XF.L('Já existe uma conta com esse email. Entra em vez disso.', 'There is already an account with that email. Sign in instead.')));
     return XF.hash(password).then(function (h) {
       users[email] = { name: name.trim(), email: email, pw: h, lab: !!lab, notifyEmail: true, created: new Date().toISOString(), addresses: [], names: [], favs: [] };
       XF.save('xf-users', users);
@@ -197,9 +249,9 @@
   XF.login = function (email, password) {
     var users = XF.load('xf-users', {}); email = email.trim().toLowerCase();
     var u = users[email];
-    if (!u) return Promise.reject(new Error(XF.isPT() ? 'Não há nenhuma conta com esse email.' : 'There is no account with that email.'));
+    if (!u) return Promise.reject(new Error(XF.L('Não há nenhuma conta com esse email.', 'There is no account with that email.')));
     return XF.hash(password).then(function (h) {
-      if (h !== u.pw) throw new Error(XF.isPT() ? 'A palavra-passe não está certa.' : 'That password is not right.');
+      if (h !== u.pw) throw new Error(XF.L('A palavra-passe não está certa.', 'That password is not right.'));
       XF.save('xf-user', { email: email });
       return u;
     });
@@ -226,8 +278,7 @@
     var acct = u
       ? '<a class="pill" href="conta.html"' + cur('conta') + '><span class="avatar">' + XF.esc(u.name.charAt(0).toUpperCase()) + '</span>' + XF.esc(u.name.split(' ')[0]) + '</a>'
       : '<a class="pill" href="conta.html"' + cur('conta') + ' data-i18n="login">' + XF.t('login') + '</a>';
-    return (XF.TEST ? '<p class="test-banner" data-i18n="testMode">' + XF.t('testMode') + '</p>' : '') +
-      '<div class="bar"><a class="brand" href="index.html"><span style="width:40px;height:40px;display:inline-flex">' + XF.LOGO + '</span><span>XYLOFAB</span></a>' +
+    return '<div class="bar"><a class="brand" href="index.html"><span style="width:40px;height:40px;display:inline-flex">' + XF.LOGO + '</span><span>XYLOFAB</span></a>' +
       '<nav class="nav" aria-label="Principal">' +
       '<a class="navlink" href="loja.html"' + cur('loja') + ' data-i18n="shop">' + XF.t('shop') + '</a>' +
       '<a class="navlink" href="index.html#custom">Custom</a>' +
@@ -241,13 +292,20 @@
       Object.keys(DICT).map(function (c) { return '<button type="button" lang="' + c + '" data-code="' + c + '" aria-pressed="' + (c === XF.lang) + '">' + NAMES[c] + '</button>'; }).join('') +
       '</div><p class="small" style="margin:0;color:#3B4664" data-i18n="langNote">' + XF.t('langNote') + '</p></div>';
   }
+  XF.PAY = [['mbway', 'MB WAY'], ['multibanco', 'Multibanco'], ['visa', 'Visa'], ['mastercard', 'Mastercard']];
+  /* logótipos oficiais em assets/pay/<id>.svg; se o ficheiro faltar mostra só o nome */
+  XF.payLogos = function (ids) {
+    return XF.PAY.filter(function (p) { return !ids || ids.indexOf(p[0]) >= 0; }).map(function (p) {
+      return '<span class="pay-chip pay-logo"><img src="assets/pay/' + p[0] + '.svg" alt="' + p[1] + '" height="26" onerror="this.replaceWith(document.createTextNode(this.alt))"></span>';
+    }).join('');
+  };
   function footer() {
     return '<div class="inner"><div class="foot-cols">' +
       '<div style="flex:1 1 260px;display:flex;flex-direction:column;gap:14px"><a class="brand" href="index.html"><span style="width:52px;height:52px;display:inline-flex">' + XF.LOGO + '</span><span style="font-size:26px;font-weight:800">XYLOFAB</span></a><p class="muted" style="margin:0;max-width:300px" data-i18n="tagline">' + XF.t('tagline') + '</p></div>' +
       '<nav aria-label="Loja"><b data-i18n="shop">' + XF.t('shop') + '</b><a href="loja.html" data-i18n="allProducts">' + XF.t('allProducts') + '</a><a href="index.html#custom">XyloFab Custom</a><a href="index.html#lab">XyloFab Lab</a></nav>' +
       '<nav aria-label="Ajuda"><b data-i18n="help">' + XF.t('help') + '</b><a href="envios.html" data-i18n="shipping">' + XF.t('shipping') + '</a><a href="envios.html#devolucoes" data-i18n="returns">' + XF.t('returns') + '</a><a href="quem-somos.html#contactos" data-i18n="contacts">' + XF.t('contacts') + '</a><a href="conta.html" data-i18n="myAccount">' + XF.t('myAccount') + '</a></nav>' +
       '<nav aria-label="XyloFab"><b>XYLOFAB</b><a href="quem-somos.html" data-i18n="about">' + XF.t('about') + '</a><a href="termos.html" data-i18n="terms">' + XF.t('terms') + '</a><a href="privacidade.html" data-i18n="privacy">' + XF.t('privacy') + '</a></nav>' +
-      '</div><div class="pay-row"><span class="mono small" style="font-weight:700;letter-spacing:.14em;margin-right:6px" data-i18n="securePay">' + XF.t('securePay') + '</span><span class="pay-chip">MB WAY</span><span class="pay-chip">Multibanco</span><span class="pay-chip">VISA</span><span class="pay-chip">Mastercard</span></div>' +
+      '</div><div class="pay-row"><span class="mono small" style="font-weight:700;letter-spacing:.14em;margin-right:6px" data-i18n="securePay">' + XF.t('securePay') + '</span>' + XF.payLogos() + '</div>' +
       '<div class="foot-legal"><p style="margin:0">Any Larissa &amp; Tiago Febra · <a href="mailto:' + XF.EMAIL + '" style="color:#fff">' + XF.EMAIL + '</a></p><p style="margin:0;color:#8D99B5">© XyloFab. <span data-i18n="made">' + XF.t('made') + '</span></p></div></div>';
   }
   XF.mount = function () {
@@ -264,6 +322,10 @@
     }
     XF.applyLang();
     XF.renderCartCount();
+    /* se o dicionário da língua ainda não chegou, carrega-o e volta a desenhar a página */
+    if (XF.lang !== 'pt' && XF.lang !== 'en' && !XF.I18N[XF.lang]) {
+      XF.loadDict(XF.lang, function () { XF.applyLang(); document.dispatchEvent(new CustomEvent('xf:lang')); });
+    }
   };
   document.addEventListener('DOMContentLoaded', XF.mount);
 })();
