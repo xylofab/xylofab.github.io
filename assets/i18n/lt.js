@@ -371,5 +371,6 @@ window.XF.I18N["lt"] = {
 "· personalised": "· personalizuota",
 "> NDA signed by both of us": "> NDA pasirašyta abiejų",
 "> prototype #1 printing": "> prototipas Nr. 1 spausdinamas",
-"> tuned with you, layer by layer": "> tobulintas kartu su tavimi, sluoksnis po sluoksnio"
+"> tuned with you, layer by layer": "> tobulintas kartu su tavimi, sluoksnis po sluoksnio",
+"3D PRINTING · PRODUCTS · INNOVATION": "3D SPAUDA · PRODUKTAI · INOVACIJOS"
 };

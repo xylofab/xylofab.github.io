@@ -80,7 +80,7 @@
     if (UI.en[key] != null) return XF.tr(UI.en[key]);
     return DICT.en[key] != null ? DICT.en[key] : key;
   };
-  var dictSrc = function (c) { return 'assets/i18n/' + c + '.js?v=3'; };
+  var dictSrc = function (c) { return 'assets/i18n/' + c + '.js?v=4'; };
   XF.loadDict = function (c, cb) {
     if (c === 'pt' || c === 'en' || XF.I18N[c]) { cb(); return; }
     var sc = document.createElement('script'); sc.src = dictSrc(c);

@@ -371,5 +371,6 @@ window.XF.I18N["nl"] = {
 "· personalised": "· gepersonaliseerd",
 "> NDA signed by both of us": "> NDA door ons allebei getekend",
 "> prototype #1 printing": "> prototype nr. 1 wordt geprint",
-"> tuned with you, layer by layer": "> samen met jou bijgeschaafd, laag voor laag"
+"> tuned with you, layer by layer": "> samen met jou bijgeschaafd, laag voor laag",
+"3D PRINTING · PRODUCTS · INNOVATION": "3D-PRINTEN · PRODUCTEN · INNOVATIE"
 };

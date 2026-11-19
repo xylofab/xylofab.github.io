@@ -371,5 +371,6 @@ window.XF.I18N["it"] = {
 "· personalised": "· personalizzato",
 "> NDA signed by both of us": "> NDA firmato da entrambi",
 "> prototype #1 printing": "> prototipo n. 1 in stampa",
-"> tuned with you, layer by layer": "> perfezionato con te, strato dopo strato"
+"> tuned with you, layer by layer": "> perfezionato con te, strato dopo strato",
+"3D PRINTING · PRODUCTS · INNOVATION": "STAMPA 3D · PRODOTTI · INNOVAZIONE"
 };

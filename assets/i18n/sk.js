@@ -371,5 +371,6 @@ window.XF.I18N["sk"] = {
 "· personalised": "· personalizované",
 "> NDA signed by both of us": "> NDA podpísaná nami oboma",
 "> prototype #1 printing": "> prototyp č. 1 sa tlačí",
-"> tuned with you, layer by layer": "> doladené s tebou, vrstvu po vrstve"
+"> tuned with you, layer by layer": "> doladené s tebou, vrstvu po vrstve",
+"3D PRINTING · PRODUCTS · INNOVATION": "3D TLAČ · PRODUKTY · INOVÁCIE"
 };

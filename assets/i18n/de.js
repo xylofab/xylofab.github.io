@@ -371,5 +371,6 @@ window.XF.I18N["de"] = {
 "· personalised": "· personalisiert",
 "> NDA signed by both of us": "> NDA von beiden unterschrieben",
 "> prototype #1 printing": "> Prototyp Nr. 1 wird gedruckt",
-"> tuned with you, layer by layer": "> mit dir abgestimmt, Schicht für Schicht"
+"> tuned with you, layer by layer": "> mit dir abgestimmt, Schicht für Schicht",
+"3D PRINTING · PRODUCTS · INNOVATION": "3D-DRUCK · PRODUKTE · INNOVATION"
 };

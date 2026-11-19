@@ -371,5 +371,6 @@ window.XF.I18N["bg"] = {
 "· personalised": "· персонализирано",
 "> NDA signed by both of us": "> NDA, подписано от двама ни",
 "> prototype #1 printing": "> прототип №1 се печата",
-"> tuned with you, layer by layer": "> доизпипан с теб, слой по слой"
+"> tuned with you, layer by layer": "> доизпипан с теб, слой по слой",
+"3D PRINTING · PRODUCTS · INNOVATION": "3D ПЕЧАТ · ПРОДУКТИ · ИНОВАЦИИ"
 };

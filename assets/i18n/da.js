@@ -371,5 +371,6 @@ window.XF.I18N["da"] = {
 "· personalised": "· personlig",
 "> NDA signed by both of us": "> NDA underskrevet af os begge",
 "> prototype #1 printing": "> prototype nr. 1 printes",
-"> tuned with you, layer by layer": "> finjusteret med dig, lag for lag"
+"> tuned with you, layer by layer": "> finjusteret med dig, lag for lag",
+"3D PRINTING · PRODUCTS · INNOVATION": "3D-PRINT · PRODUKTER · INNOVATION"
 };

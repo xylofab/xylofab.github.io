@@ -371,5 +371,6 @@ window.XF.I18N["fi"] = {
 "· personalised": "· personoitu",
 "> NDA signed by both of us": "> NDA allekirjoitettu molempien toimesta",
 "> prototype #1 printing": "> prototyyppi nro 1 tulostuu",
-"> tuned with you, layer by layer": "> hiottu kanssasi, kerros kerrokselta"
+"> tuned with you, layer by layer": "> hiottu kanssasi, kerros kerrokselta",
+"3D PRINTING · PRODUCTS · INNOVATION": "3D-TULOSTUS · TUOTTEET · INNOVAATIO"
 };
