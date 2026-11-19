@@ -372,5 +372,7 @@ window.XF.I18N["sk"] = {
 "> NDA signed by both of us": "> NDA podpísaná nami oboma",
 "> prototype #1 printing": "> prototyp č. 1 sa tlačí",
 "> tuned with you, layer by layer": "> doladené s tebou, vrstvu po vrstve",
-"3D PRINTING · PRODUCTS · INNOVATION": "3D TLAČ · PRODUKTY · INOVÁCIE"
+"3D PRINTING · PRODUCTS · INNOVATION": "3D TLAČ · PRODUKTY · INOVÁCIE",
+"Average of": "Priemer z",
+"reviews": "recenzií"
 };

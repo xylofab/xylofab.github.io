@@ -372,5 +372,7 @@ window.XF.I18N["el"] = {
 "> NDA signed by both of us": "> NDA υπογεγραμμένο και από τους δύο",
 "> prototype #1 printing": "> το πρωτότυπο #1 τυπώνεται",
 "> tuned with you, layer by layer": "> τελειοποιημένο μαζί σου, στρώση στρώση",
-"3D PRINTING · PRODUCTS · INNOVATION": "3D ΕΚΤΥΠΩΣΗ · ΠΡΟΪΟΝΤΑ · ΚΑΙΝΟΤΟΜΙΑ"
+"3D PRINTING · PRODUCTS · INNOVATION": "3D ΕΚΤΥΠΩΣΗ · ΠΡΟΪΟΝΤΑ · ΚΑΙΝΟΤΟΜΙΑ",
+"Average of": "Μέσος όρος από",
+"reviews": "κριτικές"
 };

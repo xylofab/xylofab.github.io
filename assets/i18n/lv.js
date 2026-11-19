@@ -372,5 +372,7 @@ window.XF.I18N["lv"] = {
 "> NDA signed by both of us": "> NDA parakstīts no abām pusēm",
 "> prototype #1 printing": "> prototips Nr. 1 drukājas",
 "> tuned with you, layer by layer": "> pilnveidots kopā ar tevi, slāni pa slānim",
-"3D PRINTING · PRODUCTS · INNOVATION": "3D DRUKA · PRODUKTI · INOVĀCIJAS"
+"3D PRINTING · PRODUCTS · INNOVATION": "3D DRUKA · PRODUKTI · INOVĀCIJAS",
+"Average of": "Vidēji no",
+"reviews": "atsauksmēm"
 };

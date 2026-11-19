@@ -372,5 +372,7 @@ window.XF.I18N["ga"] = {
 "> NDA signed by both of us": "> NDA sínithe ag an mbeirt againn",
 "> prototype #1 printing": "> fréamhshamhail #1 á priontáil",
 "> tuned with you, layer by layer": "> mionchoigeartaithe leat, sraith ar shraith",
-"3D PRINTING · PRODUCTS · INNOVATION": "PRIONTÁIL 3D · TÁIRGÍ · NUÁLAÍOCHT"
+"3D PRINTING · PRODUCTS · INNOVATION": "PRIONTÁIL 3D · TÁIRGÍ · NUÁLAÍOCHT",
+"Average of": "Meán",
+"reviews": "léirmheas"
 };

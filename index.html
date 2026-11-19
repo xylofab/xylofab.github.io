@@ -178,6 +178,7 @@
 <div class="pin-stage" style="display: flex; flex-direction: column; justify-content: center; gap: 40px; padding: 100px 0 60px">
 <div class="wrap" data-from="up" style="width: 100%; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 20px">
 <div style="display: flex; flex-direction: column; gap: 10px"><p class="eyebrow"><span data-lang="pt">OPINIÕES</span><span data-lang="en" hidden>REVIEWS</span></p><h2 id="rev-title" class="h-l" data-i18n="rev">Quem já tem uma.</h2></div>
+<div id="rev-avg" style="display: flex; align-items: center; gap: 16px"></div>
 </div>
 <div style="overflow: hidden"><div data-from="right"><div class="rowA" id="revA"></div></div></div>
 <div style="overflow: hidden"><div data-from="left"><div class="rowB" id="revB"></div></div></div>
@@ -190,7 +191,7 @@
 
 <footer id="site-footer"></footer>
 
-<script src="assets/site.js?v=4"></script>
+<script src="assets/site.js?v=5"></script>
 <script>
 (function () {
   var cl = function (v) { return Math.max(0, Math.min(1, v)); };
@@ -240,6 +241,13 @@
     };
     var a = REV.map(card).join(''), b = REV.slice().reverse().map(card).join('');
     $('revA').innerHTML = a + a; $('revB').innerHTML = b + b;
+    /* média geral: calculada das opiniões mostradas (na fase 2, das opiniões aprovadas da app) */
+    var avg = REV.reduce(function (t, r) { return t + r.s; }, 0) / REV.length;
+    var full = Math.round(avg);
+    var num = new Intl.NumberFormat(XF.lang === 'pt' ? 'pt-PT' : XF.lang, { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(avg);
+    $('rev-avg').innerHTML = '<span style="font-size:clamp(48px,7vw,72px);font-weight:900;line-height:1;letter-spacing:-.03em">' + num + '</span>' +
+      '<span style="display:flex;flex-direction:column;gap:6px"><span aria-label="' + num + '/5" style="color:#FFB020;font-size:22px;letter-spacing:3px">' + '★★★★★'.slice(0, full) + '☆☆☆☆☆'.slice(0, 5 - full) + '</span>' +
+      '<span class="muted" style="font-size:14px">' + XF.L('Média de ', 'Average of ') + REV.length + XF.L(' opiniões', ' reviews') + ' · <span class="mono" style="font-weight:700">' + label + '</span></span></span>';
   }
 
   /* lab */

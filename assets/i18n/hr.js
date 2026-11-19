@@ -372,5 +372,7 @@ window.XF.I18N["hr"] = {
 "> NDA signed by both of us": "> NDA potpisan od oboje",
 "> prototype #1 printing": "> prototip br. 1 se ispisuje",
 "> tuned with you, layer by layer": "> dotjeran s tobom, sloj po sloj",
-"3D PRINTING · PRODUCTS · INNOVATION": "3D ISPIS · PROIZVODI · INOVACIJE"
+"3D PRINTING · PRODUCTS · INNOVATION": "3D ISPIS · PROIZVODI · INOVACIJE",
+"Average of": "Prosjek od",
+"reviews": "recenzija"
 };

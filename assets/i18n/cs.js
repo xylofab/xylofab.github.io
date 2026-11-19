@@ -372,5 +372,7 @@ window.XF.I18N["cs"] = {
 "> NDA signed by both of us": "> NDA podepsaná námi oběma",
 "> prototype #1 printing": "> prototyp č. 1 se tiskne",
 "> tuned with you, layer by layer": "> doladěno s tebou, vrstvu po vrstvě",
-"3D PRINTING · PRODUCTS · INNOVATION": "3D TISK · PRODUKTY · INOVACE"
+"3D PRINTING · PRODUCTS · INNOVATION": "3D TISK · PRODUKTY · INOVACE",
+"Average of": "Průměr z",
+"reviews": "recenzí"
 };

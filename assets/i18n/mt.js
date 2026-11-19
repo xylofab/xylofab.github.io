@@ -372,5 +372,7 @@ window.XF.I18N["mt"] = {
 "> NDA signed by both of us": "> NDA ffirmat mit-tnejn",
 "> prototype #1 printing": "> prototip nru 1 qed jiġi pprintjat",
 "> tuned with you, layer by layer": "> irfinat miegħek, saff wara saff",
-"3D PRINTING · PRODUCTS · INNOVATION": "PRINTJAR 3D · PRODOTTI · INNOVAZZJONI"
+"3D PRINTING · PRODUCTS · INNOVATION": "PRINTJAR 3D · PRODOTTI · INNOVAZZJONI",
+"Average of": "Medja ta'",
+"reviews": "reviżjonijiet"
 };

@@ -372,5 +372,7 @@ window.XF.I18N["sl"] = {
 "> NDA signed by both of us": "> NDA podpisan z obeh strani",
 "> prototype #1 printing": "> prototip št. 1 se tiska",
 "> tuned with you, layer by layer": "> izpopolnjen s tabo, plast za plastjo",
-"3D PRINTING · PRODUCTS · INNOVATION": "3D TISK · IZDELKI · INOVACIJE"
+"3D PRINTING · PRODUCTS · INNOVATION": "3D TISK · IZDELKI · INOVACIJE",
+"Average of": "Povprečje",
+"reviews": "mnenj"
 };

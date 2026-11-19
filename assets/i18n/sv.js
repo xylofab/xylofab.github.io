@@ -372,5 +372,7 @@ window.XF.I18N["sv"] = {
 "> NDA signed by both of us": "> NDA signerat av oss båda",
 "> prototype #1 printing": "> prototyp nr 1 skrivs ut",
 "> tuned with you, layer by layer": "> finslipad med dig, lager för lager",
-"3D PRINTING · PRODUCTS · INNOVATION": "3D-UTSKRIFT · PRODUKTER · INNOVATION"
+"3D PRINTING · PRODUCTS · INNOVATION": "3D-UTSKRIFT · PRODUKTER · INNOVATION",
+"Average of": "Snitt av",
+"reviews": "omdömen"
 };

@@ -372,5 +372,7 @@ window.XF.I18N["ro"] = {
 "> NDA signed by both of us": "> NDA semnat de amândoi",
 "> prototype #1 printing": "> prototipul nr. 1 se imprimă",
 "> tuned with you, layer by layer": "> reglat cu tine, strat cu strat",
-"3D PRINTING · PRODUCTS · INNOVATION": "IMPRIMARE 3D · PRODUSE · INOVAȚIE"
+"3D PRINTING · PRODUCTS · INNOVATION": "IMPRIMARE 3D · PRODUSE · INOVAȚIE",
+"Average of": "Media a",
+"reviews": "recenzii"
 };

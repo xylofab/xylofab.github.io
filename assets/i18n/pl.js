@@ -372,5 +372,7 @@ window.XF.I18N["pl"] = {
 "> NDA signed by both of us": "> NDA podpisane przez nas oboje",
 "> prototype #1 printing": "> prototyp nr 1 w druku",
 "> tuned with you, layer by layer": "> dopracowany z Tobą, warstwa po warstwie",
-"3D PRINTING · PRODUCTS · INNOVATION": "DRUK 3D · PRODUKTY · INNOWACJE"
+"3D PRINTING · PRODUCTS · INNOVATION": "DRUK 3D · PRODUKTY · INNOWACJE",
+"Average of": "Średnia z",
+"reviews": "opinii"
 };

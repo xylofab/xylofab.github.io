@@ -372,5 +372,7 @@ window.XF.I18N["hu"] = {
 "> NDA signed by both of us": "> NDA mindkettőnk aláírásával",
 "> prototype #1 printing": "> az 1. prototípus nyomtatás alatt",
 "> tuned with you, layer by layer": "> veled csiszolva, rétegről rétegre",
-"3D PRINTING · PRODUCTS · INNOVATION": "3D NYOMTATÁS · TERMÉKEK · INNOVÁCIÓ"
+"3D PRINTING · PRODUCTS · INNOVATION": "3D NYOMTATÁS · TERMÉKEK · INNOVÁCIÓ",
+"Average of": "Átlag:",
+"reviews": "vélemény"
 };
