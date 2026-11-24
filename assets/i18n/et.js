@@ -424,5 +424,6 @@ window.XF.I18N["et"] = {
 "You": "Sina",
 "Write your message.": "Kirjuta oma sõnum.",
 "Leave your email so we can reply.": "Jäta oma e-post, et saaksime vastata.",
-"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Vestlussõnumid:</strong> sinu nimi, e-post ja see, mida kirjutad, ainult selleks, et saaksime vastata."
+"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Vestlussõnumid:</strong> sinu nimi, e-post ja see, mida kirjutad, ainult selleks, et saaksime vastata.",
+"Menu": "Menüü"
 };

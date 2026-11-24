@@ -424,5 +424,6 @@ window.XF.I18N["lv"] = {
 "You": "Tu",
 "Write your message.": "Uzraksti ziņu.",
 "Leave your email so we can reply.": "Atstāj e-pastu, lai varam atbildēt.",
-"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Tērzēšanas ziņas:</strong> tavs vārds, e-pasts un tas, ko raksti, tikai lai varētu tev atbildēt."
+"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Tērzēšanas ziņas:</strong> tavs vārds, e-pasts un tas, ko raksti, tikai lai varētu tev atbildēt.",
+"Menu": "Izvēlne"
 };

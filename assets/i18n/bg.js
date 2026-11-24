@@ -424,5 +424,6 @@ window.XF.I18N["bg"] = {
 "You": "Ти",
 "Write your message.": "Напиши съобщението си.",
 "Leave your email so we can reply.": "Остави имейла си, за да можем да отговорим.",
-"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Съобщения в чата:</strong> името ти, имейлът ти и това, което пишеш, само за да ти отговорим."
+"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Съобщения в чата:</strong> името ти, имейлът ти и това, което пишеш, само за да ти отговорим.",
+"Menu": "Меню"
 };

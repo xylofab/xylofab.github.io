@@ -424,5 +424,6 @@ window.XF.I18N["mt"] = {
 "You": "Int",
 "Write your message.": "Ikteb il-messaġġ tiegħek.",
 "Leave your email so we can reply.": "Ħallilna l-email tiegħek biex inkunu nistgħu nwieġbu.",
-"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Messaġġi taċ-chat:</strong> ismek, l-email tiegħek u dak li tikteb, biss biex inkunu nistgħu nwieġbuk."
+"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Messaġġi taċ-chat:</strong> ismek, l-email tiegħek u dak li tikteb, biss biex inkunu nistgħu nwieġbuk.",
+"Menu": "Menu"
 };

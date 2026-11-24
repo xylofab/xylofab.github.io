@@ -424,5 +424,6 @@ window.XF.I18N["lt"] = {
 "You": "Tu",
 "Write your message.": "Parašyk žinutę.",
 "Leave your email so we can reply.": "Palik el. paštą, kad galėtume atsakyti.",
-"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Pokalbio žinutės:</strong> tavo vardas, el. paštas ir tai, ką rašai, tik tam, kad galėtume atsakyti."
+"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Pokalbio žinutės:</strong> tavo vardas, el. paštas ir tai, ką rašai, tik tam, kad galėtume atsakyti.",
+"Menu": "Meniu"
 };

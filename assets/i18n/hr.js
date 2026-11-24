@@ -424,5 +424,6 @@ window.XF.I18N["hr"] = {
 "You": "Vi",
 "Write your message.": "Napišite poruku.",
 "Leave your email so we can reply.": "Ostavite e-mail kako bismo vam mogli odgovoriti.",
-"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Poruke iz chata:</strong> vaše ime, e-mail i ono što napišete, samo da vam možemo odgovoriti."
+"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Poruke iz chata:</strong> vaše ime, e-mail i ono što napišete, samo da vam možemo odgovoriti.",
+"Menu": "Izbornik"
 };

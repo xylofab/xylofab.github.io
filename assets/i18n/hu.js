@@ -424,5 +424,6 @@ window.XF.I18N["hu"] = {
 "You": "Te",
 "Write your message.": "Írd meg az üzeneted.",
 "Leave your email so we can reply.": "Add meg az e-mail címed, hogy válaszolhassunk.",
-"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Chatüzenetek:</strong> a neved, az e-mail címed és amit írsz, csak hogy válaszolhassunk."
+"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Chatüzenetek:</strong> a neved, az e-mail címed és amit írsz, csak hogy válaszolhassunk.",
+"Menu": "Menü"
 };

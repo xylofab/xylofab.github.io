@@ -424,5 +424,6 @@ window.XF.I18N["ga"] = {
 "You": "Tusa",
 "Write your message.": "Scríobh do theachtaireacht.",
 "Leave your email so we can reply.": "Fág do ríomhphost ionas gur féidir linn freagra a thabhairt.",
-"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Teachtaireachtaí comhrá:</strong> d’ainm, do ríomhphost agus a scríobhann tú, ionas gur féidir linn freagra a thabhairt ort."
+"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Teachtaireachtaí comhrá:</strong> d’ainm, do ríomhphost agus a scríobhann tú, ionas gur féidir linn freagra a thabhairt ort.",
+"Menu": "Roghchlár"
 };

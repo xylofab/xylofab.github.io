@@ -424,5 +424,6 @@ window.XF.I18N["cs"] = {
 "You": "Vy",
 "Write your message.": "Napište zprávu.",
 "Leave your email so we can reply.": "Nechte nám e-mail, abychom mohli odpovědět.",
-"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Zprávy z chatu:</strong> vaše jméno, e-mail a to, co napíšete, jen abychom vám mohli odpovědět."
+"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Zprávy z chatu:</strong> vaše jméno, e-mail a to, co napíšete, jen abychom vám mohli odpovědět.",
+"Menu": "Nabídka"
 };

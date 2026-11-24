@@ -424,5 +424,6 @@ window.XF.I18N["da"] = {
 "You": "Dig",
 "Write your message.": "Skriv din besked.",
 "Leave your email so we can reply.": "Skriv din e-mail, så vi kan svare.",
-"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Chatbeskeder:</strong> dit navn, din e-mail og det, du skriver, kun så vi kan svare dig."
+"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Chatbeskeder:</strong> dit navn, din e-mail og det, du skriver, kun så vi kan svare dig.",
+"Menu": "Menu"
 };

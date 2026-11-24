@@ -424,5 +424,6 @@ window.XF.I18N["ro"] = {
 "You": "Tu",
 "Write your message.": "Scrie mesajul.",
 "Leave your email so we can reply.": "Lasă-ne emailul ca să-ți putem răspunde.",
-"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Mesajele din chat:</strong> numele, emailul și ce scrii, doar ca să-ți putem răspunde."
+"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Mesajele din chat:</strong> numele, emailul și ce scrii, doar ca să-ți putem răspunde.",
+"Menu": "Meniu"
 };

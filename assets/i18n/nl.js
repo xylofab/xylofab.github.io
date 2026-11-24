@@ -424,5 +424,6 @@ window.XF.I18N["nl"] = {
 "You": "Jij",
 "Write your message.": "Schrijf je bericht.",
 "Leave your email so we can reply.": "Laat je e-mail achter zodat we kunnen antwoorden.",
-"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Chatberichten:</strong> je naam, e-mail en wat je schrijft, alleen om je te kunnen antwoorden."
+"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Chatberichten:</strong> je naam, e-mail en wat je schrijft, alleen om je te kunnen antwoorden.",
+"Menu": "Menu"
 };

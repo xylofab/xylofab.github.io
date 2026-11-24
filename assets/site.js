@@ -47,8 +47,8 @@
   };
   /* Textos da interface (português e inglês completos; as outras línguas usam inglês aqui). */
   var UI = {
-    pt: { myAccount: 'A minha conta', custom: 'Custom', lab: 'Lab', shipping: 'Envios', terms: 'Termos e condições', privacy: 'Política de privacidade', allProducts: 'Todos os produtos', help: 'Ajuda', returns: 'Trocas e devoluções', contacts: 'Contactos', securePay: 'PAGAMENTOS SEGUROS', tagline: 'Impressão 3D por encomenda. Produtos nossos, peças à medida e umas invenções.', made: 'Feito com filamento e teimosia.', testMode: 'MODO DE TESTE · NENHUM PAGAMENTO É FEITO', langNote: 'Escolhe a tua língua.', added: 'no carrinho.', soon: 'Em breve' },
-    en: { myAccount: 'My account', custom: 'Custom', lab: 'Lab', shipping: 'Shipping', terms: 'Terms and conditions', privacy: 'Privacy policy', allProducts: 'All products', help: 'Help', returns: 'Returns', contacts: 'Contact', securePay: 'SECURE PAYMENTS', tagline: 'Made-to-order 3D printing. Our own products, custom parts and a few inventions.', made: 'Made with filament and stubbornness.', testMode: 'TEST MODE · NO PAYMENT IS TAKEN', langNote: 'Choose your language.', added: 'added to your cart.', soon: 'Coming soon' }
+    pt: { menu: 'Menu', myAccount: 'A minha conta', custom: 'Custom', lab: 'Lab', shipping: 'Envios', terms: 'Termos e condições', privacy: 'Política de privacidade', allProducts: 'Todos os produtos', help: 'Ajuda', returns: 'Trocas e devoluções', contacts: 'Contactos', securePay: 'PAGAMENTOS SEGUROS', tagline: 'Impressão 3D por encomenda. Produtos nossos, peças à medida e umas invenções.', made: 'Feito com filamento e teimosia.', testMode: 'MODO DE TESTE · NENHUM PAGAMENTO É FEITO', langNote: 'Escolhe a tua língua.', added: 'no carrinho.', soon: 'Em breve' },
+    en: { menu: 'Menu', myAccount: 'My account', custom: 'Custom', lab: 'Lab', shipping: 'Shipping', terms: 'Terms and conditions', privacy: 'Privacy policy', allProducts: 'All products', help: 'Help', returns: 'Returns', contacts: 'Contact', securePay: 'SECURE PAYMENTS', tagline: 'Made-to-order 3D printing. Our own products, custom parts and a few inventions.', made: 'Made with filament and stubbornness.', testMode: 'TEST MODE · NO PAYMENT IS TAKEN', langNote: 'Choose your language.', added: 'added to your cart.', soon: 'Coming soon' }
   };
 
   var DICT = {};
@@ -82,7 +82,7 @@
     if (UI.en[key] != null) return XF.tr(UI.en[key]);
     return DICT.en[key] != null ? DICT.en[key] : key;
   };
-  var dictSrc = function (c) { return 'assets/i18n/' + c + '.js?v=8'; };
+  var dictSrc = function (c) { return 'assets/i18n/' + c + '.js?v=9'; };
   XF.loadDict = function (c, cb) {
     if (c === 'pt' || c === 'en' || XF.I18N[c]) { cb(); return; }
     var sc = document.createElement('script'); sc.src = dictSrc(c);
@@ -510,14 +510,17 @@
       ? '<a class="pill" href="conta.html"' + cur('conta') + '><span class="avatar">' + XF.esc(u.name.charAt(0).toUpperCase()) + '</span>' + XF.esc(u.name.split(' ')[0]) + '</a>'
       : '<a class="pill" href="conta.html"' + cur('conta') + ' data-i18n="login">' + XF.t('login') + '</a>';
     return '<div class="bar"><a class="brand" href="index.html"><span style="width:40px;height:40px;display:inline-flex">' + XF.LOGO + '</span><span>XYLOFAB</span></a>' +
-      '<nav class="nav" aria-label="Principal">' +
+      /* no telemóvel: só o carrinho e o botão Menu; o resto abre por baixo */
+      '<div class="m-only"><a class="pill pill-white" href="carrinho.html" aria-label="' + XF.esc(XF.t('cart')) + '"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2.5l2.2 11h10.6l2-8H6.6" fill="none" stroke="#0A0F1F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.5" cy="19.5" r="1.6" fill="#0A0F1F"/><circle cx="17" cy="19.5" r="1.6" fill="#0A0F1F"/></svg><span class="badge" data-cart-count>' + XF.cartCount() + '</span></a>' +
+      '<button type="button" class="pill" id="xf-menu-btn" aria-expanded="false" aria-controls="xf-nav"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg><span data-i18n="menu">Menu</span></button></div>' +
+      '<nav class="nav" id="xf-nav" aria-label="Principal">' +
       '<a class="navlink" href="loja.html"' + cur('loja') + ' data-i18n="shop">' + XF.t('shop') + '</a>' +
       '<a class="navlink" href="index.html#custom">Custom</a>' +
       '<a class="navlink" href="index.html#lab">Lab</a>' +
       '<a class="navlink" href="quem-somos.html"' + cur('quem') + ' data-i18n="about">' + XF.t('about') + '</a>' +
       '<button type="button" class="pill" id="xf-lang-btn" aria-haspopup="true" aria-expanded="false" aria-label="Língua / Language"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="#fff" stroke-width="1.8"/><path d="M3 12h18M12 3c2.8 3 2.8 15 0 18M12 3c-2.8 3-2.8 15 0 18" fill="none" stroke="#fff" stroke-width="1.8"/></svg><span data-lang-btn>' + XF.lang.toUpperCase() + '</span></button>' +
       acct +
-      '<a class="pill pill-white" href="carrinho.html"' + cur('carrinho') + '><span data-i18n="cart">' + XF.t('cart') + '</span> <span class="badge" data-cart-count>' + XF.cartCount() + '</span></a>' +
+      '<a class="pill pill-white d-only" href="carrinho.html"' + cur('carrinho') + '><span data-i18n="cart">' + XF.t('cart') + '</span> <span class="badge" data-cart-count>' + XF.cartCount() + '</span></a>' +
       '</nav></div>' +
       '<div class="lang-menu" id="xf-lang-menu" role="dialog" aria-label="Língua / Language"><div class="lang-grid">' +
       Object.keys(DICT).map(function (c) { return '<button type="button" lang="' + c + '" data-code="' + c + '" aria-pressed="' + (c === XF.lang) + '">' + NAMES[c] + '</button>'; }).join('') +
@@ -545,6 +548,11 @@
     if (h) { h.className = 'site-header'; h.innerHTML = header(page); }
     var f = document.getElementById('site-footer');
     if (f) { f.className = 'site-footer'; f.innerHTML = footer(); }
+    var mb = document.getElementById('xf-menu-btn');
+    if (mb) mb.addEventListener('click', function () {
+      var o = !h.classList.contains('menu-open');
+      h.classList.toggle('menu-open', o); mb.setAttribute('aria-expanded', String(o));
+    });
     var btn = document.getElementById('xf-lang-btn'), menu = document.getElementById('xf-lang-menu');
     if (btn && menu) {
       btn.addEventListener('click', function () { var o = !menu.classList.contains('open'); menu.classList.toggle('open', o); btn.setAttribute('aria-expanded', String(o)); });

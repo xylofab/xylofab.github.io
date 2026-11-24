@@ -424,5 +424,6 @@ window.XF.I18N["el"] = {
 "You": "Εσύ",
 "Write your message.": "Γράψε το μήνυμά σου.",
 "Leave your email so we can reply.": "Άφησε το email σου για να σου απαντήσουμε.",
-"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Μηνύματα συνομιλίας:</strong> το όνομά σου, το email σου και ό,τι γράφεις, μόνο για να σου απαντήσουμε."
+"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Μηνύματα συνομιλίας:</strong> το όνομά σου, το email σου και ό,τι γράφεις, μόνο για να σου απαντήσουμε.",
+"Menu": "Μενού"
 };
