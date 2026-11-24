@@ -409,5 +409,20 @@ window.XF.I18N["ro"] = {
 "You choose MB WAY, Multibanco or card on the secure Stripe payment page. Your card details never pass through us.": "Alegi MB WAY, Multibanco sau card pe pagina de plată securizată Stripe. Datele cardului nu trec niciodată pe la noi.",
 "You need to sign in to your account.": "Trebuie să intri în cont.",
 "Your order is over 2 kg. Write to us and we will agree the shipping cost.": "Comanda ta depășește 2 kg. Scrie-ne și stabilim transportul.",
-"review": "recenzie"
+"review": "recenzie",
+"Chat with us": "Scrie-ne",
+"Hi! We are Any and Tiago. Ask us anything and we will answer right here.": "Salut! Suntem Any și Tiago. Întreabă-ne orice și îți răspundem chiar aici.",
+"If you leave the site, the reply goes to your email.": "Dacă ieși de pe site, răspunsul vine pe email.",
+"Your name": "Numele tău",
+"Your email": "Emailul tău",
+"Write your message": "Scrie mesajul",
+"Send": "Trimite",
+"Close": "Închide",
+"Sent. We will reply as soon as we can.": "Trimis. Îți răspundem cât de repede putem.",
+"Your email app will open to send the message.": "Se va deschide emailul tău ca să trimiți mesajul.",
+"New message from XyloFab": "Mesaj nou de la XyloFab",
+"You": "Tu",
+"Write your message.": "Scrie mesajul.",
+"Leave your email so we can reply.": "Lasă-ne emailul ca să-ți putem răspunde.",
+"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Mesajele din chat:</strong> numele, emailul și ce scrii, doar ca să-ți putem răspunde."
 };

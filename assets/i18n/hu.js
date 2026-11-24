@@ -409,5 +409,20 @@ window.XF.I18N["hu"] = {
 "You choose MB WAY, Multibanco or card on the secure Stripe payment page. Your card details never pass through us.": "Az MB WAY-t, a Multibancót vagy a kártyát a Stripe biztonságos fizetési oldalán választod. A kártyaadataid soha nem mennek át rajtunk.",
 "You need to sign in to your account.": "Be kell jelentkezned a fiókodba.",
 "Your order is over 2 kg. Write to us and we will agree the shipping cost.": "A rendelésed 2 kg felett van. Írj nekünk, és megbeszéljük a szállítást.",
-"review": "vélemény"
+"review": "vélemény",
+"Chat with us": "Írj nekünk",
+"Hi! We are Any and Tiago. Ask us anything and we will answer right here.": "Szia! Any és Tiago vagyunk. Kérdezz bármit, itt válaszolunk.",
+"If you leave the site, the reply goes to your email.": "Ha elhagyod az oldalt, a válasz e-mailben érkezik.",
+"Your name": "A neved",
+"Your email": "Az e-mail címed",
+"Write your message": "Írd meg az üzeneted",
+"Send": "Küldés",
+"Close": "Bezárás",
+"Sent. We will reply as soon as we can.": "Elküldve. Amint tudunk, válaszolunk.",
+"Your email app will open to send the message.": "Megnyílik a leveleződ az üzenet elküldéséhez.",
+"New message from XyloFab": "Új üzenet a XyloFabtól",
+"You": "Te",
+"Write your message.": "Írd meg az üzeneted.",
+"Leave your email so we can reply.": "Add meg az e-mail címed, hogy válaszolhassunk.",
+"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Chatüzenetek:</strong> a neved, az e-mail címed és amit írsz, csak hogy válaszolhassunk."
 };

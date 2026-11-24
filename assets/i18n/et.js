@@ -409,5 +409,20 @@ window.XF.I18N["et"] = {
 "You choose MB WAY, Multibanco or card on the secure Stripe payment page. Your card details never pass through us.": "MB WAY, Multibanco või kaardi valid Stripe'i turvalisel makselehel. Sinu kaardiandmed ei liigu kunagi meie kaudu.",
 "You need to sign in to your account.": "Pead oma kontole sisse logima.",
 "Your order is over 2 kg. Write to us and we will agree the shipping cost.": "Sinu tellimus kaalub üle 2 kg. Kirjuta meile ja lepime saatmise kokku.",
-"review": "arvustuse põhjal"
+"review": "arvustuse põhjal",
+"Chat with us": "Kirjuta meile",
+"Hi! We are Any and Tiago. Ask us anything and we will answer right here.": "Tere! Oleme Any ja Tiago. Küsi mida tahes, vastame siinsamas.",
+"If you leave the site, the reply goes to your email.": "Kui lahkud lehelt, tuleb vastus e-postiga.",
+"Your name": "Sinu nimi",
+"Your email": "Sinu e-post",
+"Write your message": "Kirjuta oma sõnum",
+"Send": "Saada",
+"Close": "Sulge",
+"Sent. We will reply as soon as we can.": "Saadetud. Vastame niipea kui saame.",
+"Your email app will open to send the message.": "Sõnumi saatmiseks avaneb sinu e-post.",
+"New message from XyloFab": "Uus sõnum XyloFabilt",
+"You": "Sina",
+"Write your message.": "Kirjuta oma sõnum.",
+"Leave your email so we can reply.": "Jäta oma e-post, et saaksime vastata.",
+"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Vestlussõnumid:</strong> sinu nimi, e-post ja see, mida kirjutad, ainult selleks, et saaksime vastata."
 };

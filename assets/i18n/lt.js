@@ -409,5 +409,20 @@ window.XF.I18N["lt"] = {
 "You choose MB WAY, Multibanco or card on the secure Stripe payment page. Your card details never pass through us.": "MB WAY, Multibanco arba kortelę renkiesi saugiame Stripe mokėjimo puslapyje. Kortelės duomenys niekada nekeliauja per mus.",
 "You need to sign in to your account.": "Turi prisijungti prie savo paskyros.",
 "Your order is over 2 kg. Write to us and we will agree the shipping cost.": "Tavo užsakymas sveria daugiau nei 2 kg. Parašyk mums ir susitarsime dėl siuntimo.",
-"review": "atsiliepimo"
+"review": "atsiliepimo",
+"Chat with us": "Parašyk mums",
+"Hi! We are Any and Tiago. Ask us anything and we will answer right here.": "Labas! Mes Any ir Tiago. Klausk ko nori, atsakysime čia pat.",
+"If you leave the site, the reply goes to your email.": "Jei išeisi iš svetainės, atsakymas ateis el. paštu.",
+"Your name": "Tavo vardas",
+"Your email": "Tavo el. paštas",
+"Write your message": "Parašyk žinutę",
+"Send": "Siųsti",
+"Close": "Uždaryti",
+"Sent. We will reply as soon as we can.": "Išsiųsta. Atsakysime kuo greičiau.",
+"Your email app will open to send the message.": "Atsidarys tavo el. paštas žinutei išsiųsti.",
+"New message from XyloFab": "Nauja žinutė iš XyloFab",
+"You": "Tu",
+"Write your message.": "Parašyk žinutę.",
+"Leave your email so we can reply.": "Palik el. paštą, kad galėtume atsakyti.",
+"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Pokalbio žinutės:</strong> tavo vardas, el. paštas ir tai, ką rašai, tik tam, kad galėtume atsakyti."
 };

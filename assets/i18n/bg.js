@@ -409,5 +409,20 @@ window.XF.I18N["bg"] = {
 "You choose MB WAY, Multibanco or card on the secure Stripe payment page. Your card details never pass through us.": "Избираш MB WAY, Multibanco или карта на сигурната страница за плащане на Stripe. Данните на картата ти никога не минават през нас.",
 "You need to sign in to your account.": "Трябва да влезеш в профила си.",
 "Your order is over 2 kg. Write to us and we will agree the shipping cost.": "Поръчката ти е над 2 kg. Пиши ни да уговорим доставката.",
-"review": "отзив"
+"review": "отзив",
+"Chat with us": "Пиши ни",
+"Hi! We are Any and Tiago. Ask us anything and we will answer right here.": "Здравей! Ние сме Ани и Тиагу. Питай ни каквото искаш и ще отговорим тук.",
+"If you leave the site, the reply goes to your email.": "Ако напуснеш сайта, отговорът ще дойде по имейл.",
+"Your name": "Твоето име",
+"Your email": "Твоят имейл",
+"Write your message": "Напиши съобщението си",
+"Send": "Изпрати",
+"Close": "Затвори",
+"Sent. We will reply as soon as we can.": "Изпратено. Ще отговорим възможно най-скоро.",
+"Your email app will open to send the message.": "Ще се отвори имейлът ти, за да изпратиш съобщението.",
+"New message from XyloFab": "Ново съобщение от XyloFab",
+"You": "Ти",
+"Write your message.": "Напиши съобщението си.",
+"Leave your email so we can reply.": "Остави имейла си, за да можем да отговорим.",
+"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Съобщения в чата:</strong> името ти, имейлът ти и това, което пишеш, само за да ти отговорим."
 };

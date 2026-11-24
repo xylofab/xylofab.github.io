@@ -409,5 +409,20 @@ window.XF.I18N["nl"] = {
 "You choose MB WAY, Multibanco or card on the secure Stripe payment page. Your card details never pass through us.": "Je kiest MB WAY, Multibanco of kaart op de beveiligde betaalpagina van Stripe. Je kaartgegevens gaan nooit via ons.",
 "You need to sign in to your account.": "Je moet inloggen op je account.",
 "Your order is over 2 kg. Write to us and we will agree the shipping cost.": "Je bestelling weegt meer dan 2 kg. Schrijf ons en we spreken de verzendkosten af.",
-"review": "review"
+"review": "review",
+"Chat with us": "Praat met ons",
+"Hi! We are Any and Tiago. Ask us anything and we will answer right here.": "Hoi! Wij zijn Any en Tiago. Vraag ons wat je wilt, we antwoorden hier.",
+"If you leave the site, the reply goes to your email.": "Als je de site verlaat, komt het antwoord per e-mail.",
+"Your name": "Je naam",
+"Your email": "Je e-mail",
+"Write your message": "Schrijf je bericht",
+"Send": "Versturen",
+"Close": "Sluiten",
+"Sent. We will reply as soon as we can.": "Verstuurd. We antwoorden zo snel mogelijk.",
+"Your email app will open to send the message.": "Je e-mailprogramma opent om het bericht te versturen.",
+"New message from XyloFab": "Nieuw bericht van XyloFab",
+"You": "Jij",
+"Write your message.": "Schrijf je bericht.",
+"Leave your email so we can reply.": "Laat je e-mail achter zodat we kunnen antwoorden.",
+"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Chatberichten:</strong> je naam, e-mail en wat je schrijft, alleen om je te kunnen antwoorden."
 };

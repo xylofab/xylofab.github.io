@@ -409,5 +409,20 @@ window.XF.I18N["da"] = {
 "You choose MB WAY, Multibanco or card on the secure Stripe payment page. Your card details never pass through us.": "Du vælger MB WAY, Multibanco eller kort på Stripes sikre betalingsside. Dine kortoplysninger går aldrig gennem os.",
 "You need to sign in to your account.": "Du skal logge ind på din konto.",
 "Your order is over 2 kg. Write to us and we will agree the shipping cost.": "Din ordre vejer over 2 kg. Skriv til os, så aftaler vi fragten.",
-"review": "anmeldelse"
+"review": "anmeldelse",
+"Chat with us": "Skriv til os",
+"Hi! We are Any and Tiago. Ask us anything and we will answer right here.": "Hej! Vi er Any og Tiago. Spørg os om hvad som helst, så svarer vi her.",
+"If you leave the site, the reply goes to your email.": "Hvis du forlader siden, kommer svaret på e-mail.",
+"Your name": "Dit navn",
+"Your email": "Din e-mail",
+"Write your message": "Skriv din besked",
+"Send": "Send",
+"Close": "Luk",
+"Sent. We will reply as soon as we can.": "Sendt. Vi svarer, så snart vi kan.",
+"Your email app will open to send the message.": "Dit e-mailprogram åbner, så du kan sende beskeden.",
+"New message from XyloFab": "Ny besked fra XyloFab",
+"You": "Dig",
+"Write your message.": "Skriv din besked.",
+"Leave your email so we can reply.": "Skriv din e-mail, så vi kan svare.",
+"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Chatbeskeder:</strong> dit navn, din e-mail og det, du skriver, kun så vi kan svare dig."
 };

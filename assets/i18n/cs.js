@@ -409,5 +409,20 @@ window.XF.I18N["cs"] = {
 "You choose MB WAY, Multibanco or card on the secure Stripe payment page. Your card details never pass through us.": "MB WAY, Multibanco nebo kartu vybíráš na zabezpečené platební stránce Stripe. Údaje o kartě k nám nikdy nejdou.",
 "You need to sign in to your account.": "Musíš se přihlásit ke svému účtu.",
 "Your order is over 2 kg. Write to us and we will agree the shipping cost.": "Tvoje objednávka má přes 2 kg. Napiš nám a domluvíme dopravu.",
-"review": "recenze"
+"review": "recenze",
+"Chat with us": "Napište nám",
+"Hi! We are Any and Tiago. Ask us anything and we will answer right here.": "Ahoj! Jsme Any a Tiago. Zeptejte se na cokoli, odpovíme přímo tady.",
+"If you leave the site, the reply goes to your email.": "Když web opustíte, odpověď přijde e-mailem.",
+"Your name": "Vaše jméno",
+"Your email": "Váš e-mail",
+"Write your message": "Napište zprávu",
+"Send": "Odeslat",
+"Close": "Zavřít",
+"Sent. We will reply as soon as we can.": "Odesláno. Odpovíme co nejdříve.",
+"Your email app will open to send the message.": "Otevře se váš e-mail pro odeslání zprávy.",
+"New message from XyloFab": "Nová zpráva od XyloFab",
+"You": "Vy",
+"Write your message.": "Napište zprávu.",
+"Leave your email so we can reply.": "Nechte nám e-mail, abychom mohli odpovědět.",
+"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Zprávy z chatu:</strong> vaše jméno, e-mail a to, co napíšete, jen abychom vám mohli odpovědět."
 };

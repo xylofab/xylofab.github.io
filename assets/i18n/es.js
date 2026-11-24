@@ -409,5 +409,20 @@ window.XF.I18N["es"] = {
 "You choose MB WAY, Multibanco or card on the secure Stripe payment page. Your card details never pass through us.": "Eliges MB WAY, Multibanco o tarjeta en la página de pago segura de Stripe. Los datos de tu tarjeta nunca pasan por nosotros.",
 "You need to sign in to your account.": "Tienes que entrar en tu cuenta.",
 "Your order is over 2 kg. Write to us and we will agree the shipping cost.": "Tu pedido pasa de 2 kg. Escríbenos y acordamos el envío.",
-"review": "opinión"
+"review": "opinión",
+"Chat with us": "Habla con nosotros",
+"Hi! We are Any and Tiago. Ask us anything and we will answer right here.": "¡Hola! Somos Any y Tiago. Pregúntanos lo que quieras y te respondemos aquí mismo.",
+"If you leave the site, the reply goes to your email.": "Si sales de la web, la respuesta llegará a tu email.",
+"Your name": "Tu nombre",
+"Your email": "Tu email",
+"Write your message": "Escribe tu mensaje",
+"Send": "Enviar",
+"Close": "Cerrar",
+"Sent. We will reply as soon as we can.": "Enviado. Te respondemos en cuanto podamos.",
+"Your email app will open to send the message.": "Se abrirá tu email para enviar el mensaje.",
+"New message from XyloFab": "Nuevo mensaje de XyloFab",
+"You": "Tú",
+"Write your message.": "Escribe tu mensaje.",
+"Leave your email so we can reply.": "Déjanos tu email para poder responderte.",
+"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Mensajes del chat:</strong> tu nombre, email y lo que escribes, solo para poder responderte."
 };

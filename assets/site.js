@@ -82,7 +82,7 @@
     if (UI.en[key] != null) return XF.tr(UI.en[key]);
     return DICT.en[key] != null ? DICT.en[key] : key;
   };
-  var dictSrc = function (c) { return 'assets/i18n/' + c + '.js?v=7'; };
+  var dictSrc = function (c) { return 'assets/i18n/' + c + '.js?v=8'; };
   XF.loadDict = function (c, cb) {
     if (c === 'pt' || c === 'en' || XF.I18N[c]) { cb(); return; }
     var sc = document.createElement('script'); sc.src = dictSrc(c);
@@ -268,7 +268,7 @@
   /* ---------- fase 2: a loja a sério, na app fab3d ---------- */
   if (XF.API) (function () {
     var TOKEN = 'xf-token', ME = 'xf-me', CAT = 'xf-cat';
-    var ERR = {"A encomenda passa de 2 kg. Escreve-nos para combinarmos os portes.": "Your order is over 2 kg. Write to us and we will agree the shipping cost.", "A loja ainda não está a aceitar pagamentos. Tenta mais tarde.": "The shop is not taking payments yet. Please try later.", "A palavra-passe precisa de 8 caracteres ou mais.": "The password needs 8 characters or more.", "Conta-nos a ideia em poucas linhas.": "Tell us the idea in a few lines.", "Demasiados pedidos. Espera um pouco e tenta outra vez.": "Too many requests. Wait a little and try again.", "Escolhe as estrelas primeiro.": "Pick the stars first.", "Escreve uma frase.": "Write a sentence.", "Esse email não parece certo.": "That email does not look right.", "Esse link já não serve. Pede outro.": "That link no longer works. Ask for a new one.", "Esta encomenda já começou a ser impressa. Escreve-nos e vemos o que dá para fazer.": "This order has already started printing. Write to us and we will see what we can do.", "Falta a localidade.": "The city is missing.", "Falta a morada.": "The address is missing.", "Falta o código postal.": "The postcode is missing.", "Falta o teu nome.": "Your name is missing.", "Já existe uma conta com esse email. Entra em vez disso.": "There is already an account with that email. Sign in instead.", "Não encontrei essa encomenda.": "We could not find that order.", "O carrinho está vazio.": "Your cart is empty.", "O email ou a palavra-passe não estão certos.": "The email or the password is not right.", "O pagamento não abriu. Tenta outra vez.": "The payment did not open. Try again.", "Só dá para avaliar depois de entregue.": "You can review it once it is delivered.", "Tens de entrar na tua conta.": "You need to sign in to your account.", "Um dos produtos já não está à venda. Tira-o do carrinho.": "One of the products is no longer for sale. Remove it from the cart.", "Pedido inválido.": "Something in the form is not right."};
+    var ERR = {"A encomenda passa de 2 kg. Escreve-nos para combinarmos os portes.": "Your order is over 2 kg. Write to us and we will agree the shipping cost.", "A loja ainda não está a aceitar pagamentos. Tenta mais tarde.": "The shop is not taking payments yet. Please try later.", "A palavra-passe precisa de 8 caracteres ou mais.": "The password needs 8 characters or more.", "Conta-nos a ideia em poucas linhas.": "Tell us the idea in a few lines.", "Demasiados pedidos. Espera um pouco e tenta outra vez.": "Too many requests. Wait a little and try again.", "Escolhe as estrelas primeiro.": "Pick the stars first.", "Escreve uma frase.": "Write a sentence.", "Esse email não parece certo.": "That email does not look right.", "Esse link já não serve. Pede outro.": "That link no longer works. Ask for a new one.", "Esta encomenda já começou a ser impressa. Escreve-nos e vemos o que dá para fazer.": "This order has already started printing. Write to us and we will see what we can do.", "Falta a localidade.": "The city is missing.", "Falta a morada.": "The address is missing.", "Falta o código postal.": "The postcode is missing.", "Falta o teu nome.": "Your name is missing.", "Já existe uma conta com esse email. Entra em vez disso.": "There is already an account with that email. Sign in instead.", "Não encontrei essa encomenda.": "We could not find that order.", "O carrinho está vazio.": "Your cart is empty.", "O email ou a palavra-passe não estão certos.": "The email or the password is not right.", "O pagamento não abriu. Tenta outra vez.": "The payment did not open. Try again.", "Só dá para avaliar depois de entregue.": "You can review it once it is delivered.", "Tens de entrar na tua conta.": "You need to sign in to your account.", "Um dos produtos já não está à venda. Tira-o do carrinho.": "One of the products is no longer for sale. Remove it from the cart.", "Pedido inválido.": "Something in the form is not right.", "Escreve a mensagem.": "Write your message.", "Deixa o teu email para te podermos responder.": "Leave your email so we can reply."};
     function errText(pt) {
       pt = pt || 'Algo correu mal. Tenta outra vez.';
       if (XF.isPT()) return pt;
@@ -277,8 +277,8 @@
       if (!en && /^O pagamento não abriu/.test(pt)) en = 'The payment did not open. Try again.';
       return XF.tr(en || 'Something went wrong. Try again.');
     }
-    XF.req = function (method, path, body) {
-      var h = {}, t = XF.load(TOKEN, '');
+    XF.req = function (method, path, body, extra) {
+      var h = extra || {}, t = XF.load(TOKEN, '');
       if (body !== undefined) h['content-type'] = 'application/json';
       if (t) h.authorization = 'Bearer ' + t;
       return fetch(XF.API + '/api/loja' + path, { method: method, headers: h, body: body === undefined ? undefined : JSON.stringify(body) })
@@ -287,7 +287,7 @@
           return r.text().then(function (x) {
             var d = {}; try { d = x ? JSON.parse(x) : {}; } catch (e) {}
             if (r.status === 401 && t && path.indexOf('/conta') === 0) { XF.drop(TOKEN); XF.drop(ME); }
-            if (!r.ok) throw new Error(errText(d.error));
+            if (!r.ok) { var err = new Error(errText(d.error)); err.status = r.status; throw err; }
             return d;
           });
         });
@@ -347,6 +347,22 @@
     XF.orderStatus = function (id) { return XF.req('GET', '/encomendas/' + encodeURIComponent(id)); };
     XF.sendIdea = function (body) { return XF.req('POST', '/lab', body); };
     XF.reviews = function () { return XF.req('GET', '/opinioes'); };
+    /* chat do balão: a chave da conversa fica neste browser */
+    XF.chatSend = function (text, name, email) {
+      var k = XF.load('xf-chat', ''), h = k ? { 'x-chat-key': k } : {};
+      return XF.req('POST', '/chat', { text: text, name: name || '', email: email || '', lang: XF.lang, page: location.pathname.slice(0, 120) }, h).then(function (d) {
+        if (d.key) XF.save('xf-chat', d.key);
+        return d;
+      });
+    };
+    XF.chatRead = function (after) {
+      var k = XF.load('xf-chat', '');
+      if (!k) return Promise.resolve({ messages: [] });
+      return XF.req('GET', '/chat?depois=' + (after || 0), undefined, { 'x-chat-key': k }).catch(function (e) {
+        if (e.status === 404) XF.drop('xf-chat');
+        throw e;
+      });
+    };
     if (XF.load(TOKEN, '')) document.addEventListener('DOMContentLoaded', function () { XF.refreshMe().then(function () { XF.mount(); }); });
   })();
 
@@ -358,6 +374,133 @@
     clearTimeout(XF._toast); XF._toast = setTimeout(function () { t.innerHTML = ''; }, 2600);
   };
   XF.esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+
+  /* ---------- balão de chat (canto inferior direito) ----------
+     Com a loja ligada, as mensagens vão para a app (Loja online → Mensagens) e as respostas
+     aparecem aqui. Em modo de teste abre o email. O número de telefone nunca aparece. */
+  var CHAT_ICON = '<svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.5 4v-4H6.5A2.5 2.5 0 0 1 4 13.5z" fill="#0B1020"/><circle cx="8.5" cy="9.5" r="1.3" fill="#FF5A1F"/><circle cx="12" cy="9.5" r="1.3" fill="#FF5A1F"/><circle cx="15.5" cy="9.5" r="1.3" fill="#FF5A1F"/></svg>';
+  var chat = { last: 0, seen: 0, timer: null, idle: null, busy: false };
+  function chatMsg(m) {
+    var d = document.createElement('div');
+    d.className = 'chat-bubble ' + (m.from === 'me' ? 'me' : 'them');
+    var p = document.createElement('p'); p.textContent = m.text; d.appendChild(p);
+    var s = document.createElement('span'); s.className = 'chat-who';
+    var t = ''; try { t = new Date(m.at).toLocaleTimeString(XF.lang === 'pt' ? 'pt-PT' : XF.lang, { hour: '2-digit', minute: '2-digit' }); } catch (e) {}
+    s.textContent = (m.from === 'me' ? XF.L('Tu', 'You') : 'XyloFab') + (t ? ' · ' + t : '');
+    d.appendChild(s);
+    return d;
+  }
+  function chatShow(list) {
+    var log = document.getElementById('xf-chat-log');
+    if (!log || !list || !list.length) return;
+    list.forEach(function (m) {
+      if (m.id && m.id <= chat.last) return;
+      if (m.id) chat.last = m.id;
+      log.appendChild(chatMsg(m));
+    });
+    log.scrollTop = log.scrollHeight;
+    chatAskFields();
+  }
+  function chatAskFields() {
+    var known = !!XF.load('xf-chat', '') || !!XF.profile();
+    var who = document.getElementById('xf-chat-who');
+    if (who) who.hidden = known;
+  }
+  function chatBadge(on) {
+    var b = document.getElementById('xf-chat-dot');
+    if (b) b.hidden = !on;
+  }
+  function chatPoll() {
+    if (!XF.chatRead || !XF.load('xf-chat', '')) return;
+    XF.chatRead(chat.last).then(function (d) {
+      var fresh = (d.messages || []).filter(function (m) { return m.id > chat.last; });
+      chatShow(fresh);
+      var open = document.getElementById('xf-chat-panel');
+      var theirs = fresh.some(function (m) { return m.from !== 'me'; });
+      if (theirs && !(open && open.classList.contains('open'))) chatBadge(true);
+    }).catch(function () {});
+  }
+  function chatTexts() {
+    var set = function (id, v, attr) { var e = document.getElementById(id); if (e) { if (attr) e.setAttribute(attr, v); else e.textContent = v; } };
+    set('xf-chat-btn', XF.L('Fala connosco', 'Chat with us'), 'aria-label');
+    set('xf-chat-title', XF.L('Fala connosco', 'Chat with us'));
+    set('xf-chat-close', XF.L('Fechar', 'Close'), 'aria-label');
+    set('xf-chat-hello', XF.L('Olá! Somos a Any e o Tiago. Pergunta o que quiseres e respondemos aqui mesmo.', 'Hi! We are Any and Tiago. Ask us anything and we will answer right here.'));
+    set('xf-chat-note', XF.L('Se saíres do site, a resposta chega ao teu email.', 'If you leave the site, the reply goes to your email.'));
+    set('xf-chat-name-l', XF.L('O teu nome', 'Your name'));
+    set('xf-chat-email-l', XF.L('O teu email', 'Your email'));
+    set('xf-chat-text-l', XF.L('Escreve a tua mensagem', 'Write your message'));
+    set('xf-chat-text', XF.L('Escreve a tua mensagem', 'Write your message'), 'placeholder');
+    set('xf-chat-send', XF.L('Enviar', 'Send'));
+    set('xf-chat-dot', XF.L('Nova mensagem da XyloFab', 'New message from XyloFab'), 'aria-label');
+  }
+  function chatOpen(open) {
+    var panel = document.getElementById('xf-chat-panel'), btn = document.getElementById('xf-chat-btn');
+    if (!panel) return;
+    panel.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', String(open));
+    clearInterval(chat.timer);
+    if (open) {
+      chatBadge(false);
+      chatAskFields();
+      chatPoll();
+      chat.timer = setInterval(chatPoll, 8000);
+      setTimeout(function () { var t = document.getElementById('xf-chat-text'); if (t) t.focus(); }, 50);
+    } else {
+      btn.focus();
+    }
+  }
+  XF.mountChat = function () {
+    if (document.getElementById('xf-chat')) { chatTexts(); return; }
+    var w = document.createElement('div');
+    w.id = 'xf-chat'; w.className = 'chat-wrap';
+    w.innerHTML =
+      '<div class="chat-panel" id="xf-chat-panel" role="dialog" aria-labelledby="xf-chat-title">' +
+        '<div class="chat-head"><b id="xf-chat-title"></b><button type="button" class="chat-x" id="xf-chat-close">×</button></div>' +
+        '<div class="chat-log" id="xf-chat-log" aria-live="polite"><div class="chat-bubble them"><p id="xf-chat-hello"></p></div></div>' +
+        '<form class="chat-form" id="xf-chat-form" novalidate>' +
+          '<div id="xf-chat-who"><label><span id="xf-chat-name-l"></span><input name="name" autocomplete="name" maxlength="120"></label>' +
+          '<label><span id="xf-chat-email-l"></span><input name="email" type="email" autocomplete="email" required maxlength="200"></label></div>' +
+          '<input name="website" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true">' +
+          '<label><span id="xf-chat-text-l" class="sr"></span><textarea name="text" id="xf-chat-text" rows="2" maxlength="1000" required></textarea></label>' +
+          '<div class="chat-row"><span class="small" id="xf-chat-note"></span><button class="btn btn-orange" type="submit" id="xf-chat-send"></button></div>' +
+        '</form>' +
+      '</div>' +
+      '<button type="button" class="chat-btn" id="xf-chat-btn" aria-expanded="false" aria-controls="xf-chat-panel">' + CHAT_ICON + '<span class="chat-dot" id="xf-chat-dot" hidden></span></button>';
+    document.body.appendChild(w);
+    chatTexts();
+    var form = document.getElementById('xf-chat-form');
+    var me = XF.profile && XF.profile();
+    if (me) { form.elements.name.value = me.name || ''; form.elements.email.value = me.email || ''; }
+    document.getElementById('xf-chat-btn').addEventListener('click', function () { chatOpen(!document.getElementById('xf-chat-panel').classList.contains('open')); });
+    document.getElementById('xf-chat-close').addEventListener('click', function () { chatOpen(false); });
+    w.addEventListener('keydown', function (e) { if (e.key === 'Escape') chatOpen(false); });
+    form.elements.text.addEventListener('keydown', function (e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); form.requestSubmit ? form.requestSubmit() : form.dispatchEvent(new Event('submit')); } });
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (chat.busy) return;
+      var f = form.elements, text = f.text.value.trim(), email = f.email.value.trim(), name = f.name.value.trim();
+      if (f.website.value) return;
+      if (!text) { XF.toast(XF.L('Escreve a mensagem.', 'Write your message.')); f.text.focus(); return; }
+      var needEmail = !XF.load('xf-chat', '') && !(XF.profile && XF.profile());
+      if (needEmail && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { XF.toast(XF.L('Deixa o teu email para te podermos responder.', 'Leave your email so we can reply.')); f.email.focus(); return; }
+      if (XF.TEST || !XF.chatSend) {
+        location.href = 'mailto:' + XF.EMAIL + '?subject=' + encodeURIComponent('XyloFab · ' + (name || email)) + '&body=' + encodeURIComponent(text + '\n\n' + name);
+        XF.toast(XF.L('Abre o teu email para enviar a mensagem.', 'Your email app will open to send the message.'));
+        return;
+      }
+      chat.busy = true;
+      XF.chatSend(text, name, email).then(function (d) {
+        f.text.value = '';
+        chatShow(d.messages);
+        if ((d.messages || []).length === 1) XF.toast(XF.L('Enviado. Respondemos assim que pudermos.', 'Sent. We will reply as soon as we can.'));
+      }).catch(function (err) { XF.toast(err.message); }).then(function () { chat.busy = false; });
+    });
+    document.addEventListener('xf:lang', chatTexts);
+    /* vindo do email da resposta (?conversa=1), abre logo a conversa */
+    if (/[?&]conversa=1/.test(location.search)) chatOpen(true);
+    else if (XF.load('xf-chat', '')) { chatPoll(); chat.idle = setInterval(function () { if (document.visibilityState === 'visible') chatPoll(); }, 60000); }
+  };
 
   /* ---------- cabeçalho e rodapé ---------- */
   function header(page) {
@@ -410,6 +553,7 @@
     }
     XF.applyLang();
     XF.renderCartCount();
+    XF.mountChat();
     /* se o dicionário da língua ainda não chegou, carrega-o e volta a desenhar a página */
     if (XF.lang !== 'pt' && XF.lang !== 'en' && !XF.I18N[XF.lang]) {
       XF.loadDict(XF.lang, function () { XF.applyLang(); document.dispatchEvent(new CustomEvent('xf:lang')); });

@@ -409,5 +409,20 @@ window.XF.I18N["sl"] = {
 "You choose MB WAY, Multibanco or card on the secure Stripe payment page. Your card details never pass through us.": "MB WAY, Multibanco ali kartico izbereš na varni plačilni strani Stripe. Podatki kartice nikoli ne gredo skozi nas.",
 "You need to sign in to your account.": "Prijaviti se moraš v svoj račun.",
 "Your order is over 2 kg. Write to us and we will agree the shipping cost.": "Tvoje naročilo tehta več kot 2 kg. Piši nam in se dogovorimo za poštnino.",
-"review": "mnenja"
+"review": "mnenja",
+"Chat with us": "Pišite nam",
+"Hi! We are Any and Tiago. Ask us anything and we will answer right here.": "Živjo! Sva Any in Tiago. Vprašajte karkoli, odgovoriva kar tukaj.",
+"If you leave the site, the reply goes to your email.": "Če zapustite stran, odgovor prejmete po e-pošti.",
+"Your name": "Vaše ime",
+"Your email": "Vaš e-naslov",
+"Write your message": "Napišite sporočilo",
+"Send": "Pošlji",
+"Close": "Zapri",
+"Sent. We will reply as soon as we can.": "Poslano. Odgovoriva čim prej.",
+"Your email app will open to send the message.": "Odprla se bo vaša e-pošta za pošiljanje sporočila.",
+"New message from XyloFab": "Novo sporočilo od XyloFab",
+"You": "Vi",
+"Write your message.": "Napišite sporočilo.",
+"Leave your email so we can reply.": "Pustite e-naslov, da vam lahko odgovoriva.",
+"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Sporočila v klepetu:</strong> vaše ime, e-naslov in to, kar napišete, samo da vam lahko odgovoriva."
 };

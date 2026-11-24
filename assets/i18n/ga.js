@@ -409,5 +409,20 @@ window.XF.I18N["ga"] = {
 "You choose MB WAY, Multibanco or card on the secure Stripe payment page. Your card details never pass through us.": "Roghnaíonn tú MB WAY, Multibanco nó cárta ar leathanach íocaíochta slán Stripe. Ní théann sonraí do chárta tríd againne riamh.",
 "You need to sign in to your account.": "Ní mór duit síniú isteach i do chuntas.",
 "Your order is over 2 kg. Write to us and we will agree the shipping cost.": "Tá d'ordú os cionn 2 kg. Scríobh chugainn agus aontóimid an seoladh.",
-"review": "léirmheas"
+"review": "léirmheas",
+"Chat with us": "Labhair linn",
+"Hi! We are Any and Tiago. Ask us anything and we will answer right here.": "Haigh! Is muidne Any agus Tiago. Cuir ceist ar bith agus freagróimid anseo.",
+"If you leave the site, the reply goes to your email.": "Má fhágann tú an suíomh, tiocfaidh an freagra chuig do ríomhphost.",
+"Your name": "D’ainm",
+"Your email": "Do ríomhphost",
+"Write your message": "Scríobh do theachtaireacht",
+"Send": "Seol",
+"Close": "Dún",
+"Sent. We will reply as soon as we can.": "Seolta. Freagróimid chomh luath agus is féidir.",
+"Your email app will open to send the message.": "Osclóidh do ríomhphost chun an teachtaireacht a sheoladh.",
+"New message from XyloFab": "Teachtaireacht nua ó XyloFab",
+"You": "Tusa",
+"Write your message.": "Scríobh do theachtaireacht.",
+"Leave your email so we can reply.": "Fág do ríomhphost ionas gur féidir linn freagra a thabhairt.",
+"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Teachtaireachtaí comhrá:</strong> d’ainm, do ríomhphost agus a scríobhann tú, ionas gur féidir linn freagra a thabhairt ort."
 };

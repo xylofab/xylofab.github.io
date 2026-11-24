@@ -409,5 +409,20 @@ window.XF.I18N["mt"] = {
 "You choose MB WAY, Multibanco or card on the secure Stripe payment page. Your card details never pass through us.": "Tagħżel MB WAY, Multibanco jew karta fuq il-paġna tal-ħlas sigura ta' Stripe. Id-dettalji tal-karta qatt ma jgħaddu minna.",
 "You need to sign in to your account.": "Trid tidħol fil-kont tiegħek.",
 "Your order is over 2 kg. Write to us and we will agree the shipping cost.": "L-ordni tiegħek taqbeż il-2 kg. Iktbilna u niftiehmu fuq il-kunsinna.",
-"review": "reviżjoni"
+"review": "reviżjoni",
+"Chat with us": "Ikteblna",
+"Hi! We are Any and Tiago. Ask us anything and we will answer right here.": "Bonġu! Aħna Any u Tiago. Staqsina li trid u nwieġbu hawnhekk.",
+"If you leave the site, the reply goes to your email.": "Jekk titlaq mis-sit, it-tweġiba tasal fl-email tiegħek.",
+"Your name": "Ismek",
+"Your email": "L-email tiegħek",
+"Write your message": "Ikteb il-messaġġ tiegħek",
+"Send": "Ibgħat",
+"Close": "Agħlaq",
+"Sent. We will reply as soon as we can.": "Mibgħut. Inwieġbu malajr kemm nistgħu.",
+"Your email app will open to send the message.": "L-email tiegħek se tinfetaħ biex tibgħat il-messaġġ.",
+"New message from XyloFab": "Messaġġ ġdid minn XyloFab",
+"You": "Int",
+"Write your message.": "Ikteb il-messaġġ tiegħek.",
+"Leave your email so we can reply.": "Ħallilna l-email tiegħek biex inkunu nistgħu nwieġbu.",
+"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Messaġġi taċ-chat:</strong> ismek, l-email tiegħek u dak li tikteb, biss biex inkunu nistgħu nwieġbuk."
 };

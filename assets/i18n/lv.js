@@ -409,5 +409,20 @@ window.XF.I18N["lv"] = {
 "You choose MB WAY, Multibanco or card on the secure Stripe payment page. Your card details never pass through us.": "MB WAY, Multibanco vai karti izvēlies Stripe drošajā maksājumu lapā. Tavas kartes dati nekad neiet caur mums.",
 "You need to sign in to your account.": "Tev jāpiesakās savā kontā.",
 "Your order is over 2 kg. Write to us and we will agree the shipping cost.": "Tavs pasūtījums sver vairāk par 2 kg. Uzraksti mums, un vienosimies par piegādi.",
-"review": "atsauksmes"
+"review": "atsauksmes",
+"Chat with us": "Raksti mums",
+"Hi! We are Any and Tiago. Ask us anything and we will answer right here.": "Sveiki! Mēs esam Any un Tiago. Jautā, ko vēlies, atbildēsim tepat.",
+"If you leave the site, the reply goes to your email.": "Ja aiziesi no vietnes, atbilde pienāks e-pastā.",
+"Your name": "Tavs vārds",
+"Your email": "Tavs e-pasts",
+"Write your message": "Uzraksti ziņu",
+"Send": "Sūtīt",
+"Close": "Aizvērt",
+"Sent. We will reply as soon as we can.": "Nosūtīts. Atbildēsim, cik ātri vien varēsim.",
+"Your email app will open to send the message.": "Atvērsies tavs e-pasts, lai nosūtītu ziņu.",
+"New message from XyloFab": "Jauna ziņa no XyloFab",
+"You": "Tu",
+"Write your message.": "Uzraksti ziņu.",
+"Leave your email so we can reply.": "Atstāj e-pastu, lai varam atbildēt.",
+"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Tērzēšanas ziņas:</strong> tavs vārds, e-pasts un tas, ko raksti, tikai lai varētu tev atbildēt."
 };

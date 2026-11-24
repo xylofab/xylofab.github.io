@@ -409,5 +409,20 @@ window.XF.I18N["el"] = {
 "You choose MB WAY, Multibanco or card on the secure Stripe payment page. Your card details never pass through us.": "Επιλέγεις MB WAY, Multibanco ή κάρτα στην ασφαλή σελίδα πληρωμής του Stripe. Τα στοιχεία της κάρτας δεν περνούν ποτέ από εμάς.",
 "You need to sign in to your account.": "Πρέπει να συνδεθείς στον λογαριασμό σου.",
 "Your order is over 2 kg. Write to us and we will agree the shipping cost.": "Η παραγγελία σου ξεπερνά τα 2 kg. Γράψε μας να συμφωνήσουμε τα μεταφορικά.",
-"review": "κριτική"
+"review": "κριτική",
+"Chat with us": "Γράψε μας",
+"Hi! We are Any and Tiago. Ask us anything and we will answer right here.": "Γεια! Είμαστε η Any και ο Tiago. Ρώτα μας ό,τι θέλεις και απαντάμε εδώ.",
+"If you leave the site, the reply goes to your email.": "Αν φύγεις από τη σελίδα, η απάντηση έρχεται στο email σου.",
+"Your name": "Το όνομά σου",
+"Your email": "Το email σου",
+"Write your message": "Γράψε το μήνυμά σου",
+"Send": "Αποστολή",
+"Close": "Κλείσιμο",
+"Sent. We will reply as soon as we can.": "Στάλθηκε. Θα απαντήσουμε το συντομότερο.",
+"Your email app will open to send the message.": "Θα ανοίξει το email σου για να στείλεις το μήνυμα.",
+"New message from XyloFab": "Νέο μήνυμα από τη XyloFab",
+"You": "Εσύ",
+"Write your message.": "Γράψε το μήνυμά σου.",
+"Leave your email so we can reply.": "Άφησε το email σου για να σου απαντήσουμε.",
+"<strong>Chat messages:</strong> your name, email and what you write, only so we can reply to you.": "<strong>Μηνύματα συνομιλίας:</strong> το όνομά σου, το email σου και ό,τι γράφεις, μόνο για να σου απαντήσουμε."
 };
